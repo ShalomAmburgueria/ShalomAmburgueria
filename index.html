@@ -175,6 +175,7 @@
     <button type="button" class="painel__fechar" id="fechar-painel-checkout" aria-label="Fechar">✕</button>
     <h3 id="checkout-titulo" class="painel__nome">Finalizar pedido</h3>
 
+    <div id="checkout-formulario">
     <form id="form-checkout" class="painel__corpo" novalidate>
       <label class="campo">
         <span class="campo__rotulo">Nome *</span>
@@ -263,6 +264,26 @@
       📲 Enviar pedido pelo WhatsApp
     </button>
     <p class="dica-envio">Toque em enviar no WhatsApp para confirmar seu pedido.</p>
+    </div>
+
+    <!-- Tela mostrada assim que o cliente conclui o envio. A confirmação de
+         que o pedido chegou é automática aqui no site; quem confirma que a
+         loja RECEBEU e vai preparar é a própria loja, respondendo no
+         WhatsApp — isso não dá pra automatizar sem um atendente humano. -->
+    <div id="checkout-sucesso" class="painel__corpo checkout-sucesso" hidden>
+      <div class="checkout-sucesso__icone" aria-hidden="true">✅</div>
+      <h4 class="checkout-sucesso__titulo">Pedido enviado!</h4>
+      <p class="checkout-sucesso__texto">
+        Agora é só finalizar o envio lá no WhatsApp que abriu (toque no
+        botão verde de enviar da conversa).
+      </p>
+      <p class="checkout-sucesso__texto">
+        A loja vai confirmar o recebimento do seu pedido respondendo por lá.
+      </p>
+      <button type="button" class="btn btn--secundario btn--grande" id="btn-novo-pedido">
+        Fazer novo pedido
+      </button>
+    </div>
   </section>
 
   <!-- Área para leitores de tela anunciarem mensagens rápidas (ex: "item adicionado") -->

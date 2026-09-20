@@ -725,6 +725,8 @@
   function abrirCheckout() {
     fecharCarrinho();
     document.getElementById("checkout-total").textContent = document.getElementById("carrinho-total").textContent;
+    document.getElementById("checkout-formulario").hidden = false;
+    document.getElementById("checkout-sucesso").hidden = true;
     mostrarPainel("painel-checkout", "overlay-checkout");
     atualizarStatusLoja();
   }
@@ -890,7 +892,11 @@
     const novaAba = window.open(url, "_blank");
     if (!novaAba) window.location.href = url;
 
-    // Pedido "enviado": limpamos o carrinho e o formulário para um novo pedido.
+    // O pedido foi montado e o WhatsApp foi aberto com o texto pronto — essa
+    // parte é automática. A partir daqui falta só o cliente tocar em
+    // "enviar" dentro do WhatsApp, e quem confirma que a loja RECEBEU é um
+    // atendente humano respondendo por lá (isso não dá para automatizar
+    // sem backend/API paga do WhatsApp Business).
     carrinho = [];
     salvarCarrinho();
     renderizarBarraCarrinho();
@@ -898,7 +904,9 @@
     configurarTipoEntrega();
     document.getElementById("campo-troco").hidden = true;
     anunciar("Pedido enviado para o WhatsApp!");
-    fecharCheckout();
+
+    document.getElementById("checkout-formulario").hidden = true;
+    document.getElementById("checkout-sucesso").hidden = false;
   }
 
   // =========================================================================
@@ -928,6 +936,7 @@
     document.getElementById("fechar-painel-checkout").addEventListener("click", fecharCheckout);
     document.getElementById("overlay-checkout").addEventListener("click", fecharCheckout);
     document.getElementById("form-checkout").addEventListener("submit", enviarPedidoWhatsApp);
+    document.getElementById("btn-novo-pedido").addEventListener("click", fecharCheckout);
   }
 
   function iniciar() {

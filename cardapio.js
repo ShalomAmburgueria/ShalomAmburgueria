@@ -35,15 +35,29 @@ const CONFIG = {
   // O site usa isso para mostrar "Aberto agora" / "Fechado" e bloquear o
   // envio do pedido fora do horário.
   // A DEFINIR — horário abaixo é um exemplo, confirme com o dono da loja.
+  //
+  // ⚠️ MODO TESTE: horário alargado para 00:00–23:59 todos os dias, só para
+  // conseguir testar o envio do pedido a qualquer hora. Troque pelo horário
+  // real da loja (como o exemplo comentado abaixo) antes de publicar!
   horarios: {
-    dom: { abre: "18:00", fecha: "23:00" },
-    seg: { abre: "18:00", fecha: "23:00" },
-    ter: { abre: "18:00", fecha: "23:00" },
-    qua: { abre: "18:00", fecha: "23:00" },
-    qui: { abre: "18:00", fecha: "23:00" },
-    sex: { abre: "18:00", fecha: "23:30" },
-    sab: { abre: "18:00", fecha: "23:30" },
+    dom: { abre: "00:00", fecha: "23:59" },
+    seg: { abre: "00:00", fecha: "23:59" },
+    ter: { abre: "00:00", fecha: "23:59" },
+    qua: { abre: "00:00", fecha: "23:59" },
+    qui: { abre: "00:00", fecha: "23:59" },
+    sex: { abre: "00:00", fecha: "23:59" },
+    sab: { abre: "00:00", fecha: "23:59" },
   },
+  // Exemplo de horário real (descomente e ajuste, apagando o bloco acima):
+  // horarios: {
+  //   dom: { abre: "18:00", fecha: "23:00" },
+  //   seg: { abre: "18:00", fecha: "23:00" },
+  //   ter: { abre: "18:00", fecha: "23:00" },
+  //   qua: { abre: "18:00", fecha: "23:00" },
+  //   qui: { abre: "18:00", fecha: "23:00" },
+  //   sex: { abre: "18:00", fecha: "23:30" },
+  //   sab: { abre: "18:00", fecha: "23:30" },
+  // },
 
   // Quais "linhas" de lanche estão à venda: "tradicional" e/ou "artesanal".
   // Se só houver uma linha ativa aqui, o seletor de linha some do site e

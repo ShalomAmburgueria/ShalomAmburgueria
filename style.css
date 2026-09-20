@@ -773,6 +773,35 @@ textarea.campo-texto {
   margin: 8px 0 0;
 }
 
+/* Tela de confirmação exibida assim que o pedido é enviado */
+.checkout-sucesso {
+  text-align: center;
+  padding: 20px 4px 8px;
+}
+
+.checkout-sucesso__icone {
+  font-size: 3rem;
+  line-height: 1;
+  margin-bottom: 10px;
+}
+
+.checkout-sucesso__titulo {
+  font-size: 1.3rem;
+  color: var(--dourado-claro);
+  margin: 0 0 12px;
+}
+
+.checkout-sucesso__texto {
+  color: var(--texto-muted);
+  font-size: 0.92rem;
+  margin: 0 0 14px;
+  line-height: 1.5;
+}
+
+.checkout-sucesso #btn-novo-pedido {
+  margin-top: 8px;
+}
+
 /* =========================================================================
    CARRINHO — itens listados
    ========================================================================= */
