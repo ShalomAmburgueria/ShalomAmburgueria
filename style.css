@@ -623,6 +623,26 @@ main {
   padding-right: 2px;
 }
 
+/* #checkout-formulario envolve o formulário inteiro + resumo + botão de
+   enviar, para poder trocar tudo isso pela tela de sucesso depois do envio.
+   Ele assume o papel de área rolável do painel (que normalmente seria do
+   .painel__corpo sozinho), senão o botão de enviar fica cortado fora da
+   tela sem como rolar até ele. */
+#checkout-formulario {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 2px;
+}
+
+#checkout-formulario #form-checkout {
+  overflow: visible;
+  flex: 0 0 auto;
+  padding-right: 0;
+}
+
 .painel__rodape {
   flex-shrink: 0;
   display: flex;
