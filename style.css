@@ -1,0 +1,1026 @@
+/* =========================================================================
+   Shalon Lanches e Porções — estilos
+   Mobile-first: as regras "base" valem para celular; media queries no fim
+   do arquivo ajustam para tablet/desktop.
+   ========================================================================= */
+
+/* ---------- Paleta e variáveis ---------- */
+:root {
+  --bg: #17130f;
+  --bg-alt: #211a14;
+  --bg-cartao: #2a2119;
+  --borda: #4a3a26;
+
+  --dourado: #f0b429;
+  --dourado-claro: #ffd66b;
+  --dourado-escuro: #a97810;
+
+  --vermelho: #c8202a;
+  --vermelho-escuro: #8f1620;
+
+  --verde: #16382a;
+  --verde-claro: #2f6b4f;
+
+  --branco: #fdfaf4;
+  --texto-muted: #cbbfa9;
+  --texto-muted-2: #a3937a;
+
+  --sombra: 0 10px 30px rgba(0, 0, 0, 0.45);
+  --raio: 14px;
+
+  --fonte-titulo: "Poppins", sans-serif;
+  --fonte-logo: "Great Vibes", cursive;
+}
+
+/* ---------- Reset básico ---------- */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--branco);
+  font-family: var(--fonte-titulo);
+  line-height: 1.45;
+  padding-bottom: calc(90px + env(safe-area-inset-bottom, 0px));
+}
+
+img {
+  max-width: 100%;
+}
+
+/* Várias classes abaixo (.painel, .overlay, .barra-carrinho) definem sua
+   própria propriedade "display". Sem isto, essa regra teria a mesma
+   especificidade que a regra padrão do navegador para [hidden] e, sendo
+   declarada depois, venceria — deixando o elemento visível mesmo com o
+   atributo "hidden" presente. Esta regra garante que "hidden" sempre vence. */
+[hidden] {
+  display: none !important;
+}
+
+h1, h2, h3 {
+  margin: 0;
+  font-family: var(--fonte-titulo);
+}
+
+button {
+  font-family: inherit;
+}
+
+/* Foco visível para acessibilidade em todos os elementos interativos */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid var(--dourado-claro);
+  outline-offset: 2px;
+}
+
+/* Respeita usuários que preferem menos animação */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.sr-somente {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* =========================================================================
+   CABEÇALHO / LOGO
+   ========================================================================= */
+.topo {
+  background:
+    radial-gradient(circle at 50% -20%, rgba(240, 180, 41, 0.18), transparent 55%),
+    var(--bg);
+  padding: 20px 16px 14px;
+  border-bottom: 3px solid var(--dourado-escuro);
+  padding-top: calc(20px + env(safe-area-inset-top, 0px));
+}
+
+.topo__conteudo {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 2px;
+}
+
+.logo__coroa {
+  width: 64px;
+  height: auto;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+  margin-bottom: 2px;
+}
+
+.logo__nome {
+  font-family: var(--fonte-logo);
+  font-size: 3.2rem;
+  line-height: 1;
+  color: var(--branco);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6), 0 0 18px rgba(240, 180, 41, 0.25);
+}
+
+.logo__faixa {
+  margin-top: 6px;
+  background: linear-gradient(180deg, var(--vermelho) 0%, var(--vermelho-escuro) 100%);
+  color: var(--branco);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  padding: 5px 16px;
+  border-radius: 999px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.35);
+}
+
+.topo__status-linha {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.status-loja {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: var(--bg-cartao);
+  border: 1px solid var(--borda);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.status-loja__ponto {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #6b6b6b;
+  flex-shrink: 0;
+}
+
+.status-loja--aberto .status-loja__ponto {
+  background: #35c15a;
+  box-shadow: 0 0 8px #35c15a;
+}
+
+.status-loja--fechado .status-loja__ponto {
+  background: var(--vermelho);
+  box-shadow: 0 0 8px var(--vermelho);
+}
+
+/* Seletor Tradicional / Artesanal */
+.seletor-linha {
+  display: inline-flex;
+  background: var(--bg-cartao);
+  border: 1px solid var(--borda);
+  border-radius: 999px;
+  padding: 4px;
+  gap: 4px;
+}
+
+.seletor-linha__btn {
+  border: none;
+  background: transparent;
+  color: var(--texto-muted);
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 9px 18px;
+  min-height: 44px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.seletor-linha__btn[aria-checked="true"] {
+  background: linear-gradient(180deg, var(--dourado-claro), var(--dourado));
+  color: #241a06;
+}
+
+/* =========================================================================
+   MENU DE CATEGORIAS (fixo no topo ao rolar)
+   ========================================================================= */
+.menu-categorias {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  background: rgba(23, 19, 15, 0.96);
+  backdrop-filter: blur(6px);
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--borda);
+  scrollbar-width: none;
+}
+
+.menu-categorias::-webkit-scrollbar {
+  display: none;
+}
+
+.menu-categorias__btn {
+  flex: 0 0 auto;
+  min-height: 44px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--borda);
+  background: var(--bg-cartao);
+  color: var(--texto-muted);
+  font-weight: 600;
+  font-size: 0.88rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.menu-categorias__btn[aria-current="true"] {
+  background: linear-gradient(180deg, var(--dourado-claro), var(--dourado));
+  color: #241a06;
+  border-color: var(--dourado);
+}
+
+/* =========================================================================
+   SEÇÕES E GRADE DE ITENS
+   ========================================================================= */
+main {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 12px;
+}
+
+.secao {
+  padding: 22px 4px 6px;
+  scroll-margin-top: 64px;
+}
+
+.secao__titulo {
+  font-size: 1.25rem;
+  color: var(--dourado-claro);
+  margin-bottom: 4px;
+}
+
+.secao__observacao {
+  color: var(--texto-muted-2);
+  font-size: 0.82rem;
+  margin: 4px 0 14px;
+}
+
+.secao--bebidas {
+  background: linear-gradient(180deg, transparent, rgba(22, 56, 42, 0.35));
+  border-radius: var(--raio);
+}
+
+.grade-itens {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+/* Itens de grid têm min-width:auto por padrão, ou seja, não encolhem além
+   do conteúdo interno. Sem isto, em telas estreitas o card ficava mais
+   largo que a coluna e empurrava a etiqueta de preço para fora da tela. */
+.grade-itens > * {
+  min-width: 0;
+}
+
+/* ---------- Card de item ---------- */
+.cartao-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--bg-cartao);
+  border: 1px solid var(--borda);
+  border-radius: var(--raio);
+  padding: 12px;
+  text-align: left;
+  color: inherit;
+  cursor: pointer;
+  width: 100%;
+  min-height: 44px;
+  transition: transform 0.15s, border-color 0.15s;
+}
+
+.cartao-item:hover,
+.cartao-item:focus-visible {
+  border-color: var(--dourado);
+}
+
+.cartao-item:active {
+  transform: scale(0.99);
+}
+
+.cartao-item__icone {
+  flex: 0 0 auto;
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.7rem;
+  background: radial-gradient(circle at 30% 30%, #3a2d1c, #201810);
+  border: 1px solid var(--borda);
+  overflow: hidden;
+}
+
+.cartao-item__icone img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cartao-item__corpo {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.cartao-item__nome {
+  font-weight: 700;
+  font-size: 0.98rem;
+  margin: 0 0 2px;
+}
+
+.cartao-item__ingredientes {
+  color: var(--texto-muted);
+  font-size: 0.8rem;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.cartao-item__direita {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.etiqueta-preco {
+  background: linear-gradient(180deg, var(--dourado-claro), var(--dourado));
+  color: #241a06;
+  font-weight: 800;
+  font-size: 0.92rem;
+  padding: 5px 10px;
+  border-radius: 8px;
+  white-space: nowrap;
+}
+
+.botao-add {
+  min-width: 44px;
+  min-height: 44px;
+  border-radius: 50%;
+  border: none;
+  background: var(--vermelho);
+  color: var(--branco);
+  font-size: 1.3rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+.botao-add:hover,
+.botao-add:focus-visible {
+  background: var(--vermelho-escuro);
+}
+
+/* Card do combo (destaque maior) */
+.cartao-combo {
+  border-color: var(--vermelho);
+  background: linear-gradient(180deg, rgba(200, 32, 42, 0.12), var(--bg-cartao));
+}
+
+.cartao-item__lista {
+  margin: 4px 0 0;
+  padding-left: 18px;
+  color: var(--texto-muted);
+  font-size: 0.8rem;
+}
+
+/* Porções: bloco de tamanhos de batata frita */
+.bloco-batata {
+  background: var(--bg-cartao);
+  border: 1px solid var(--borda);
+  border-radius: var(--raio);
+  padding: 14px;
+  margin-bottom: 12px;
+}
+
+.bloco-batata__cabecalho {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.bloco-batata__nome {
+  font-weight: 700;
+}
+
+.bloco-batata__opcoes {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.opcao-tamanho {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background: var(--bg-alt);
+  border: 1px solid var(--borda);
+  border-radius: 10px;
+  padding: 10px 12px;
+  min-height: 44px;
+}
+
+.opcao-tamanho__nome {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+/* =========================================================================
+   BARRA FIXA DO CARRINHO
+   ========================================================================= */
+.barra-carrinho {
+  position: fixed;
+  left: 12px;
+  right: 12px;
+  bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+  z-index: 30;
+  max-width: 696px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(180deg, var(--vermelho) 0%, var(--vermelho-escuro) 100%);
+  color: var(--branco);
+  border: none;
+  border-radius: 14px;
+  padding: 14px 16px;
+  min-height: 56px;
+  box-shadow: var(--sombra);
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.barra-carrinho__qtd {
+  background: rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+  min-width: 26px;
+  height: 26px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+}
+
+.barra-carrinho__texto {
+  flex: 1;
+  text-align: left;
+  font-size: 0.95rem;
+}
+
+.barra-carrinho__total {
+  font-size: 1rem;
+}
+
+/* =========================================================================
+   OVERLAY + PAINÉIS (bottom sheets)
+   ========================================================================= */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 40;
+}
+
+.painel {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 50;
+  max-width: 720px;
+  margin: 0 auto;
+  background: var(--bg-alt);
+  border-top: 2px solid var(--dourado);
+  border-radius: 20px 20px 0 0;
+  padding: 10px 18px calc(18px + env(safe-area-inset-bottom, 0px));
+  max-height: 88vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.5);
+  animation: subir 0.22s ease-out;
+}
+
+@keyframes subir {
+  from { transform: translateY(16px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.painel__alca {
+  width: 42px;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--borda);
+  margin: 4px auto 8px;
+  flex-shrink: 0;
+}
+
+.painel__fechar {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--borda);
+  background: var(--bg-cartao);
+  color: var(--branco);
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.painel__cabecalho {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 30px 14px 2px;
+  flex-shrink: 0;
+}
+
+.painel__icone {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  background: radial-gradient(circle at 30% 30%, #3a2d1c, #201810);
+  border: 1px solid var(--borda);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.7rem;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.painel__icone img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.painel__nome {
+  font-size: 1.15rem;
+  margin: 0;
+}
+
+.painel__preco-base {
+  margin: 2px 0 0;
+  color: var(--dourado-claro);
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.painel__corpo {
+  overflow-y: auto;
+  flex: 1 1 auto;
+  padding-right: 2px;
+}
+
+.painel__rodape {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-top: 14px;
+  border-top: 1px solid var(--borda);
+  margin-top: 12px;
+}
+
+/* Grupos dentro do painel de item */
+.grupo-painel {
+  margin-bottom: 18px;
+}
+
+.grupo-painel__titulo {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--texto-muted-2);
+  margin: 0 0 8px;
+  font-weight: 700;
+}
+
+.opcao-check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 4px;
+  min-height: 44px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  cursor: pointer;
+}
+
+.opcao-check input {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  accent-color: var(--dourado);
+}
+
+.opcao-check__nome {
+  flex: 1;
+  font-size: 0.92rem;
+}
+
+.opcao-check__preco {
+  color: var(--texto-muted);
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.campo-texto,
+textarea.campo-texto {
+  width: 100%;
+  background: var(--bg-cartao);
+  border: 1px solid var(--borda);
+  border-radius: 10px;
+  color: var(--branco);
+  padding: 11px 12px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  min-height: 44px;
+}
+
+textarea.campo-texto {
+  resize: vertical;
+  min-height: 70px;
+}
+
+/* Stepper de quantidade */
+.stepper {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--bg-cartao);
+  border: 1px solid var(--borda);
+  border-radius: 999px;
+  padding: 4px;
+  flex-shrink: 0;
+}
+
+.stepper__btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: none;
+  background: var(--dourado);
+  color: #241a06;
+  font-size: 1.2rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.stepper__valor {
+  min-width: 28px;
+  text-align: center;
+  font-weight: 700;
+}
+
+/* =========================================================================
+   BOTÕES GERAIS
+   ========================================================================= */
+.btn {
+  min-height: 48px;
+  border: none;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  padding: 12px 18px;
+}
+
+.btn--primario {
+  background: linear-gradient(180deg, var(--dourado-claro), var(--dourado));
+  color: #241a06;
+}
+
+.btn--grande {
+  width: 100%;
+}
+
+.btn--whatsapp {
+  background: linear-gradient(180deg, #34d05c, #22a648);
+  color: #04240f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn--whatsapp:disabled {
+  background: #4a4a4a;
+  color: #9c9c9c;
+  cursor: not-allowed;
+}
+
+.btn--secundario {
+  background: var(--bg-cartao);
+  border: 1px solid var(--borda);
+  color: var(--branco);
+}
+
+.dica-envio {
+  text-align: center;
+  color: var(--texto-muted-2);
+  font-size: 0.78rem;
+  margin: 8px 0 0;
+}
+
+/* =========================================================================
+   CARRINHO — itens listados
+   ========================================================================= */
+.item-carrinho {
+  display: flex;
+  gap: 10px;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.item-carrinho__icone {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: radial-gradient(circle at 30% 30%, #3a2d1c, #201810);
+  border: 1px solid var(--borda);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+
+.item-carrinho__corpo {
+  flex: 1;
+  min-width: 0;
+}
+
+.item-carrinho__nome {
+  font-weight: 700;
+  font-size: 0.92rem;
+  margin: 0 0 2px;
+}
+
+.item-carrinho__detalhe {
+  color: var(--texto-muted);
+  font-size: 0.78rem;
+  margin: 0 0 2px;
+}
+
+.item-carrinho__acoes {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.item-carrinho__preco {
+  font-weight: 700;
+  color: var(--dourado-claro);
+  white-space: nowrap;
+  font-size: 0.9rem;
+}
+
+.link-acao {
+  background: none;
+  border: none;
+  color: var(--texto-muted);
+  font-size: 0.8rem;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 6px 2px;
+  min-height: 44px;
+}
+
+.link-acao--remover {
+  color: #e57373;
+}
+
+.carrinho-vazio {
+  text-align: center;
+  color: var(--texto-muted-2);
+  padding: 30px 10px;
+}
+
+/* Resumo de valores (subtotal / taxa / total) */
+.resumo-valores {
+  flex-shrink: 0;
+  padding-top: 10px;
+  border-top: 1px solid var(--borda);
+  margin-top: 6px;
+}
+
+.resumo-valores__linha {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.88rem;
+  color: var(--texto-muted);
+  padding: 3px 0;
+}
+
+.resumo-valores__linha--total {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--dourado-claro);
+  padding-top: 6px;
+}
+
+.aviso {
+  background: rgba(200, 32, 42, 0.18);
+  border: 1px solid var(--vermelho);
+  color: #ffb4b4;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 0.82rem;
+  margin: 10px 0 0;
+}
+
+/* =========================================================================
+   FORMULÁRIO DE FINALIZAÇÃO
+   ========================================================================= */
+.campo {
+  display: block;
+  margin-bottom: 14px;
+}
+
+.campo__rotulo {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--texto-muted);
+  margin-bottom: 6px;
+}
+
+.campo input[type="text"],
+.campo input[type="tel"],
+.campo textarea {
+  width: 100%;
+  background: var(--bg-cartao);
+  border: 1px solid var(--borda);
+  border-radius: 10px;
+  color: var(--branco);
+  padding: 11px 12px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  min-height: 44px;
+}
+
+.campo textarea {
+  resize: vertical;
+}
+
+.campo__erro {
+  display: block;
+  color: #ff8a8a;
+  font-size: 0.78rem;
+  margin-top: 4px;
+  min-height: 1em;
+}
+
+.campo--fieldset {
+  border: none;
+  padding: 0;
+  margin: 0 0 14px;
+}
+
+.campo-duplo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.campos-endereco {
+  overflow: hidden;
+  transition: max-height 0.2s ease;
+}
+
+.opcoes-toggle {
+  display: flex;
+  gap: 8px;
+}
+
+.opcoes-toggle__btn {
+  flex: 1;
+  min-height: 44px;
+  border-radius: 10px;
+  border: 1px solid var(--borda);
+  background: var(--bg-cartao);
+  color: var(--texto-muted);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.opcoes-toggle__btn[aria-pressed="true"] {
+  background: linear-gradient(180deg, var(--dourado-claro), var(--dourado));
+  color: #241a06;
+  border-color: var(--dourado);
+}
+
+.opcoes-pagamento {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.opcao-radio {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--bg-cartao);
+  border: 1px solid var(--borda);
+  border-radius: 10px;
+  padding: 11px 12px;
+  min-height: 44px;
+  cursor: pointer;
+}
+
+.opcao-radio input {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--dourado);
+}
+
+/* =========================================================================
+   RODAPÉ
+   ========================================================================= */
+.rodape {
+  text-align: center;
+  color: var(--texto-muted-2);
+  font-size: 0.78rem;
+  padding: 24px 16px 8px;
+}
+
+/* =========================================================================
+   RESPONSIVO — TABLET E DESKTOP
+   ========================================================================= */
+@media (min-width: 640px) {
+  .grade-itens {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .campo-duplo {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .logo__nome {
+    font-size: 3.8rem;
+  }
+}
+
+@media (min-width: 960px) {
+  .topo__conteudo,
+  main,
+  .menu-categorias {
+    max-width: 960px;
+  }
+
+  .grade-itens {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  }
+}

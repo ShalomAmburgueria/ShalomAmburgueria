@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Shalon Lanches e Porções | Cardápio e Pedido pelo WhatsApp</title>
+  <meta name="description" content="Monte seu pedido de lanches, porções e bebidas da Shalon Lanches e Porções e envie direto pelo WhatsApp. Rápido, fácil e sem cadastro." />
+
+  <!-- Open Graph / compartilhamento -->
+  <meta property="og:title" content="Shalon Lanches e Porções" />
+  <meta property="og:description" content="Monte seu pedido e envie pelo WhatsApp em menos de 1 minuto." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="favicon.svg" />
+
+  <meta name="theme-color" content="#171310" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+
+  <!-- Google Fonts: Poppins (textos) e Great Vibes (logo cursivo) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ======================= CABEÇALHO ======================= -->
+  <header class="topo">
+    <div class="topo__conteudo">
+      <!-- Logo recriado em SVG/CSS, sem usar fotos do cardápio impresso -->
+      <div class="logo" role="img" aria-label="Shalon Lanches e Porções">
+        <svg class="logo__coroa" viewBox="0 0 100 60" aria-hidden="true" focusable="false">
+          <polygon points="5,50 15,15 30,35 50,8 70,35 85,15 95,50" fill="url(#gradCoroa)" stroke="#7a4f0c" stroke-width="1.5" stroke-linejoin="round" />
+          <circle cx="15" cy="15" r="5" fill="url(#gradCoroa)" stroke="#7a4f0c" stroke-width="1.5" />
+          <circle cx="50" cy="8" r="6" fill="url(#gradCoroa)" stroke="#7a4f0c" stroke-width="1.5" />
+          <circle cx="85" cy="15" r="5" fill="url(#gradCoroa)" stroke="#7a4f0c" stroke-width="1.5" />
+          <rect x="5" y="48" width="90" height="8" rx="2" fill="url(#gradCoroa)" stroke="#7a4f0c" stroke-width="1.5" />
+          <defs>
+            <linearGradient id="gradCoroa" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#ffe28a" />
+              <stop offset="55%" stop-color="#f0b429" />
+              <stop offset="100%" stop-color="#c98b0f" />
+            </linearGradient>
+          </defs>
+        </svg>
+        <span class="logo__nome">Shalon</span>
+        <span class="logo__faixa">Lanches e Porções</span>
+      </div>
+
+      <div class="topo__status-linha">
+        <p id="status-loja" class="status-loja" aria-live="polite">
+          <span class="status-loja__ponto" aria-hidden="true"></span>
+          <span class="status-loja__texto">Verificando horário…</span>
+        </p>
+
+        <!-- Seletor de linha: só aparece quando há 2 linhas ativas (ver app.js) -->
+        <div id="seletor-linha" class="seletor-linha" role="radiogroup" aria-label="Escolha a linha do lanche">
+          <button type="button" class="seletor-linha__btn" data-linha="tradicional" role="radio" aria-checked="true">Tradicional</button>
+          <button type="button" class="seletor-linha__btn" data-linha="artesanal" role="radio" aria-checked="false">Artesanal</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ======================= MENU DE CATEGORIAS ======================= -->
+  <nav class="menu-categorias" id="menu-categorias" aria-label="Categorias do cardápio">
+    <button type="button" class="menu-categorias__btn" data-categoria="cat-lanches" aria-current="true">🍔 Lanches</button>
+    <button type="button" class="menu-categorias__btn" data-categoria="cat-combo">🎉 Combo</button>
+    <button type="button" class="menu-categorias__btn" data-categoria="cat-porcoes">🍟 Porções</button>
+    <button type="button" class="menu-categorias__btn" data-categoria="cat-bebidas">🥤 Bebidas</button>
+  </nav>
+
+  <!-- ======================= CONTEÚDO PRINCIPAL ======================= -->
+  <main id="conteudo">
+
+    <section id="cat-lanches" class="secao" aria-labelledby="titulo-lanches">
+      <h2 id="titulo-lanches" class="secao__titulo">🍔 Lanches</h2>
+      <p class="secao__observacao" id="obs-lanches"></p>
+      <div class="grade-itens" id="grade-lanches"></div>
+    </section>
+
+    <section id="cat-combo" class="secao" aria-labelledby="titulo-combo">
+      <h2 id="titulo-combo" class="secao__titulo">🎉 Combo Especial</h2>
+      <div class="grade-itens" id="grade-combo"></div>
+    </section>
+
+    <section id="cat-porcoes" class="secao" aria-labelledby="titulo-porcoes">
+      <h2 id="titulo-porcoes" class="secao__titulo">🍟 Porções</h2>
+      <p class="secao__observacao" id="obs-porcoes"></p>
+      <div class="grade-itens" id="grade-porcoes"></div>
+    </section>
+
+    <section id="cat-bebidas" class="secao secao--bebidas" aria-labelledby="titulo-bebidas">
+      <h2 id="titulo-bebidas" class="secao__titulo">🥤 Bebidas</h2>
+      <div class="grade-itens" id="grade-bebidas"></div>
+    </section>
+
+  </main>
+
+  <footer class="rodape">
+    <p>Shalon Lanches e Porções — peça pelo site e finalize no WhatsApp 📲</p>
+  </footer>
+
+  <!-- ======================= BARRA FIXA DO CARRINHO ======================= -->
+  <button type="button" id="barra-carrinho" class="barra-carrinho" hidden aria-label="Abrir carrinho">
+    <span class="barra-carrinho__qtd" id="barra-carrinho-qtd">0</span>
+    <span class="barra-carrinho__texto">Ver carrinho</span>
+    <span class="barra-carrinho__total" id="barra-carrinho-total">R$ 0,00</span>
+  </button>
+
+  <!-- ======================= PAINEL DE ITEM (bottom sheet) ======================= -->
+  <div id="overlay-item" class="overlay" hidden></div>
+  <section id="painel-item" class="painel" hidden aria-labelledby="painel-item-nome" role="dialog" aria-modal="true">
+    <div class="painel__alca" aria-hidden="true"></div>
+    <button type="button" class="painel__fechar" id="fechar-painel-item" aria-label="Fechar">✕</button>
+
+    <div class="painel__cabecalho">
+      <div class="painel__icone" id="painel-item-icone" aria-hidden="true"></div>
+      <div>
+        <h3 id="painel-item-nome" class="painel__nome"></h3>
+        <p id="painel-item-preco-base" class="painel__preco-base"></p>
+      </div>
+    </div>
+
+    <div class="painel__corpo" id="painel-item-corpo">
+      <!-- Preenchido dinamicamente pelo app.js: sabor, ingredientes removíveis, adicionais, observação -->
+    </div>
+
+    <div class="painel__rodape">
+      <div class="stepper" role="group" aria-label="Quantidade">
+        <button type="button" class="stepper__btn" id="painel-item-menos" aria-label="Diminuir quantidade">−</button>
+        <span class="stepper__valor" id="painel-item-qtd">1</span>
+        <button type="button" class="stepper__btn" id="painel-item-mais" aria-label="Aumentar quantidade">+</button>
+      </div>
+      <button type="button" class="btn btn--primario btn--grande" id="painel-item-confirmar">
+        Adicionar · <span id="painel-item-total">R$ 0,00</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ======================= CARRINHO (bottom sheet) ======================= -->
+  <div id="overlay-carrinho" class="overlay" hidden></div>
+  <section id="painel-carrinho" class="painel painel--carrinho" hidden aria-labelledby="carrinho-titulo" role="dialog" aria-modal="true">
+    <div class="painel__alca" aria-hidden="true"></div>
+    <button type="button" class="painel__fechar" id="fechar-painel-carrinho" aria-label="Fechar carrinho">✕</button>
+    <h3 id="carrinho-titulo" class="painel__nome">Seu pedido</h3>
+
+    <div class="painel__corpo" id="lista-carrinho">
+      <!-- Itens do carrinho renderizados pelo app.js -->
+    </div>
+
+    <div class="resumo-valores" id="resumo-carrinho">
+      <div class="resumo-valores__linha">
+        <span>Subtotal</span>
+        <span id="carrinho-subtotal">R$ 0,00</span>
+      </div>
+      <div class="resumo-valores__linha">
+        <span>Taxa de entrega</span>
+        <span id="carrinho-taxa">a combinar</span>
+      </div>
+      <div class="resumo-valores__linha resumo-valores__linha--total">
+        <span>Total</span>
+        <span id="carrinho-total">R$ 0,00</span>
+      </div>
+      <p id="carrinho-aviso-minimo" class="aviso" hidden></p>
+    </div>
+
+    <button type="button" class="btn btn--primario btn--grande" id="btn-ir-checkout">Continuar para finalizar</button>
+  </section>
+
+  <!-- ======================= FINALIZAÇÃO (bottom sheet) ======================= -->
+  <div id="overlay-checkout" class="overlay" hidden></div>
+  <section id="painel-checkout" class="painel painel--checkout" hidden aria-labelledby="checkout-titulo" role="dialog" aria-modal="true">
+    <div class="painel__alca" aria-hidden="true"></div>
+    <button type="button" class="painel__fechar" id="fechar-painel-checkout" aria-label="Fechar">✕</button>
+    <h3 id="checkout-titulo" class="painel__nome">Finalizar pedido</h3>
+
+    <form id="form-checkout" class="painel__corpo" novalidate>
+      <label class="campo">
+        <span class="campo__rotulo">Nome *</span>
+        <input type="text" id="cliente-nome" name="nome" autocomplete="name" required maxlength="60" />
+        <span class="campo__erro" id="erro-nome"></span>
+      </label>
+
+      <label class="campo">
+        <span class="campo__rotulo">Telefone (WhatsApp) *</span>
+        <input type="tel" id="cliente-telefone" name="telefone" autocomplete="tel" required inputmode="tel" placeholder="(11) 90000-0000" maxlength="20" />
+        <span class="campo__erro" id="erro-telefone"></span>
+      </label>
+
+      <fieldset class="campo campo--fieldset">
+        <legend class="campo__rotulo">Como vai receber? *</legend>
+        <div class="opcoes-toggle" role="radiogroup" aria-label="Entrega ou retirada">
+          <button type="button" class="opcoes-toggle__btn" id="opcao-entrega" data-tipo="entrega" aria-pressed="true">🛵 Entrega</button>
+          <button type="button" class="opcoes-toggle__btn" id="opcao-retirada" data-tipo="retirada" aria-pressed="false">🏪 Retirada</button>
+        </div>
+      </fieldset>
+
+      <div id="campos-endereco" class="campos-endereco">
+        <label class="campo">
+          <span class="campo__rotulo">Rua *</span>
+          <input type="text" id="endereco-rua" name="rua" autocomplete="address-line1" maxlength="80" />
+          <span class="campo__erro" id="erro-rua"></span>
+        </label>
+        <div class="campo-duplo">
+          <label class="campo">
+            <span class="campo__rotulo">Número *</span>
+            <input type="text" id="endereco-numero" name="numero" autocomplete="off" inputmode="numeric" maxlength="10" />
+            <span class="campo__erro" id="erro-numero"></span>
+          </label>
+          <label class="campo">
+            <span class="campo__rotulo">Bairro *</span>
+            <input type="text" id="endereco-bairro" name="bairro" autocomplete="address-level3" maxlength="50" />
+            <span class="campo__erro" id="erro-bairro"></span>
+          </label>
+        </div>
+        <label class="campo">
+          <span class="campo__rotulo">Complemento / referência</span>
+          <input type="text" id="endereco-complemento" name="complemento" autocomplete="off" maxlength="80" />
+        </label>
+      </div>
+
+      <fieldset class="campo campo--fieldset">
+        <legend class="campo__rotulo">Forma de pagamento *</legend>
+        <div class="opcoes-pagamento" role="radiogroup" aria-label="Forma de pagamento">
+          <label class="opcao-radio">
+            <input type="radio" name="pagamento" value="Pix" />
+            <span>💠 Pix</span>
+          </label>
+          <label class="opcao-radio">
+            <input type="radio" name="pagamento" value="Cartão na entrega" />
+            <span>💳 Cartão na entrega</span>
+          </label>
+          <label class="opcao-radio">
+            <input type="radio" name="pagamento" value="Dinheiro" />
+            <span>💵 Dinheiro</span>
+          </label>
+        </div>
+        <span class="campo__erro" id="erro-pagamento"></span>
+      </fieldset>
+
+      <label class="campo" id="campo-troco" hidden>
+        <span class="campo__rotulo">Troco para quanto?</span>
+        <input type="text" id="cliente-troco" name="troco" inputmode="numeric" placeholder="Ex: 50" maxlength="10" />
+      </label>
+
+      <label class="campo">
+        <span class="campo__rotulo">Observações gerais</span>
+        <textarea id="observacoes-gerais" name="observacoes" rows="3" maxlength="300" placeholder="Ex: sem cebola em tudo, tocar interfone 2x…"></textarea>
+      </label>
+    </form>
+
+    <div class="resumo-valores">
+      <div class="resumo-valores__linha resumo-valores__linha--total">
+        <span>Total do pedido</span>
+        <span id="checkout-total">R$ 0,00</span>
+      </div>
+    </div>
+
+    <p id="aviso-fechado" class="aviso aviso--fechado" hidden></p>
+
+    <button type="submit" form="form-checkout" class="btn btn--whatsapp btn--grande" id="btn-enviar-whatsapp">
+      📲 Enviar pedido pelo WhatsApp
+    </button>
+    <p class="dica-envio">Toque em enviar no WhatsApp para confirmar seu pedido.</p>
+  </section>
+
+  <!-- Área para leitores de tela anunciarem mensagens rápidas (ex: "item adicionado") -->
+  <div id="anuncio" class="sr-somente" role="status" aria-live="polite"></div>
+
+  <script src="cardapio.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
