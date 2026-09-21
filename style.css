@@ -516,6 +516,14 @@ main {
   border-radius: 10px;
   padding: 10px 12px;
   min-height: 44px;
+  /* Botões não herdam a cor de texto do body por padrão (o navegador usa a
+     cor de texto padrão do sistema, geralmente preta) — por isso era preciso
+     declarar explicitamente, senão "Pequena/Média/Grande" ficava ilegível
+     no fundo escuro. */
+  color: var(--branco);
+  width: 100%;
+  cursor: pointer;
+  font-family: inherit;
 }
 
 .opcao-tamanho__nome {
