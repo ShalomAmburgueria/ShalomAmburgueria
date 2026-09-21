@@ -45,6 +45,7 @@
         </svg>
         <span class="logo__nome">Shalon</span>
         <span class="logo__faixa">Lanches e Porções</span>
+        <p class="logo__tagline" id="tagline"></p>
       </div>
 
       <div class="topo__status-linha">
@@ -99,7 +100,26 @@
 
   <footer class="rodape">
     <p>Shalon Lanches e Porções — peça pelo site e finalize no WhatsApp 📲</p>
+
+    <nav class="rodape__links" aria-label="Sobre a loja">
+      <button type="button" class="rodape__link" id="btn-quem-somos">Quem Somos</button>
+      <button type="button" class="rodape__link" id="btn-endereco">Endereço e Contato</button>
+    </nav>
+
+    <div class="rodape__credito">
+      <span>Site desenvolvido por</span>
+      <img src="doubene-logo.png" alt="doubene.ai" class="rodape__credito-logo" width="120" height="36" loading="lazy" />
+    </div>
   </footer>
+
+  <!-- ======================= PAINEL INFORMATIVO (Quem Somos / Endereço) ======================= -->
+  <div id="overlay-info" class="overlay" hidden></div>
+  <section id="painel-info" class="painel painel--info" hidden aria-labelledby="info-titulo" role="dialog" aria-modal="true">
+    <div class="painel__alca" aria-hidden="true"></div>
+    <button type="button" class="painel__fechar" id="fechar-painel-info" aria-label="Fechar">✕</button>
+    <h3 id="info-titulo" class="painel__nome"></h3>
+    <div class="painel__corpo" id="info-corpo"></div>
+  </section>
 
   <!-- ======================= BARRA FIXA DO CARRINHO ======================= -->
   <button type="button" id="barra-carrinho" class="barra-carrinho" hidden aria-label="Abrir carrinho">

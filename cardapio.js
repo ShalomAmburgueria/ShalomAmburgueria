@@ -17,6 +17,26 @@ const CONFIG = {
   // Nome da loja (aparece no título da página e na mensagem do WhatsApp)
   nomeLoja: "Shalon Lanches e Porções",
 
+  // Frase de efeito que aparece embaixo do logo, no topo do site.
+  tagline: "Chegou o novo sabor da sua fome",
+
+  // Texto do botão/painel "Quem Somos", no rodapé. Pode usar várias frases
+  // (cada item da lista vira um parágrafo).
+  // A DEFINIR — pedir o texto para o dono da loja.
+  sobreLoja: [
+    "A Shalon Lanches e Porções nasceu da vontade de servir um lanche de verdade, feito na hora, com ingredientes de qualidade.",
+    "// A DEFINIR — complete a história da loja aqui (quando começou, o que torna a Shalon especial, etc.)",
+  ],
+
+  // Endereço e contato, mostrados no botão/painel "Endereço e Contato".
+  // O telefone/WhatsApp já vem do campo CONFIG.whatsapp acima.
+  // A DEFINIR
+  endereco: {
+    rua: "// A DEFINIR — rua e número",
+    bairro: "// A DEFINIR — bairro e cidade",
+    referencia: "", // opcional, ex: "Perto da praça central"
+  },
+
   // Número de WhatsApp que vai receber os pedidos, no formato DDI+DDD+número,
   // só dígitos (sem espaços, parênteses ou traços).
   // ⚠️ TESTE — troque pelo número real da lanchonete antes de publicar o site!

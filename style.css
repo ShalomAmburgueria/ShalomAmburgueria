@@ -1,7 +1,7 @@
 /* =========================================================================
    Shalon Lanches e Porções — estilos
-   Identidade "Letreiro": letreiro de neon de lanchonete 24h — rosa e ciano
-   brilhando sobre o céu noturno, coroa em âmbar.
+   Identidade "Letreiro": letreiro de neon de lanchonete 24h — amarelo bem
+   escuro e ciano brilhando sobre o céu noturno, coroa em âmbar.
    Mobile-first: as regras "base" valem para celular; media queries no fim
    do arquivo ajustam para tablet/desktop.
    ========================================================================= */
@@ -13,8 +13,9 @@
   --bg-cartao: #1b1926;
   --borda: rgba(255, 255, 255, 0.1);
 
-  --magenta: #ff3d8f;
-  --magenta-escuro: #c82a6c;
+  --primario: #b8860b; /* amarelo bem escuro (dark goldenrod) */
+  --primario-claro: #d9a521;
+  --primario-escuro: #7a5c07;
   --cyan: #35e0d0;
   --cyan-escuro: #1fa89c;
   --amber: #ffc857;
@@ -46,7 +47,7 @@ html {
 body {
   margin: 0;
   background:
-    radial-gradient(circle at 12% 0%, rgba(255, 61, 143, 0.08), transparent 40%),
+    radial-gradient(circle at 12% 0%, rgba(184, 134, 11, 0.12), transparent 40%),
     radial-gradient(circle at 88% 15%, rgba(53, 224, 208, 0.06), transparent 40%),
     var(--bg);
   color: var(--branco);
@@ -146,9 +147,9 @@ textarea:focus-visible,
   line-height: 1;
   color: var(--branco);
   text-shadow:
-    0 0 4px rgba(255, 61, 143, 0.9),
-    0 0 14px rgba(255, 61, 143, 0.65),
-    0 0 34px rgba(255, 61, 143, 0.4);
+    0 0 4px rgba(184, 134, 11, 0.95),
+    0 0 14px rgba(217, 165, 33, 0.7),
+    0 0 34px rgba(184, 134, 11, 0.45);
   animation: acender 1.6s ease-out 1;
 }
 
@@ -175,6 +176,18 @@ textarea:focus-visible,
   border-radius: 999px;
   text-shadow: 0 0 8px rgba(53, 224, 208, 0.6);
   box-shadow: inset 0 0 10px rgba(53, 224, 208, 0.15);
+}
+
+.logo__tagline {
+  margin: 10px 0 0;
+  font-size: 0.86rem;
+  font-style: italic;
+  font-weight: 500;
+  color: var(--texto-muted);
+}
+
+.logo__tagline:empty {
+  display: none;
 }
 
 .topo__status-linha {
@@ -240,9 +253,9 @@ textarea:focus-visible,
 }
 
 .seletor-linha__btn[aria-checked="true"] {
-  background: var(--magenta);
-  color: #1a0410;
-  box-shadow: 0 0 14px rgba(255, 61, 143, 0.5);
+  background: var(--primario);
+  color: #fff6df;
+  box-shadow: 0 0 14px rgba(184, 134, 11, 0.6);
 }
 
 /* =========================================================================
@@ -353,7 +366,7 @@ main {
 
 /* Acento colorido alternado nas bordas, como os tubos de neon de um letreiro */
 .cartao-item:nth-child(odd) {
-  box-shadow: inset 3px 0 0 var(--magenta);
+  box-shadow: inset 3px 0 0 var(--primario);
 }
 
 .cartao-item:nth-child(even) {
@@ -369,17 +382,20 @@ main {
   transform: scale(0.99);
 }
 
+/* Selo do ícone/emoji do item: várias camadas para dar profundidade e um
+   pouco de "luz de estúdio", já que não é uma foto real do produto. */
 .cartao-item__icone {
   flex: 0 0 auto;
-  width: 52px;
-  height: 52px;
-  border-radius: 12px;
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.7rem;
-  background: radial-gradient(circle at 30% 30%, #241f33, #14121c);
+  font-size: 1.9rem;
+  background: radial-gradient(circle at 32% 26%, #322b47 0%, #1c1828 55%, #100e18 100%);
   border: 1px solid var(--borda);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05), inset 0 -6px 10px rgba(0, 0, 0, 0.35);
   overflow: hidden;
 }
 
@@ -432,29 +448,29 @@ main {
   min-width: 44px;
   min-height: 44px;
   border-radius: 50%;
-  border: 1px solid var(--magenta);
+  border: 1px solid var(--primario-claro);
   background: transparent;
-  color: var(--magenta);
+  color: var(--primario-claro);
   font-size: 1.3rem;
   font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 0 10px rgba(255, 61, 143, 0.25);
+  box-shadow: 0 0 10px rgba(184, 134, 11, 0.35);
   transition: background-color 0.15s;
 }
 
 .botao-add:hover,
 .botao-add:focus-visible {
-  background: rgba(255, 61, 143, 0.16);
+  background: rgba(184, 134, 11, 0.2);
 }
 
 /* Card do combo (destaque maior) */
 .cartao-combo {
-  border-color: var(--magenta);
-  background: linear-gradient(160deg, rgba(255, 61, 143, 0.1), var(--bg-cartao));
-  box-shadow: 0 0 20px rgba(255, 61, 143, 0.12);
+  border-color: var(--primario);
+  background: linear-gradient(160deg, rgba(184, 134, 11, 0.14), var(--bg-cartao));
+  box-shadow: 0 0 20px rgba(184, 134, 11, 0.15);
 }
 
 .cartao-item__lista {
@@ -573,13 +589,13 @@ main {
   max-width: 720px;
   margin: 0 auto;
   background: var(--bg-alt);
-  border-top: 1px solid var(--magenta);
+  border-top: 1px solid var(--primario);
   border-radius: 20px 20px 0 0;
   padding: 10px 18px calc(18px + env(safe-area-inset-bottom, 0px));
   max-height: 88vh;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.6), 0 -2px 20px rgba(255, 61, 143, 0.15);
+  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.6), 0 -2px 20px rgba(184, 134, 11, 0.2);
   animation: subir 0.22s ease-out;
 }
 
@@ -620,15 +636,16 @@ main {
 }
 
 .painel__icone {
-  width: 52px;
-  height: 52px;
-  border-radius: 12px;
-  background: radial-gradient(circle at 30% 30%, #241f33, #14121c);
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  background: radial-gradient(circle at 32% 26%, #322b47 0%, #1c1828 55%, #100e18 100%);
   border: 1px solid var(--borda);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05), inset 0 -6px 10px rgba(0, 0, 0, 0.35);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.7rem;
+  font-size: 1.9rem;
   flex-shrink: 0;
   overflow: hidden;
 }
@@ -656,6 +673,13 @@ main {
   overflow-y: auto;
   flex: 1 1 auto;
   padding-right: 2px;
+}
+
+.info-paragrafo {
+  color: var(--texto-muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0 0 14px;
 }
 
 /* #checkout-formulario envolve o formulário inteiro + resumo + botão de
@@ -792,9 +816,9 @@ textarea.campo-texto {
 }
 
 .btn--primario {
-  background: var(--magenta);
-  color: #1a0410;
-  box-shadow: 0 0 16px rgba(255, 61, 143, 0.35);
+  background: var(--primario);
+  color: #fff6df;
+  box-shadow: 0 0 16px rgba(184, 134, 11, 0.45);
 }
 
 .btn--grande {
@@ -875,7 +899,7 @@ textarea.campo-texto {
   width: 44px;
   height: 44px;
   border-radius: 10px;
-  background: radial-gradient(circle at 30% 30%, #241f33, #14121c);
+  background: radial-gradient(circle at 32% 26%, #322b47 0%, #1c1828 55%, #100e18 100%);
   border: 1px solid var(--borda);
   display: flex;
   align-items: center;
@@ -1046,10 +1070,10 @@ textarea.campo-texto {
 }
 
 .opcoes-toggle__btn[aria-pressed="true"] {
-  background: var(--magenta);
-  color: #1a0410;
-  border-color: var(--magenta);
-  box-shadow: 0 0 14px rgba(255, 61, 143, 0.4);
+  background: var(--primario);
+  color: #fff6df;
+  border-color: var(--primario);
+  box-shadow: 0 0 14px rgba(184, 134, 11, 0.5);
 }
 
 .opcoes-pagamento {
@@ -1084,6 +1108,52 @@ textarea.campo-texto {
   color: var(--texto-muted-2);
   font-size: 0.78rem;
   padding: 24px 16px 8px;
+}
+
+.rodape__links {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.rodape__link {
+  min-height: 40px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--borda);
+  background: var(--bg-cartao);
+  color: var(--texto-muted);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.rodape__link:hover,
+.rodape__link:focus-visible {
+  border-color: var(--cyan);
+  color: var(--cyan);
+}
+
+.rodape__credito {
+  margin-top: 22px;
+  padding-top: 16px;
+  border-top: 1px solid var(--borda);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.7rem;
+  color: var(--texto-muted-2);
+}
+
+.rodape__credito-logo {
+  height: 22px;
+  width: auto;
+  border-radius: 4px;
+  opacity: 0.85;
 }
 
 /* =========================================================================

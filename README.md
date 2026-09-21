@@ -14,6 +14,7 @@ de confirmação do pedido.
 | `cardapio.js` | **Os dados que o dono da loja edita**: preços, itens, horários, número de WhatsApp |
 | `app.js` | A lógica do site (carrinho, cálculo de preços, montagem da mensagem) — normalmente não precisa mexer aqui |
 | `favicon.svg` | Ícone da aba do navegador (coroa) |
+| `doubene-logo.png` | Logo da doubene.ai, mostrado de forma discreta no rodapé ("Site desenvolvido por") |
 | `Cardapio_1.jpeg` / `Cardapio_2.jpeg` | Cardápios impressos originais, usados só como referência visual — não são exibidos no site |
 
 ## Como editar preços e itens
@@ -49,6 +50,15 @@ const CONFIG = {
 - **Linhas ativas**: se a loja vender só a linha Artesanal (por exemplo), use
   `linhasAtivas: ["artesanal"]` — o seletor Tradicional/Artesanal some
   automaticamente do site e todo o cardápio usa só essa linha.
+- **Frase de efeito (`tagline`)**: aparece embaixo do logo. Troque o texto
+  entre aspas para mudar a frase, ou apague o conteúdo (deixe `""`) para não
+  mostrar nenhuma frase.
+- **"Quem Somos" (`sobreLoja`)**: uma lista de parágrafos (cada linha entre
+  aspas e separada por vírgula vira um parágrafo) mostrada quando o cliente
+  toca no botão "Quem Somos" no rodapé do site.
+- **"Endereço e Contato" (`endereco`)**: preencha `rua`, `bairro` e, se
+  quiser, `referencia` (ex: "Perto da praça central"). O telefone mostrado
+  nesse painel já vem automaticamente do `CONFIG.whatsapp`.
 
 ### 2. `CARDAPIO` — os itens à venda
 
@@ -142,6 +152,13 @@ Confira este checklist antes de divulgar o link para os clientes:
 - [ ] **Conferir todos os preços com o dono da lanchonete** — os valores
       atuais em `cardapio.js` foram tirados dos cardápios impressos
       fornecidos, mas vale uma checagem final antes de publicar.
+- [ ] **Preencher "Quem Somos" e "Endereço e Contato"** em `cardapio.js` →
+      `CONFIG.sobreLoja` e `CONFIG.endereco` (ainda estão com texto de
+      exemplo marcado `// A DEFINIR`).
+- [ ] **Trocar os emojis pelas fotos reais dos lanches**, se o dono da loja
+      for fornecer — basta preencher o campo `foto` de cada item em
+      `cardapio.js` (veja "Como editar preços e itens" acima). Sem fotos, o
+      site continua funcionando normalmente com os emojis.
 - [ ] Testar um pedido completo no celular (adicionar item, editar
       quantidade, finalizar, conferir a mensagem que chega no WhatsApp).
 

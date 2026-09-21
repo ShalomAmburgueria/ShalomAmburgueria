@@ -396,7 +396,8 @@
     if (
       document.getElementById("painel-item").hidden &&
       document.getElementById("painel-carrinho").hidden &&
-      document.getElementById("painel-checkout").hidden
+      document.getElementById("painel-checkout").hidden &&
+      document.getElementById("painel-info").hidden
     ) {
       document.body.style.overflow = "";
     }
@@ -735,6 +736,34 @@
     esconderPainel("painel-checkout", "overlay-checkout");
   }
 
+  // =========================================================================
+  // PAINEL INFORMATIVO — "Quem Somos" e "Endereço e Contato"
+  // =========================================================================
+  function abrirPainelInfo(titulo, paragrafos) {
+    document.getElementById("info-titulo").textContent = titulo;
+    const corpo = document.getElementById("info-corpo");
+    corpo.replaceChildren();
+    paragrafos.forEach((texto) => {
+      if (texto) corpo.appendChild(criarEl("p", "info-paragrafo", texto));
+    });
+    mostrarPainel("painel-info", "overlay-info");
+  }
+
+  function fecharPainelInfo() {
+    esconderPainel("painel-info", "overlay-info");
+  }
+
+  function abrirQuemSomos() {
+    abrirPainelInfo("Quem Somos", CONFIG.sobreLoja);
+  }
+
+  function abrirEndereco() {
+    const endereco = CONFIG.endereco;
+    const linhaEndereco = [endereco.rua, endereco.bairro].filter(Boolean).join(" — ");
+    const paragrafos = [linhaEndereco, endereco.referencia, `📞 WhatsApp: ${CONFIG.whatsapp}`];
+    abrirPainelInfo("Endereço e Contato", paragrafos);
+  }
+
   function configurarTipoEntrega() {
     const btnEntrega = document.getElementById("opcao-entrega");
     const btnRetirada = document.getElementById("opcao-retirada");
@@ -937,9 +966,15 @@
     document.getElementById("overlay-checkout").addEventListener("click", fecharCheckout);
     document.getElementById("form-checkout").addEventListener("submit", enviarPedidoWhatsApp);
     document.getElementById("btn-novo-pedido").addEventListener("click", fecharCheckout);
+
+    document.getElementById("fechar-painel-info").addEventListener("click", fecharPainelInfo);
+    document.getElementById("overlay-info").addEventListener("click", fecharPainelInfo);
+    document.getElementById("btn-quem-somos").addEventListener("click", abrirQuemSomos);
+    document.getElementById("btn-endereco").addEventListener("click", abrirEndereco);
   }
 
   function iniciar() {
+    document.getElementById("tagline").textContent = CONFIG.tagline || "";
     configurarSeletorLinha();
     renderizarCardapio();
     configurarMenuCategorias();
