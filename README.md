@@ -1,4 +1,4 @@
-# Shalon Lanches e Porções — Site de Cardápio e Pedidos
+# Shalom Lanches e Porções — Site de Cardápio e Pedidos
 
 Site estático (HTML, CSS e JavaScript puros, sem framework e sem build) para
 o cliente montar o pedido e enviar pronto para o WhatsApp da lanchonete. Não
@@ -59,6 +59,10 @@ const CONFIG = {
 - **"Endereço e Contato" (`endereco`)**: preencha `rua`, `bairro` e, se
   quiser, `referencia` (ex: "Perto da praça central"). O telefone mostrado
   nesse painel já vem automaticamente do `CONFIG.whatsapp`.
+- **Instagram (`instagram`)**: cole o link completo do perfil (ex:
+  `"https://instagram.com/shalomlancheseporcoes"`). O botão "Siga no
+  Instagram" só aparece no rodapé depois que esse campo for preenchido —
+  enquanto estiver vazio (`""`), ele fica escondido.
 
 ### 2. `CARDAPIO` — os itens à venda
 
@@ -155,6 +159,9 @@ Confira este checklist antes de divulgar o link para os clientes:
 - [ ] **Preencher "Quem Somos" e "Endereço e Contato"** em `cardapio.js` →
       `CONFIG.sobreLoja` e `CONFIG.endereco` (ainda estão com texto de
       exemplo marcado `// A DEFINIR`).
+- [ ] **Preencher o link do Instagram**, se a loja tiver um, em
+      `CONFIG.instagram` (opcional — sem preencher, o botão simplesmente não
+      aparece no rodapé).
 - [ ] **Trocar os emojis pelas fotos reais dos lanches**, se o dono da loja
       for fornecer — basta preencher o campo `foto` de cada item em
       `cardapio.js` (veja "Como editar preços e itens" acima). Sem fotos, o

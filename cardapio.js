@@ -15,7 +15,7 @@
 // ============================================================================
 const CONFIG = {
   // Nome da loja (aparece no título da página e na mensagem do WhatsApp)
-  nomeLoja: "Shalon Lanches e Porções",
+  nomeLoja: "Shalom Lanches e Porções",
 
   // Frase de efeito que aparece embaixo do logo, no topo do site.
   tagline: "Chegou o novo sabor da sua fome",
@@ -24,8 +24,8 @@ const CONFIG = {
   // (cada item da lista vira um parágrafo).
   // A DEFINIR — pedir o texto para o dono da loja.
   sobreLoja: [
-    "A Shalon Lanches e Porções nasceu da vontade de servir um lanche de verdade, feito na hora, com ingredientes de qualidade.",
-    "// A DEFINIR — complete a história da loja aqui (quando começou, o que torna a Shalon especial, etc.)",
+    "A Shalom Lanches e Porções nasceu da vontade de servir um lanche de verdade, feito na hora, com ingredientes de qualidade.",
+    "// A DEFINIR — complete a história da loja aqui (quando começou, o que torna a Shalom especial, etc.)",
   ],
 
   // Endereço e contato, mostrados no botão/painel "Endereço e Contato".
@@ -36,6 +36,12 @@ const CONFIG = {
     bairro: "// A DEFINIR — bairro e cidade",
     referencia: "", // opcional, ex: "Perto da praça central"
   },
+
+  // Link do Instagram da loja (endereço completo, começando com https://).
+  // Enquanto ficar vazio (""), o botão "Siga no Instagram" não aparece no
+  // rodapé do site — assim que preencher, ele aparece sozinho.
+  // A DEFINIR — ex: "https://instagram.com/shalomlancheseporcoes"
+  instagram: "",
 
   // Número de WhatsApp que vai receber os pedidos, no formato DDI+DDD+número,
   // só dígitos (sem espaços, parênteses ou traços).

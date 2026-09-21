@@ -1,5 +1,5 @@
 /* =========================================================================
-   Shalon Lanches e Porções — estilos
+   Shalom Lanches e Porções — estilos
    Identidade "Letreiro": letreiro de neon de lanchonete 24h — amarelo bem
    escuro e ciano brilhando sobre o céu noturno, coroa em âmbar.
    Mobile-first: as regras "base" valem para celular; media queries no fim
@@ -1127,6 +1127,12 @@ textarea.campo-texto {
 }
 
 .rodape__link {
+  /* display:inline-flex garante que o botão <button> e o link <a> do
+     Instagram fiquem com o mesmo tamanho/alinhamento — um <a> comum é
+     "inline" e não respeita min-height/padding vertical do mesmo jeito. */
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   min-height: 40px;
   padding: 8px 16px;
   border-radius: 999px;
@@ -1135,6 +1141,7 @@ textarea.campo-texto {
   color: var(--texto-muted);
   font-size: 0.8rem;
   font-weight: 600;
+  text-decoration: none;
   cursor: pointer;
   transition: border-color 0.15s, color 0.15s;
 }

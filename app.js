@@ -1,5 +1,5 @@
 /*
- * app.js — lógica do site da Shalon Lanches e Porções
+ * app.js — lógica do site da Shalom Lanches e Porções
  * -----------------------------------------------------------------------
  * Este arquivo lê os dados de CONFIG e CARDAPIO (definidos em cardapio.js)
  * e cuida de: montar o cardápio na tela, abrir o painel de personalização
@@ -18,7 +18,7 @@
   // =========================================================================
   // ESTADO GERAL
   // =========================================================================
-  const CHAVE_CARRINHO = "shalon_carrinho_v1";
+  const CHAVE_CARRINHO = "shalom_carrinho_v1";
 
   let linhaAtual = CONFIG.linhasAtivas[0]; // "tradicional" ou "artesanal"
   let carrinho = carregarCarrinho(); // array de itens no carrinho
@@ -973,8 +973,19 @@
     document.getElementById("btn-endereco").addEventListener("click", abrirEndereco);
   }
 
+  function configurarLinkInstagram() {
+    const link = document.getElementById("link-instagram");
+    if (CONFIG.instagram) {
+      link.href = CONFIG.instagram;
+      link.hidden = false;
+    } else {
+      link.hidden = true;
+    }
+  }
+
   function iniciar() {
     document.getElementById("tagline").textContent = CONFIG.tagline || "";
+    configurarLinkInstagram();
     configurarSeletorLinha();
     renderizarCardapio();
     configurarMenuCategorias();
