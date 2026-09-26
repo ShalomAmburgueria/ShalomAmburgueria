@@ -63,6 +63,8 @@ const CONFIG = {
   `"https://instagram.com/shalomlancheseporcoes"`). O botão "Siga no
   Instagram" só aparece no rodapé depois que esse campo for preenchido —
   enquanto estiver vazio (`""`), ele fica escondido.
+- **iFood (`ifood`)**: mesma lógica do Instagram — cole o link da loja no
+  iFood e o botão "Peça pelo iFood" aparece sozinho no rodapé.
 
 ### 2. `CARDAPIO` — os itens à venda
 
@@ -146,22 +148,26 @@ arquivos.
 
 Confira este checklist antes de divulgar o link para os clientes:
 
-- [ ] **Trocar o número de WhatsApp de teste** (`5511972317186`) pelo número
-      real da lanchonete em `cardapio.js` → `CONFIG.whatsapp`.
+- [x] **Trocar o número de WhatsApp de teste** pelo número real da lanchonete
+      em `cardapio.js` → `CONFIG.whatsapp` (já feito — `5511966321857`,
+      tirado do banner de divulgação da loja).
 - [ ] **Preencher os horários de funcionamento reais** em `CONFIG.horarios`
-      (os horários atuais são um exemplo e estão marcados `// A DEFINIR`).
+      (ainda em modo teste: 00:00–23:59 todos os dias, marcado `// A DEFINIR`
+      no arquivo).
 - [ ] **Definir a taxa de entrega** em `CONFIG.taxaEntrega` (hoje está `null`,
       mostrando "a combinar").
 - [ ] **Definir o pedido mínimo**, se houver, em `CONFIG.pedidoMinimo`.
 - [ ] **Conferir todos os preços com o dono da lanchonete** — os valores
       atuais em `cardapio.js` foram tirados dos cardápios impressos
       fornecidos, mas vale uma checagem final antes de publicar.
-- [ ] **Preencher "Quem Somos" e "Endereço e Contato"** em `cardapio.js` →
-      `CONFIG.sobreLoja` e `CONFIG.endereco` (ainda estão com texto de
-      exemplo marcado `// A DEFINIR`).
+- [x] **Preencher "Endereço"** em `cardapio.js` → `CONFIG.endereco` (já
+      feito). Falta só **"Quem Somos"** (`CONFIG.sobreLoja`), ainda com texto
+      de exemplo marcado `// A DEFINIR`.
 - [ ] **Preencher o link do Instagram**, se a loja tiver um, em
       `CONFIG.instagram` (opcional — sem preencher, o botão simplesmente não
       aparece no rodapé).
+- [ ] **Preencher o link do iFood** em `CONFIG.ifood` (mesma lógica do
+      Instagram — a loja já divulga que está no iFood, falta só o link).
 - [ ] **Trocar os emojis pelas fotos reais dos lanches**, se o dono da loja
       for fornecer — basta preencher o campo `foto` de cada item em
       `cardapio.js` (veja "Como editar preços e itens" acima). Sem fotos, o

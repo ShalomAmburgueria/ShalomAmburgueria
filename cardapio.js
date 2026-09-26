@@ -30,10 +30,9 @@ const CONFIG = {
 
   // Endereço e contato, mostrados no botão/painel "Endereço e Contato".
   // O telefone/WhatsApp já vem do campo CONFIG.whatsapp acima.
-  // A DEFINIR
   endereco: {
-    rua: "// A DEFINIR — rua e número",
-    bairro: "// A DEFINIR — bairro e cidade",
+    rua: "Rua Luiz Antonio de Oliveira, 601",
+    bairro: "Jundiapaba, Mogi das Cruzes - SP",
     referencia: "", // opcional, ex: "Perto da praça central"
   },
 
@@ -43,10 +42,15 @@ const CONFIG = {
   // A DEFINIR — ex: "https://instagram.com/shalomlancheseporcoes"
   instagram: "",
 
+  // Link da loja no iFood (endereço completo, começando com https://).
+  // Mesma lógica do Instagram: enquanto ficar vazio (""), o botão "Peça pelo
+  // iFood" não aparece no rodapé.
+  // A DEFINIR — ex: "https://www.ifood.com.br/delivery/mogi-das-cruzes-sp/shalom-lanches-e-porcoes"
+  ifood: "",
+
   // Número de WhatsApp que vai receber os pedidos, no formato DDI+DDD+número,
   // só dígitos (sem espaços, parênteses ou traços).
-  // ⚠️ TESTE — troque pelo número real da lanchonete antes de publicar o site!
-  whatsapp: "5511972317186",
+  whatsapp: "5511966321857",
 
   // Taxa de entrega em reais. Deixe "null" se ainda não foi definida
   // (o site vai mostrar "a combinar" nesse caso).

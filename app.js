@@ -973,10 +973,12 @@
     document.getElementById("btn-endereco").addEventListener("click", abrirEndereco);
   }
 
-  function configurarLinkInstagram() {
-    const link = document.getElementById("link-instagram");
-    if (CONFIG.instagram) {
-      link.href = CONFIG.instagram;
+  // Liga um <a> do rodapé (Instagram, iFood...) a um link do CONFIG. Enquanto
+  // o link não estiver preenchido, o botão fica escondido.
+  function configurarLinkExterno(idElemento, url) {
+    const link = document.getElementById(idElemento);
+    if (url) {
+      link.href = url;
       link.hidden = false;
     } else {
       link.hidden = true;
@@ -985,7 +987,8 @@
 
   function iniciar() {
     document.getElementById("tagline").textContent = CONFIG.tagline || "";
-    configurarLinkInstagram();
+    configurarLinkExterno("link-instagram", CONFIG.instagram);
+    configurarLinkExterno("link-ifood", CONFIG.ifood);
     configurarSeletorLinha();
     renderizarCardapio();
     configurarMenuCategorias();
