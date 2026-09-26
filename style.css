@@ -1120,6 +1120,21 @@ textarea.campo-texto {
   padding: 24px 16px 8px;
 }
 
+.rodape__destaque {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--vermelho);
+}
+
+.icone-whatsapp--inline {
+  width: 20px;
+  height: 20px;
+  color: #25d366;
+  vertical-align: -5px;
+  margin-left: 4px;
+}
+
 .rodape__links {
   display: flex;
   justify-content: center;
