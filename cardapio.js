@@ -50,7 +50,9 @@ const CONFIG = {
 
   // Número de WhatsApp que vai receber os pedidos, no formato DDI+DDD+número,
   // só dígitos (sem espaços, parênteses ou traços).
-  whatsapp: "5511966321857",
+  // ⚠️ TESTE — o número real da loja é 5511966321857 (visto no banner de
+  // divulgação). Troque por ele antes de publicar de verdade.
+  whatsapp: "5511972317186",
 
   // Taxa de entrega em reais. Deixe "null" se ainda não foi definida
   // (o site vai mostrar "a combinar" nesse caso).

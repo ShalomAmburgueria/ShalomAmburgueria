@@ -148,9 +148,11 @@ arquivos.
 
 Confira este checklist antes de divulgar o link para os clientes:
 
-- [x] **Trocar o número de WhatsApp de teste** pelo número real da lanchonete
-      em `cardapio.js` → `CONFIG.whatsapp` (já feito — `5511966321857`,
-      tirado do banner de divulgação da loja).
+- [ ] **Trocar o número de WhatsApp de teste** (`5511972317186`) pelo número
+      real da lanchonete em `cardapio.js` → `CONFIG.whatsapp`. O número real
+      já é conhecido (`5511966321857`, visto no banner de divulgação) — só
+      falta trocar quando for para produção; propositalmente mantido como
+      teste por enquanto.
 - [ ] **Preencher os horários de funcionamento reais** em `CONFIG.horarios`
       (ainda em modo teste: 00:00–23:59 todos os dias, marcado `// A DEFINIR`
       no arquivo).
