@@ -39,8 +39,7 @@ const CONFIG = {
   // Link do Instagram da loja (endereço completo, começando com https://).
   // Enquanto ficar vazio (""), o botão "Siga no Instagram" não aparece no
   // rodapé do site — assim que preencher, ele aparece sozinho.
-  // A DEFINIR — ex: "https://instagram.com/shalomlancheseporcoes"
-  instagram: "",
+  instagram: "https://www.instagram.com/shalom.lanches11966321857?stkn=a2lmM29tZXRlbHcx",
 
   // Link da loja no iFood (endereço completo, começando com https://).
   // Mesma lógica do Instagram: enquanto ficar vazio (""), o botão "Peça pelo

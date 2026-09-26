@@ -1,22 +1,29 @@
 /* =========================================================================
    Shalom Lanches e Porções — estilos
-   Identidade "Letreiro": letreiro de neon de lanchonete 24h — amarelo bem
-   escuro e ciano brilhando sobre o céu noturno, coroa em âmbar.
+   Identidade "Letreiro Vivo": letreiro de neon quente de lanchonete —
+   dourado/laranja vibrante e vermelho puxando a energia do banner de
+   divulicação da loja, com ciano só como destaque informativo (preços,
+   navegação ativa). Fundo escuro mas quente, não apagado.
    Mobile-first: as regras "base" valem para celular; media queries no fim
    do arquivo ajustam para tablet/desktop.
    ========================================================================= */
 
 /* ---------- Paleta e variáveis ---------- */
 :root {
-  --bg: #0e0d14;
-  --bg-alt: #17151f;
-  --bg-cartao: #1b1926;
-  --borda: rgba(255, 255, 255, 0.1);
+  --bg: #170d07;
+  --bg-alt: #241407;
+  --bg-cartao: #2c1810;
+  --borda: rgba(255, 175, 90, 0.18);
 
-  --primario: #b8860b; /* amarelo bem escuro (dark goldenrod) */
-  --primario-claro: #d9a521;
-  --primario-escuro: #7a5c07;
-  --cyan: #35e0d0;
+  --primario: #ff9d1f; /* laranja-dourado vibrante — ação/seleção principal */
+  --primario-claro: #ffc15c;
+  --primario-escuro: #c96e00;
+
+  --vermelho: #ff4433; /* vermelho quente do banner — destaque/combo/carrinho */
+  --vermelho-claro: #ff7a5c;
+  --vermelho-escuro: #c42a1e;
+
+  --cyan: #35e0d0; /* só para informação: preços, navegação ativa, foco */
   --cyan-escuro: #1fa89c;
   --amber: #ffc857;
   --amber-escuro: #d99a2b;
@@ -24,9 +31,9 @@
   --sucesso: #3ddc7a;
   --erro: #ff5470;
 
-  --branco: #edeaf2;
-  --texto-muted: #aba7bd;
-  --texto-muted-2: #8a8698;
+  --branco: #fff6ec;
+  --texto-muted: #d8bfa8;
+  --texto-muted-2: #a88a6e;
 
   --sombra: 0 10px 30px rgba(0, 0, 0, 0.55);
   --raio: 14px;
@@ -47,8 +54,9 @@ html {
 body {
   margin: 0;
   background:
-    radial-gradient(circle at 12% 0%, rgba(184, 134, 11, 0.12), transparent 40%),
-    radial-gradient(circle at 88% 15%, rgba(53, 224, 208, 0.06), transparent 40%),
+    radial-gradient(circle at 15% -5%, rgba(255, 157, 31, 0.22), transparent 42%),
+    radial-gradient(circle at 90% 10%, rgba(255, 68, 51, 0.14), transparent 45%),
+    radial-gradient(circle at 50% 60%, rgba(255, 157, 31, 0.06), transparent 50%),
     var(--bg);
   color: var(--branco);
   font-family: var(--fonte-titulo);
@@ -115,6 +123,9 @@ textarea:focus-visible,
    ========================================================================= */
 .topo {
   padding: 20px 16px 14px;
+  background:
+    radial-gradient(circle at 50% -30%, rgba(255, 157, 31, 0.35), transparent 60%),
+    radial-gradient(circle at 85% 0%, rgba(255, 68, 51, 0.18), transparent 55%);
   border-bottom: 1px solid var(--borda);
   padding-top: calc(20px + env(safe-area-inset-top, 0px));
 }
@@ -133,11 +144,11 @@ textarea:focus-visible,
 }
 
 .logo__coroa {
-  width: 64px;
+  width: 68px;
   height: auto;
   filter:
-    drop-shadow(0 0 6px rgba(255, 200, 87, 0.55))
-    drop-shadow(0 0 16px rgba(255, 200, 87, 0.3));
+    drop-shadow(0 0 8px rgba(255, 200, 87, 0.65))
+    drop-shadow(0 0 20px rgba(255, 157, 31, 0.4));
   margin-bottom: 4px;
 }
 
@@ -147,9 +158,9 @@ textarea:focus-visible,
   line-height: 1;
   color: var(--branco);
   text-shadow:
-    0 0 4px rgba(184, 134, 11, 0.95),
-    0 0 14px rgba(217, 165, 33, 0.7),
-    0 0 34px rgba(184, 134, 11, 0.45);
+    0 0 4px rgba(255, 157, 31, 0.95),
+    0 0 16px rgba(255, 157, 31, 0.75),
+    0 0 38px rgba(255, 68, 51, 0.4);
   animation: acender 1.6s ease-out 1;
 }
 
@@ -165,25 +176,24 @@ textarea:focus-visible,
   margin-top: 8px;
   display: inline-flex;
   align-items: center;
-  background: transparent;
-  border: 1px solid var(--cyan);
-  color: var(--cyan);
-  font-weight: 700;
-  letter-spacing: 0.08em;
+  background: linear-gradient(180deg, var(--vermelho) 0%, var(--vermelho-escuro) 100%);
+  border: none;
+  color: #fff6ec;
+  font-weight: 800;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  font-size: 0.68rem;
-  padding: 5px 14px;
+  font-size: 0.7rem;
+  padding: 6px 16px;
   border-radius: 999px;
-  text-shadow: 0 0 8px rgba(53, 224, 208, 0.6);
-  box-shadow: inset 0 0 10px rgba(53, 224, 208, 0.15);
+  box-shadow: 0 3px 10px rgba(255, 68, 51, 0.4), 0 0 16px rgba(255, 68, 51, 0.3);
 }
 
 .logo__tagline {
   margin: 10px 0 0;
-  font-size: 0.86rem;
-  font-style: italic;
-  font-weight: 500;
-  color: var(--texto-muted);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--primario-claro);
+  text-shadow: 0 0 12px rgba(255, 157, 31, 0.35);
 }
 
 .logo__tagline:empty {
@@ -253,9 +263,9 @@ textarea:focus-visible,
 }
 
 .seletor-linha__btn[aria-checked="true"] {
-  background: var(--primario);
-  color: #fff6df;
-  box-shadow: 0 0 14px rgba(184, 134, 11, 0.6);
+  background: linear-gradient(180deg, var(--primario-claro), var(--primario));
+  color: #2b1400;
+  box-shadow: 0 0 16px rgba(255, 157, 31, 0.6);
 }
 
 /* =========================================================================
@@ -269,7 +279,7 @@ textarea:focus-visible,
   gap: 8px;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
-  background: rgba(14, 13, 20, 0.92);
+  background: rgba(23, 13, 7, 0.94);
   backdrop-filter: blur(6px);
   padding: 10px 12px;
   border-bottom: 1px solid var(--borda);
@@ -296,10 +306,10 @@ textarea:focus-visible,
 }
 
 .menu-categorias__btn[aria-current="true"] {
-  background: rgba(53, 224, 208, 0.08);
+  background: rgba(53, 224, 208, 0.1);
   color: var(--cyan);
   border-color: var(--cyan);
-  box-shadow: 0 0 10px rgba(53, 224, 208, 0.25);
+  box-shadow: 0 0 10px rgba(53, 224, 208, 0.3);
 }
 
 /* =========================================================================
@@ -318,7 +328,7 @@ main {
 
 .secao__titulo {
   font-size: 1.25rem;
-  font-weight: 700;
+  font-weight: 800;
   color: var(--branco);
   margin-bottom: 4px;
 }
@@ -330,7 +340,7 @@ main {
 }
 
 .secao--bebidas {
-  background: linear-gradient(180deg, transparent, rgba(53, 224, 208, 0.07));
+  background: linear-gradient(180deg, transparent, rgba(53, 224, 208, 0.08));
   border-radius: var(--raio);
 }
 
@@ -352,7 +362,7 @@ main {
   display: flex;
   align-items: center;
   gap: 12px;
-  background: var(--bg-cartao);
+  background: linear-gradient(160deg, rgba(255, 157, 31, 0.06), var(--bg-cartao) 40%);
   border: 1px solid var(--borda);
   border-radius: var(--raio);
   padding: 12px;
@@ -364,26 +374,27 @@ main {
   transition: transform 0.15s, border-color 0.15s;
 }
 
-/* Acento colorido alternado nas bordas, como os tubos de neon de um letreiro */
+/* Acento colorido alternado nas bordas — dourado e vermelho, o duo do
+   banner da loja, dando ritmo e cor à lista mesmo sem fotos dos produtos. */
 .cartao-item:nth-child(odd) {
-  box-shadow: inset 3px 0 0 var(--primario);
+  box-shadow: inset 4px 0 0 var(--primario);
 }
 
 .cartao-item:nth-child(even) {
-  box-shadow: inset 3px 0 0 var(--cyan);
+  box-shadow: inset 4px 0 0 var(--vermelho);
 }
 
 .cartao-item:hover,
 .cartao-item:focus-visible {
-  border-color: rgba(255, 255, 255, 0.28);
+  border-color: rgba(255, 220, 180, 0.35);
 }
 
 .cartao-item:active {
   transform: scale(0.99);
 }
 
-/* Selo do ícone/emoji do item: várias camadas para dar profundidade e um
-   pouco de "luz de estúdio", já que não é uma foto real do produto. */
+/* Selo do ícone/emoji do item: gradiente quente pra parecer iluminado por
+   luz de chapa/grill, já que não é uma foto real do produto. */
 .cartao-item__icone {
   flex: 0 0 auto;
   width: 56px;
@@ -393,9 +404,9 @@ main {
   align-items: center;
   justify-content: center;
   font-size: 1.9rem;
-  background: radial-gradient(circle at 32% 26%, #322b47 0%, #1c1828 55%, #100e18 100%);
+  background: radial-gradient(circle at 32% 26%, #4d2c10 0%, #2c1810 55%, #170d07 100%);
   border: 1px solid var(--borda);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05), inset 0 -6px 10px rgba(0, 0, 0, 0.35);
+  box-shadow: inset 0 0 0 1px rgba(255, 200, 140, 0.08), inset 0 -6px 10px rgba(0, 0, 0, 0.35);
   overflow: hidden;
 }
 
@@ -437,40 +448,40 @@ main {
 
 .etiqueta-preco {
   color: var(--cyan);
-  font-weight: 700;
+  font-weight: 800;
   font-size: 0.95rem;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
-  text-shadow: 0 0 10px rgba(53, 224, 208, 0.5);
+  text-shadow: 0 0 10px rgba(53, 224, 208, 0.55);
 }
 
 .botao-add {
   min-width: 44px;
   min-height: 44px;
   border-radius: 50%;
-  border: 1px solid var(--primario-claro);
-  background: transparent;
-  color: var(--primario-claro);
+  border: none;
+  background: linear-gradient(160deg, var(--vermelho-claro), var(--vermelho));
+  color: #2b0602;
   font-size: 1.3rem;
-  font-weight: 700;
+  font-weight: 800;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 0 10px rgba(184, 134, 11, 0.35);
-  transition: background-color 0.15s;
+  box-shadow: 0 0 12px rgba(255, 68, 51, 0.5);
+  transition: filter 0.15s;
 }
 
 .botao-add:hover,
 .botao-add:focus-visible {
-  background: rgba(184, 134, 11, 0.2);
+  filter: brightness(1.1);
 }
 
 /* Card do combo (destaque maior) */
 .cartao-combo {
-  border-color: var(--primario);
-  background: linear-gradient(160deg, rgba(184, 134, 11, 0.14), var(--bg-cartao));
-  box-shadow: 0 0 20px rgba(184, 134, 11, 0.15);
+  border-color: var(--vermelho);
+  background: linear-gradient(160deg, rgba(255, 68, 51, 0.18), var(--bg-cartao) 55%);
+  box-shadow: 0 0 24px rgba(255, 68, 51, 0.2);
 }
 
 .cartao-item__lista {
@@ -545,19 +556,19 @@ main {
   display: flex;
   align-items: center;
   gap: 10px;
-  background: var(--bg-cartao);
-  color: var(--amber);
-  border: 1px solid var(--amber);
+  background: linear-gradient(180deg, var(--vermelho-claro) 0%, var(--vermelho) 55%, var(--vermelho-escuro) 100%);
+  color: #fff6ec;
+  border: none;
   border-radius: 14px;
   padding: 14px 16px;
   min-height: 56px;
-  box-shadow: 0 0 22px rgba(255, 200, 87, 0.25), var(--sombra);
+  box-shadow: 0 0 26px rgba(255, 68, 51, 0.45), var(--sombra);
   cursor: pointer;
-  font-weight: 700;
+  font-weight: 800;
 }
 
 .barra-carrinho__qtd {
-  background: rgba(255, 200, 87, 0.18);
+  background: rgba(0, 0, 0, 0.25);
   border-radius: 999px;
   min-width: 26px;
   height: 26px;
@@ -571,7 +582,7 @@ main {
   flex: 1;
   text-align: left;
   font-size: 0.95rem;
-  color: var(--branco);
+  color: #fff6ec;
 }
 
 .barra-carrinho__total {
@@ -584,7 +595,7 @@ main {
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(6, 5, 10, 0.7);
+  background: rgba(10, 5, 2, 0.72);
   z-index: 40;
 }
 
@@ -597,13 +608,13 @@ main {
   max-width: 720px;
   margin: 0 auto;
   background: var(--bg-alt);
-  border-top: 1px solid var(--primario);
+  border-top: 2px solid var(--primario);
   border-radius: 20px 20px 0 0;
   padding: 10px 18px calc(18px + env(safe-area-inset-bottom, 0px));
   max-height: 88vh;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.6), 0 -2px 20px rgba(184, 134, 11, 0.2);
+  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.6), 0 -2px 24px rgba(255, 157, 31, 0.25);
   animation: subir 0.22s ease-out;
 }
 
@@ -647,9 +658,9 @@ main {
   width: 56px;
   height: 56px;
   border-radius: 14px;
-  background: radial-gradient(circle at 32% 26%, #322b47 0%, #1c1828 55%, #100e18 100%);
+  background: radial-gradient(circle at 32% 26%, #4d2c10 0%, #2c1810 55%, #170d07 100%);
   border: 1px solid var(--borda);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05), inset 0 -6px 10px rgba(0, 0, 0, 0.35);
+  box-shadow: inset 0 0 0 1px rgba(255, 200, 140, 0.08), inset 0 -6px 10px rgba(0, 0, 0, 0.35);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -740,7 +751,7 @@ main {
   gap: 10px;
   padding: 10px 4px;
   min-height: 44px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 200, 140, 0.08);
   cursor: pointer;
 }
 
@@ -797,8 +808,8 @@ textarea.campo-texto {
   height: 38px;
   border-radius: 50%;
   border: none;
-  background: var(--cyan);
-  color: #062420;
+  background: linear-gradient(160deg, var(--primario-claro), var(--primario));
+  color: #2b1400;
   font-size: 1.2rem;
   font-weight: 800;
   cursor: pointer;
@@ -817,16 +828,16 @@ textarea.campo-texto {
   min-height: 48px;
   border: none;
   border-radius: 12px;
-  font-weight: 700;
+  font-weight: 800;
   font-size: 0.95rem;
   cursor: pointer;
   padding: 12px 18px;
 }
 
 .btn--primario {
-  background: var(--primario);
-  color: #fff6df;
-  box-shadow: 0 0 16px rgba(184, 134, 11, 0.45);
+  background: linear-gradient(160deg, var(--primario-claro), var(--primario));
+  color: #2b1400;
+  box-shadow: 0 0 18px rgba(255, 157, 31, 0.5);
 }
 
 .btn--grande {
@@ -900,14 +911,14 @@ textarea.campo-texto {
   display: flex;
   gap: 10px;
   padding: 12px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 200, 140, 0.1);
 }
 
 .item-carrinho__icone {
   width: 44px;
   height: 44px;
   border-radius: 10px;
-  background: radial-gradient(circle at 32% 26%, #322b47 0%, #1c1828 55%, #100e18 100%);
+  background: radial-gradient(circle at 32% 26%, #4d2c10 0%, #2c1810 55%, #170d07 100%);
   border: 1px solid var(--borda);
   display: flex;
   align-items: center;
@@ -1078,10 +1089,10 @@ textarea.campo-texto {
 }
 
 .opcoes-toggle__btn[aria-pressed="true"] {
-  background: var(--primario);
-  color: #fff6df;
+  background: linear-gradient(160deg, var(--primario-claro), var(--primario));
+  color: #2b1400;
   border-color: var(--primario);
-  box-shadow: 0 0 14px rgba(184, 134, 11, 0.5);
+  box-shadow: 0 0 16px rgba(255, 157, 31, 0.55);
 }
 
 .opcoes-pagamento {
@@ -1127,8 +1138,8 @@ textarea.campo-texto {
 }
 
 .rodape__link {
-  /* display:inline-flex garante que o botão <button> e o link <a> do
-     Instagram fiquem com o mesmo tamanho/alinhamento — um <a> comum é
+  /* display:inline-flex garante que o botão <button> e os links <a> do
+     Instagram/iFood fiquem com o mesmo tamanho/alinhamento — um <a> comum é
      "inline" e não respeita min-height/padding vertical do mesmo jeito. */
   display: inline-flex;
   align-items: center;
@@ -1148,8 +1159,8 @@ textarea.campo-texto {
 
 .rodape__link:hover,
 .rodape__link:focus-visible {
-  border-color: var(--cyan);
-  color: var(--cyan);
+  border-color: var(--primario);
+  color: var(--primario-claro);
 }
 
 .rodape__credito {
