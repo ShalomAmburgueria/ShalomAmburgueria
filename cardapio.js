@@ -44,8 +44,7 @@ const CONFIG = {
   // Link da loja no iFood (endereço completo, começando com https://).
   // Mesma lógica do Instagram: enquanto ficar vazio (""), o botão "Peça pelo
   // iFood" não aparece no rodapé.
-  // A DEFINIR — ex: "https://www.ifood.com.br/delivery/mogi-das-cruzes-sp/shalom-lanches-e-porcoes"
-  ifood: "",
+  ifood: "https://www.ifood.com.br/delivery/mogi-das-cruzes-sp/shallom-lanches-jundiapeba/914d63a4-19b5-45c1-a230-b15542697a0e?UTM_Medium=share",
 
   // Número de WhatsApp que vai receber os pedidos, no formato DDI+DDD+número,
   // só dígitos (sem espaços, parênteses ou traços).
