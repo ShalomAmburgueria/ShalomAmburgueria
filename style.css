@@ -113,6 +113,21 @@ textarea:focus-visible,
 }
 
 /* =========================================================================
+   AVISO DE AMBIENTE DE TESTE (só aparece fora do domínio de produção)
+   ========================================================================= */
+.banner-ambiente {
+  margin: 0;
+  padding: 8px 16px;
+  padding-top: calc(8px + env(safe-area-inset-top, 0px));
+  background: #1a1a1a;
+  color: #ffd23f;
+  text-align: center;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+/* =========================================================================
    CABEÇALHO / LOGO — faixa vermelha de marca, como um app de delivery
    ========================================================================= */
 .topo {

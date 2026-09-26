@@ -14,6 +14,14 @@
 // CONFIG — configurações gerais da loja
 // ============================================================================
 const CONFIG = {
+  // Endereço do site em produção (sem "https://", sem barra no final).
+  // O site compara isso com o endereço que está sendo acessado agora: se
+  // for diferente (ambiente de homologação, preview do Vercel, celular
+  // testando local, etc.), mostra um aviso "Ambiente de teste" no topo.
+  // Troque este valor quando o domínio definitivo (ex: .com.br) entrar
+  // no ar — esse valor é o mesmo tanto na branch "main" quanto "homolog".
+  dominioProducao: "shalom-amburgueria.vercel.app",
+
   // Nome da loja (aparece no título da página e na mensagem do WhatsApp)
   nomeLoja: "Shalom Lanches e Porções",
 

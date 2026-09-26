@@ -985,7 +985,18 @@
     }
   }
 
+  // Mostra o aviso "Ambiente de teste" sempre que o site não estiver sendo
+  // acessado pelo domínio oficial de produção (CONFIG.dominioProducao) —
+  // cobre o preview de homologação, localhost, IP local, etc.
+  function verificarAmbiente() {
+    const banner = document.getElementById("banner-ambiente");
+    if (window.location.hostname !== CONFIG.dominioProducao) {
+      banner.hidden = false;
+    }
+  }
+
   function iniciar() {
+    verificarAmbiente();
     document.getElementById("tagline").textContent = CONFIG.tagline || "";
     configurarLinkExterno("link-instagram", CONFIG.instagram);
     configurarLinkExterno("link-ifood", CONFIG.ifood);

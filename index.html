@@ -24,6 +24,11 @@
 </head>
 <body>
 
+  <!-- Só aparece fora do domínio de produção (ver CONFIG.dominioProducao
+       em cardapio.js) — evita confundir o ambiente de testes com o site
+       real. Preenchido/mostrado pelo app.js. -->
+  <p id="banner-ambiente" class="banner-ambiente" hidden>⚠️ Ambiente de teste — este não é o site publicado para os clientes</p>
+
   <!-- ======================= CABEÇALHO ======================= -->
   <header class="topo">
     <div class="topo__conteudo">
