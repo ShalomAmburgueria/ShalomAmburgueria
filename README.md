@@ -1,4 +1,4 @@
-# Shalom Lanches e Porções — Site de Cardápio e Pedidos
+# Shalom Amburgueria — Site de Cardápio e Pedidos
 
 Site estático (HTML, CSS e JavaScript puros, sem framework e sem build) para
 o cliente montar o pedido e enviar pronto para o WhatsApp da lanchonete. Não

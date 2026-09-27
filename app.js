@@ -1,5 +1,5 @@
 /*
- * app.js — lógica do site da Shalom Lanches e Porções
+ * app.js — lógica do site da Shalom Amburgueria
  * -----------------------------------------------------------------------
  * Este arquivo lê os dados de CONFIG e CARDAPIO (definidos em cardapio.js)
  * e cuida de: montar o cardápio na tela, abrir o painel de personalização

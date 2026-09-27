@@ -23,7 +23,7 @@ const CONFIG = {
   dominioProducao: "shalom-amburgueria.vercel.app",
 
   // Nome da loja (aparece no título da página e na mensagem do WhatsApp)
-  nomeLoja: "Shalom Lanches e Porções",
+  nomeLoja: "Shalom Amburgueria",
 
   // Frase de efeito que aparece embaixo do logo, no topo do site.
   tagline: "Chegou o novo sabor da sua fome",
@@ -32,7 +32,7 @@ const CONFIG = {
   // (cada item da lista vira um parágrafo).
   // A DEFINIR — pedir o texto para o dono da loja.
   sobreLoja: [
-    "A Shalom Lanches e Porções nasceu da vontade de servir um lanche de verdade, feito na hora, com ingredientes de qualidade.",
+    "A Shalom Amburgueria nasceu da vontade de servir um lanche de verdade, feito na hora, com ingredientes de qualidade.",
     "// A DEFINIR — complete a história da loja aqui (quando começou, o que torna a Shalom especial, etc.)",
   ],
 
