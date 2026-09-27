@@ -162,7 +162,7 @@ const CARDAPIO = {
       {
         id: "x-calabresa",
         nome: "X-Calabresa",
-        emoji: "🌭",
+        emoji: "🍖",
         foto: null,
         ingredientes: ["Calabresa fatiada", "Hambúrguer", "Queijo", "Alface", "Tomate", "Maionese"],
         precos: { tradicional: 20, artesanal: 23 },
@@ -238,7 +238,7 @@ const CARDAPIO = {
     itens: [
       { id: "porcao-churrasco", nome: "Churrasco Contra-filé", emoji: "🥩", foto: null, preco: 60 },
       { id: "porcao-frango", nome: "Frango à Passarinho", emoji: "🍗", foto: null, preco: 35 },
-      { id: "porcao-calabresa", nome: "Calabresa", emoji: "🌭", foto: null, preco: 25 },
+      { id: "porcao-calabresa", nome: "Calabresa", emoji: "🍖", foto: null, preco: 25 },
     ],
   },
 
