@@ -699,6 +699,18 @@ main {
   margin: 0 0 14px;
 }
 
+.info-paragrafo--whatsapp {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.info-paragrafo__icone {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
 /* #checkout-formulario envolve o formulário inteiro + resumo + botão de
    enviar, para poder trocar tudo isso pela tela de sucesso depois do envio.
    Ele assume o papel de área rolável do painel (que normalmente seria do

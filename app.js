@@ -739,12 +739,27 @@
   // =========================================================================
   // PAINEL INFORMATIVO — "Quem Somos" e "Endereço e Contato"
   // =========================================================================
+  // Cria o parágrafo do WhatsApp com o ícone real (clonado de um <template>
+  // no HTML) em vez de emoji — mantém o padrão de nunca usar innerHTML.
+  function criarLinhaWhatsapp(numero) {
+    const p = criarEl("p", "info-paragrafo info-paragrafo--whatsapp");
+    const template = document.getElementById("template-icone-whatsapp");
+    p.appendChild(template.content.cloneNode(true));
+    p.appendChild(document.createTextNode(`WhatsApp: ${numero}`));
+    return p;
+  }
+
   function abrirPainelInfo(titulo, paragrafos) {
     document.getElementById("info-titulo").textContent = titulo;
     const corpo = document.getElementById("info-corpo");
     corpo.replaceChildren();
-    paragrafos.forEach((texto) => {
-      if (texto) corpo.appendChild(criarEl("p", "info-paragrafo", texto));
+    paragrafos.forEach((item) => {
+      if (!item) return;
+      if (typeof item === "string") {
+        corpo.appendChild(criarEl("p", "info-paragrafo", item));
+      } else {
+        corpo.appendChild(item);
+      }
     });
     mostrarPainel("painel-info", "overlay-info");
   }
@@ -760,7 +775,7 @@
   function abrirEndereco() {
     const endereco = CONFIG.endereco;
     const linhaEndereco = [endereco.rua, endereco.bairro].filter(Boolean).join(" — ");
-    const paragrafos = [linhaEndereco, endereco.referencia, `📞 WhatsApp: ${CONFIG.whatsapp}`];
+    const paragrafos = [linhaEndereco, endereco.referencia, criarLinhaWhatsapp(CONFIG.whatsapp)];
     abrirPainelInfo("Endereço e Contato", paragrafos);
   }
 
