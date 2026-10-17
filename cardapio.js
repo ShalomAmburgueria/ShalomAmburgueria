@@ -30,10 +30,10 @@ const CONFIG = {
 
   // Texto do botão/painel "Quem Somos", no rodapé. Pode usar várias frases
   // (cada item da lista vira um parágrafo).
-  // A DEFINIR — pedir o texto para o dono da loja.
   sobreLoja: [
-    "A Shalom Amburgueria nasceu da vontade de servir um lanche de verdade, feito na hora, com ingredientes de qualidade.",
-    "// A DEFINIR — complete a história da loja aqui (quando começou, o que torna a Shalom especial, etc.)",
+    "A Shalom Amburgueria abriu as portas em 2023, no bairro Jundiapaba, em Mogi das Cruzes, com um objetivo simples: servir um lanche de verdade, feito na hora, para quem não abre mão de qualidade.",
+    "Cada hambúrguer é preparado com capricho na chapa, no ponto tradicional ou artesanal — porque aqui sabor bom não tem pressa. Shalom é mais que sabor: é qualidade e amor em cada detalhe.",
+    "Hoje, além do balcão, você também encontra a gente no iFood e no Instagram. Seja pelo site, pelo delivery ou pelos stories, a missão continua a mesma: matar a sua fome com o melhor lanche da região.",
   ],
 
   // Endereço e contato, mostrados no botão/painel "Endereço e Contato".

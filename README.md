@@ -162,14 +162,10 @@ Confira este checklist antes de divulgar o link para os clientes:
 - [ ] **Conferir todos os preços com o dono da lanchonete** — os valores
       atuais em `cardapio.js` foram tirados dos cardápios impressos
       fornecidos, mas vale uma checagem final antes de publicar.
-- [x] **Preencher "Endereço"** em `cardapio.js` → `CONFIG.endereco` (já
-      feito). Falta só **"Quem Somos"** (`CONFIG.sobreLoja`), ainda com texto
-      de exemplo marcado `// A DEFINIR`.
-- [ ] **Preencher o link do Instagram**, se a loja tiver um, em
-      `CONFIG.instagram` (opcional — sem preencher, o botão simplesmente não
-      aparece no rodapé).
-- [ ] **Preencher o link do iFood** em `CONFIG.ifood` (mesma lógica do
-      Instagram — a loja já divulga que está no iFood, falta só o link).
+- [x] **Preencher "Endereço" e "Quem Somos"** em `cardapio.js` →
+      `CONFIG.endereco` e `CONFIG.sobreLoja` (já feito).
+- [x] **Preencher o link do Instagram** em `CONFIG.instagram` (já feito).
+- [x] **Preencher o link do iFood** em `CONFIG.ifood` (já feito).
 - [ ] **Trocar os emojis pelas fotos reais dos lanches**, se o dono da loja
       for fornecer — basta preencher o campo `foto` de cada item em
       `cardapio.js` (veja "Como editar preços e itens" acima). Sem fotos, o
