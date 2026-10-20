@@ -65,7 +65,8 @@ const CONFIG = {
   toca no botão "Quem Somos" no rodapé do site.
 - **"Endereço e Contato" (`endereco`)**: preencha `rua`, `bairro` e, se
   quiser, `referencia` (ex: "Perto da praça central"). O telefone mostrado
-  nesse painel já vem automaticamente do `CONFIG.whatsapp`.
+  nesse painel já vem automaticamente do `CONFIG.whatsapp` (o número real,
+  em todos os ambientes — só o destino dos pedidos muda no HML).
 - **Instagram (`instagram`)**: cole o link completo do perfil (ex:
   `"https://instagram.com/shalomlancheseporcoes"`). O botão "Siga no
   Instagram" só aparece no rodapé depois que esse campo for preenchido —

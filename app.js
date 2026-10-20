@@ -808,7 +808,7 @@
   function abrirEndereco() {
     const endereco = CONFIG.endereco;
     const linhaEndereco = [endereco.rua, endereco.bairro].filter(Boolean).join(" — ");
-    const paragrafos = [linhaEndereco, endereco.referencia, criarLinhaWhatsapp(numeroWhatsapp())];
+    const paragrafos = [linhaEndereco, endereco.referencia, criarLinhaWhatsapp(CONFIG.whatsapp)];
     abrirPainelInfo("Endereço e Contato", paragrafos);
   }
 
