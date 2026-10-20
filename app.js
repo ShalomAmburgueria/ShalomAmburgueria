@@ -725,13 +725,46 @@
     renderizarBarraCarrinho();
   }
 
+  // Minúsculas, sem acentos e sem espaços extras — para comparar bairros.
+  function normalizarTexto(texto) {
+    return String(texto || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim().replace(/\s+/g, " ");
+  }
+
+  // Taxa para o bairro informado: número, ou null enquanto o bairro estiver vazio.
+  function taxaParaBairro(bairro) {
+    const regra = CONFIG.taxaEntrega;
+    const texto = normalizarTexto(bairro);
+    if (!texto) return null;
+    return texto.includes(normalizarTexto(regra.bairroLoja)) ? regra.noBairro : regra.outrosBairros;
+  }
+
+  // Taxa do pedido que está sendo fechado agora: 0 na retirada; null se for
+  // entrega e o bairro ainda não foi preenchido.
+  function taxaDoPedido() {
+    if (tipoEntregaAtual !== "entrega") return 0;
+    return taxaParaBairro(document.getElementById("endereco-bairro").value);
+  }
+
+  function textoTaxa(taxa) {
+    if (tipoEntregaAtual !== "entrega") return "Retirada · sem taxa";
+    return taxa === null ? "informe o bairro" : formatarPreco(taxa);
+  }
+
+  function atualizarResumoCheckout() {
+    const subtotal = calcularSubtotal();
+    const taxa = taxaDoPedido();
+    document.getElementById("checkout-subtotal").textContent = formatarPreco(subtotal);
+    document.getElementById("checkout-taxa").textContent = textoTaxa(taxa);
+    document.getElementById("checkout-total").textContent = formatarPreco(subtotal + (taxa || 0));
+  }
+
   function atualizarResumoValores() {
     const subtotal = calcularSubtotal();
+    const regra = CONFIG.taxaEntrega;
     document.getElementById("carrinho-subtotal").textContent = formatarPreco(subtotal);
     document.getElementById("carrinho-taxa").textContent =
-      CONFIG.taxaEntrega === null ? "a combinar" : formatarPreco(CONFIG.taxaEntrega);
-    const taxaSomavel = CONFIG.taxaEntrega === null ? 0 : CONFIG.taxaEntrega;
-    document.getElementById("carrinho-total").textContent = formatarPreco(subtotal + taxaSomavel);
+      `${formatarPreco(regra.noBairro)} em ${regra.bairroLoja} · ${formatarPreco(regra.outrosBairros)} outros bairros`;
+    document.getElementById("carrinho-total").textContent = formatarPreco(subtotal);
 
     const avisoMinimo = document.getElementById("carrinho-aviso-minimo");
     const btnCheckout = document.getElementById("btn-ir-checkout");
@@ -759,7 +792,7 @@
   // =========================================================================
   function abrirCheckout() {
     fecharCarrinho();
-    document.getElementById("checkout-total").textContent = document.getElementById("carrinho-total").textContent;
+    atualizarResumoCheckout();
     document.getElementById("checkout-formulario").hidden = false;
     document.getElementById("checkout-sucesso").hidden = true;
     mostrarPainel("painel-checkout", "overlay-checkout");
@@ -824,8 +857,10 @@
       btnRetirada.setAttribute("aria-pressed", String(tipo === "retirada"));
       camposEndereco.hidden = tipo !== "entrega";
       camposEndereco.style.display = tipo === "entrega" ? "" : "none";
+      atualizarResumoCheckout();
     }
 
+    document.getElementById("endereco-bairro").addEventListener("input", atualizarResumoCheckout);
     btnEntrega.addEventListener("click", () => selecionar("entrega"));
     btnRetirada.addEventListener("click", () => selecionar("retirada"));
     selecionar("entrega");
@@ -908,9 +943,8 @@
   // =========================================================================
   function montarMensagemWhatsApp(dadosCliente) {
     const subtotal = calcularSubtotal();
-    const taxa = CONFIG.taxaEntrega === null ? null : CONFIG.taxaEntrega;
-    const taxaAplicada = dadosCliente.tipo === "entrega" ? taxa : 0;
-    const total = subtotal + (taxaAplicada || 0);
+    const taxaAplicada = dadosCliente.tipo === "entrega" ? taxaParaBairro(dadosCliente.bairro) || 0 : 0;
+    const total = subtotal + taxaAplicada;
     const codigo = gerarCodigoPedido();
 
     const linhas = [];
@@ -941,7 +975,7 @@
 
     linhas.push("");
     linhas.push(`Subtotal: ${formatarPreco(subtotal)}`);
-    linhas.push(`Taxa de entrega: ${dadosCliente.tipo === "entrega" ? (taxa === null ? "a combinar" : formatarPreco(taxa)) : "—"}`);
+    linhas.push(`Taxa de entrega: ${dadosCliente.tipo === "entrega" ? formatarPreco(taxaAplicada) : "— (retirada)"}`);
     linhas.push(`*Total: ${formatarPreco(total)}*`);
 
     linhas.push("");

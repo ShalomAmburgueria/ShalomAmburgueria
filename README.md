@@ -29,7 +29,7 @@ o passo a passo em "Como fazer uma alteração". Ele tem duas partes:
 const CONFIG = {
   whatsapp: "5511966321857",   // número que recebe os pedidos (produção)
   whatsappTeste: "5511972317186", // número usado no HML/testes
-  taxaEntrega: null,           // valor em reais, ex: 8  (ou null = "a combinar")
+  taxaEntrega: { bairroLoja: "Jundiapeba", noBairro: 5, outrosBairros: 10 }, // taxa por bairro
   pedidoMinimo: 0,             // valor mínimo do pedido, ex: 30 (0 = sem mínimo)
   horarios: { ... },           // horário de funcionamento por dia da semana
   linhasAtivas: ["tradicional", "artesanal"], // quais linhas de lanche estão à venda
@@ -42,8 +42,11 @@ const CONFIG = {
   dígitos** (Brasil = 55). Exemplo: `"5511988887777"`. Já o `whatsappTeste` é
   usado automaticamente no HML e em qualquer endereço que não seja o oficial,
   para que pedidos de teste nunca cheguem na lanchonete.
-- **Taxa de entrega**: troque `null` por um número (ex: `taxaEntrega: 8`) ou
-  deixe `null` para continuar mostrando "a combinar" no site e na mensagem.
+- **Taxa de entrega**: calculada pelo bairro que o cliente digita no pedido.
+  Bairro **Jundiapeba** (`bairroLoja`) paga `noBairro` (R$ 5,00); qualquer
+  outro bairro paga `outrosBairros` (R$ 10,00). A comparação ignora
+  maiúsculas e acentos. Na **retirada** não há taxa. O total no fechamento do
+  pedido e a mensagem do WhatsApp já incluem a taxa.
 - **Pedido mínimo**: troque `0` por um valor em reais para exigir um mínimo
   na entrega.
 - **Horários**: cada dia (`dom`, `seg`, `ter`, `qua`, `qui`, `sex`, `sab`) tem
@@ -163,8 +166,8 @@ Confira este checklist antes de divulgar o link para os clientes:
       feito; o HML continua usando o número de teste).
 - [x] **Horário de funcionamento real**: 19:30–00:00, todos os dias (já feito;
       o HML fica 24h).
-- [ ] **Definir a taxa de entrega** em `CONFIG.taxaEntrega` (hoje está `null`,
-      mostrando "a combinar").
+- [x] **Taxa de entrega** por bairro em `CONFIG.taxaEntrega`: R$ 5,00 em
+      Jundiapeba e R$ 10,00 nos demais bairros (já feito).
 - [ ] **Definir o pedido mínimo**, se houver, em `CONFIG.pedidoMinimo`.
 - [ ] **Conferir todos os preços com o dono da lanchonete** — os valores
       atuais em `cardapio.js` foram tirados dos cardápios impressos

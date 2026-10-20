@@ -31,7 +31,7 @@ const CONFIG = {
   // Texto do botão/painel "Quem Somos", no rodapé. Pode usar várias frases
   // (cada item da lista vira um parágrafo).
   sobreLoja: [
-    "A Shalom Amburgueria abriu as portas em 2023, no bairro Jundiapaba, em Mogi das Cruzes, com um objetivo simples: servir um lanche de verdade, feito na hora, para quem não abre mão de qualidade.",
+    "A Shalom Amburgueria abriu as portas em 2023, no bairro Jundiapeba, em Mogi das Cruzes, com um objetivo simples: servir um lanche de verdade, feito na hora, para quem não abre mão de qualidade.",
     "Cada hambúrguer é preparado com capricho na chapa, no ponto tradicional ou artesanal — porque aqui sabor bom não tem pressa. Shalom é mais que sabor: é qualidade e amor em cada detalhe.",
     "Hoje, além do balcão, você também encontra a gente no iFood e no Instagram. Seja pelo site, pelo delivery ou pelos stories, a missão continua a mesma: matar a sua fome com o melhor lanche da região.",
   ],
@@ -40,7 +40,7 @@ const CONFIG = {
   // O telefone/WhatsApp já vem do campo CONFIG.whatsapp acima.
   endereco: {
     rua: "Rua Luiz Antonio de Oliveira, 601",
-    bairro: "Jundiapaba, Mogi das Cruzes - SP",
+    bairro: "Jundiapeba, Mogi das Cruzes - SP",
     referencia: "", // opcional, ex: "Perto da praça central"
   },
 
@@ -63,10 +63,15 @@ const CONFIG = {
   // na lanchonete por engano.
   whatsappTeste: "5511972317186",
 
-  // Taxa de entrega em reais. Deixe "null" se ainda não foi definida
-  // (o site vai mostrar "a combinar" nesse caso).
-  // A DEFINIR
-  taxaEntrega: null,
+  // Taxa de entrega, calculada pelo bairro que o cliente digita no pedido:
+  // - bairro igual a "bairroLoja" (Jundiapeba): taxa "noBairro";
+  // - qualquer outro bairro (vizinhos): taxa "outrosBairros".
+  // Retirada no balcão não paga taxa. Valores em reais.
+  taxaEntrega: {
+    bairroLoja: "Jundiapeba",
+    noBairro: 5,
+    outrosBairros: 10,
+  },
 
   // Valor mínimo do pedido em reais para liberar a entrega. 0 = sem mínimo.
   // A DEFINIR
