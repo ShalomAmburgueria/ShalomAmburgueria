@@ -28,7 +28,7 @@ o passo a passo em "Como fazer uma alteração". Ele tem duas partes:
 ```js
 const CONFIG = {
   whatsapp: "5511966321857",   // número que recebe os pedidos (produção)
-  whatsappTeste: "5511972317186", // número usado no HML/testes
+  whatsappTeste: "5511988430291", // número usado no HML/testes
   taxaEntrega: { bairroLoja: "Jundiapeba", noBairro: 5, outrosBairros: 10 }, // taxa por bairro
   pedidoMinimo: 0,             // valor mínimo do pedido, ex: 30 (0 = sem mínimo)
   horarios: { ... },           // horário de funcionamento por dia da semana

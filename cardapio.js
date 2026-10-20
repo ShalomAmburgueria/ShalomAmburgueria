@@ -61,7 +61,7 @@ const CONFIG = {
   // Número usado em qualquer ambiente que NÃO seja a produção (HML/homologação,
   // preview da Vercel, localhost...), para que testes de pedido nunca cheguem
   // na lanchonete por engano.
-  whatsappTeste: "5511972317186",
+  whatsappTeste: "5511988430291",
 
   // Taxa de entrega, calculada pelo bairro que o cliente digita no pedido:
   // - bairro igual a "bairroLoja" (Jundiapeba): taxa "noBairro";
