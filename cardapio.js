@@ -144,7 +144,7 @@ const CARDAPIO = {
         emoji: "🍳",
         foto: null,
         ingredientes: ["Hambúrguer", "Queijo", "Ovo", "Alface", "Tomate", "Maionese"],
-        precos: { tradicional: 20, artesanal: 25 },
+        precos: { tradicional: 20, artesanal: 27 },
       },
       {
         id: "x-frango",
@@ -152,7 +152,7 @@ const CARDAPIO = {
         emoji: "🍗",
         foto: null,
         ingredientes: ["Filé de frango", "Hambúrguer", "Queijo", "Alface", "Tomate", "Maionese"],
-        precos: { tradicional: 25, artesanal: 28 },
+        precos: { tradicional: 25, artesanal: 35 },
       },
       {
         id: "x-calabresa",
@@ -160,7 +160,7 @@ const CARDAPIO = {
         emoji: "🍖",
         foto: null,
         ingredientes: ["Calabresa fatiada", "Hambúrguer", "Queijo", "Alface", "Tomate", "Maionese"],
-        precos: { tradicional: 20, artesanal: 23 },
+        precos: { tradicional: 20, artesanal: 30 },
       },
       {
         id: "x-churrasco",
@@ -180,7 +180,7 @@ const CARDAPIO = {
           "Presunto", "Ovo", "Bacon", "Alface", "Tomate", "Batata palha",
           "Maionese", "Ketchup", "Mostarda",
         ],
-        precos: { tradicional: 35, artesanal: 50 },
+        precos: { tradicional: 35, artesanal: 60 },
       },
       {
         id: "dogao",
