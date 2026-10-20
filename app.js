@@ -200,15 +200,16 @@
     }
     if (categoria === "combo") {
       const item = CARDAPIO.combo.itens.find((i) => i.id === refId);
+      if (!item) return null; // ex: combo de um carrinho salvo antes desta versão
       return {
         categoria, refId,
         nome: item.nome, emoji: item.emoji, foto: item.foto,
-        precoBase: item.precos[linhaAtual],
-        temLinha: true,
+        precoBase: item.preco,
+        temLinha: false,
         ingredientes: [],
         permiteAdicionais: false,
         temSabor: false,
-        listaFixa: item.descricaoPorLinha[linhaAtual],
+        listaFixa: item.descricao,
       };
     }
     if (categoria === "porcoes-batata") {
@@ -314,7 +315,7 @@
     // Combo
     const gradeCombo = document.getElementById("grade-combo");
     gradeCombo.replaceChildren();
-    CARDAPIO.combo.itens.forEach((item) => {
+    CARDAPIO.combo.itens.filter((item) => CONFIG.linhasAtivas.includes(item.linha)).forEach((item) => {
       gradeCombo.appendChild(criarCartaoItem(obterDadosItem("combo", item.id), { destaque: true }));
     });
 

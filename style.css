@@ -1250,3 +1250,8 @@ textarea.campo-texto {
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   }
 }
+
+/* Ao editar um item pelo carrinho, o painel do item abre por cima do carrinho
+   (os dois tinham o mesmo z-index e o carrinho cobria o botão "Salvar"). */
+#overlay-item { z-index: 60; }
+#painel-item { z-index: 70; }

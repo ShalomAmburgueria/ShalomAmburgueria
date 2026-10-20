@@ -197,27 +197,34 @@ const CARDAPIO = {
   },
 
   // --------------------------------------------------------------------
-  // COMBO — combo especial, preço muda conforme a linha
+  // COMBO — um combo por linha (Tradicional e Artesanal), sempre visíveis
   // --------------------------------------------------------------------
   combo: {
+    // Os dois combos aparecem sempre na seção "Combo", independentes do
+    // seletor Tradicional/Artesanal. "linha" decide se ele aparece conforme
+    // CONFIG.linhasAtivas.
     itens: [
       {
-        id: "combo-especial",
-        nome: "Combo Especial",
+        id: "combo-especial-tradicional",
+        linha: "tradicional",
+        nome: "Combo Especial Tradicional",
         emoji: "🎉",
         foto: null,
-        descricaoPorLinha: {
-          tradicional: ["2 X-Bacon", "Batata frita", "Cebola onion", "10 coxinhas", "1 refrigerante 2 litros"],
-          artesanal: ["2 X-Bacon Artesanal", "Batata frita", "Cebola onion", "10 coxinhas", "1 refrigerante 2 litros"],
-        },
-        precos: { tradicional: 80, artesanal: 100 },
+        descricao: ["2 X-Bacon", "Batata frita", "Cebola onion", "10 coxinhas", "1 refrigerante 2 litros"],
+        preco: 80,
+      },
+      {
+        id: "combo-especial-artesanal",
+        linha: "artesanal",
+        nome: "Combo Especial Artesanal",
+        emoji: "🎉",
+        foto: null,
+        descricao: ["2 X-Bacon Artesanal", "Batata frita", "Cebola onion", "10 coxinhas", "1 refrigerante 2 litros"],
+        preco: 100,
       },
     ],
   },
 
-  // --------------------------------------------------------------------
-  // PORÇÕES — mesmo preço nas duas linhas
-  // --------------------------------------------------------------------
   porcoes: {
     observacao: "Todas as porções acompanham cheddar, catupiry, bacon e queijo parmesão.",
     batataFrita: {
