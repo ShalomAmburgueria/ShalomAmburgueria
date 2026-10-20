@@ -27,7 +27,8 @@ o passo a passo em "Como fazer uma alteração". Ele tem duas partes:
 
 ```js
 const CONFIG = {
-  whatsapp: "5511972317186",   // número que recebe os pedidos
+  whatsapp: "5511966321857",   // número que recebe os pedidos (produção)
+  whatsappTeste: "5511972317186", // número usado no HML/testes
   taxaEntrega: null,           // valor em reais, ex: 8  (ou null = "a combinar")
   pedidoMinimo: 0,             // valor mínimo do pedido, ex: 30 (0 = sem mínimo)
   horarios: { ... },           // horário de funcionamento por dia da semana
@@ -36,9 +37,11 @@ const CONFIG = {
 };
 ```
 
-- **Número de WhatsApp**: troque `whatsapp: "5511972317186"` pelo número real
-  da lanchonete, sempre no formato **DDI + DDD + número, só dígitos** (Brasil
-  = 55). Exemplo: `"5511988887777"`.
+- **Número de WhatsApp**: `whatsapp` é o número real da lanchonete (recebe os
+  pedidos de **produção**), sempre no formato **DDI + DDD + número, só
+  dígitos** (Brasil = 55). Exemplo: `"5511988887777"`. Já o `whatsappTeste` é
+  usado automaticamente no HML e em qualquer endereço que não seja o oficial,
+  para que pedidos de teste nunca cheguem na lanchonete.
 - **Taxa de entrega**: troque `null` por um número (ex: `taxaEntrega: 8`) ou
   deixe `null` para continuar mostrando "a combinar" no site e na mensagem.
 - **Pedido mínimo**: troque `0` por um valor em reais para exigir um mínimo
@@ -46,7 +49,11 @@ const CONFIG = {
 - **Horários**: cada dia (`dom`, `seg`, `ter`, `qua`, `qui`, `sex`, `sab`) tem
   um `abre` e um `fecha` no formato 24h `"HH:MM"`. O site usa isso para
   mostrar "Aberto agora" / "Fechado" e bloquear o envio do pedido fora do
-  horário.
+  horário. Hoje: todos os dias das **19:30 às 00:00** (`fecha: "00:00"` =
+  meia-noite; se `fecha` for menor ou igual a `abre`, fecha na madrugada do
+  dia seguinte). No **HML** o site fica sempre aberto (24h) para facilitar os
+  testes (`abertoSempreForaDeProducao: true`); em produção o horário real
+  sempre vale.
 - **Linhas ativas**: se a loja vender só a linha Artesanal (por exemplo), use
   `linhasAtivas: ["artesanal"]` — o seletor Tradicional/Artesanal some
   automaticamente do site e todo o cardápio usa só essa linha.
@@ -113,7 +120,11 @@ publica o site e a Locaweb cuida do domínio.
 | **HML** (homologação / testes) | `homolog` | https://hml.shalomamburgueria.com.br |
 | **Produção** (clientes) | `main` | https://www.shalomamburgueria.com.br |
 
-O HML mostra a faixa "Ambiente de teste" no topo; a produção não.
+O código é **idêntico** nas duas branches; o que diferencia os ambientes é só o
+endereço de acesso. Fora do endereço oficial (`CONFIG.dominioProducao`) o site
+mostra a faixa "Ambiente de teste", fica aberto 24h e envia os pedidos para o
+número de teste. Em produção: sem faixa, horário real (19:30–00:00) e número
+real da lanchonete.
 
 ## Como fazer uma alteração (sempre HML primeiro)
 
@@ -147,14 +158,10 @@ Se algum dia precisar mudar de projeto/conta na Vercel, ela mostra em
 
 Confira este checklist antes de divulgar o link para os clientes:
 
-- [ ] **Trocar o número de WhatsApp de teste** (`5511972317186`) pelo número
-      real da lanchonete em `cardapio.js` → `CONFIG.whatsapp`. O número real
-      já é conhecido (`5511966321857`, visto no banner de divulgação) — só
-      falta trocar quando for para produção; propositalmente mantido como
-      teste por enquanto.
-- [ ] **Preencher os horários de funcionamento reais** em `CONFIG.horarios`
-      (ainda em modo teste: 00:00–23:59 todos os dias, marcado `// A DEFINIR`
-      no arquivo).
+- [x] **Número de WhatsApp real** (`5511966321857`) em `CONFIG.whatsapp` (já
+      feito; o HML continua usando o número de teste).
+- [x] **Horário de funcionamento real**: 19:30–00:00, todos os dias (já feito;
+      o HML fica 24h).
 - [ ] **Definir a taxa de entrega** em `CONFIG.taxaEntrega` (hoje está `null`,
       mostrando "a combinar").
 - [ ] **Definir o pedido mínimo**, se houver, em `CONFIG.pedidoMinimo`.

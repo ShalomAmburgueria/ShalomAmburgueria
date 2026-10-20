@@ -86,17 +86,46 @@
   // =========================================================================
   const DIAS = ["dom", "seg", "ter", "qua", "qui", "sex", "sab"];
 
+  // Produção = acessado pelo domínio oficial. Qualquer outro endereço (HML,
+  // preview da Vercel, localhost, IP local...) é ambiente de teste.
+  function ehProducao() {
+    return window.location.hostname === CONFIG.dominioProducao;
+  }
+
+  function numeroWhatsapp() {
+    return ehProducao() ? CONFIG.whatsapp : CONFIG.whatsappTeste || CONFIG.whatsapp;
+  }
+
   function horarioDeHoje() {
     const diaChave = DIAS[new Date().getDay()];
     return CONFIG.horarios[diaChave] || null;
   }
 
+  function minutosDoDia(hhmm) {
+    const [h, m] = hhmm.split(":").map(Number);
+    return h * 60 + m;
+  }
+
   function estaAberto() {
-    const horario = horarioDeHoje();
-    if (!horario) return false;
+    if (!ehProducao() && CONFIG.abertoSempreForaDeProducao) return true;
+
     const agora = new Date();
-    const horaAtual = String(agora.getHours()).padStart(2, "0") + ":" + String(agora.getMinutes()).padStart(2, "0");
-    return horaAtual >= horario.abre && horaAtual <= horario.fecha;
+    const minutosAgora = agora.getHours() * 60 + agora.getMinutes();
+    const hoje = horarioDeHoje();
+    if (hoje) {
+      const abre = minutosDoDia(hoje.abre);
+      const fecha = minutosDoDia(hoje.fecha);
+      // Mesmo dia (ex: 18:00–23:00) ou vira a noite (ex: 19:30–00:00 / 18:00–02:00).
+      if (fecha > abre ? minutosAgora >= abre && minutosAgora < fecha : minutosAgora >= abre) return true;
+    }
+    // Madrugada: ainda dentro do expediente que começou ontem e termina hoje.
+    const ontem = CONFIG.horarios[DIAS[(agora.getDay() + 6) % 7]];
+    if (ontem) {
+      const abre = minutosDoDia(ontem.abre);
+      const fecha = minutosDoDia(ontem.fecha);
+      if (fecha <= abre && minutosAgora < fecha) return true;
+    }
+    return false;
   }
 
   function atualizarStatusLoja() {
@@ -109,7 +138,11 @@
     status.classList.toggle("status-loja--fechado", !aberto);
 
     if (aberto) {
-      texto.textContent = horario ? `Aberto agora · fecha às ${horario.fecha}` : "Aberto agora";
+      texto.textContent = !ehProducao() && CONFIG.abertoSempreForaDeProducao
+        ? "Aberto agora · teste 24h"
+        : horario
+          ? `Aberto agora · fecha às ${horario.fecha}`
+          : "Aberto agora";
     } else if (horario) {
       texto.textContent = `Fechado agora · abre às ${horario.abre}`;
     } else {
@@ -775,7 +808,7 @@
   function abrirEndereco() {
     const endereco = CONFIG.endereco;
     const linhaEndereco = [endereco.rua, endereco.bairro].filter(Boolean).join(" — ");
-    const paragrafos = [linhaEndereco, endereco.referencia, criarLinhaWhatsapp(CONFIG.whatsapp)];
+    const paragrafos = [linhaEndereco, endereco.referencia, criarLinhaWhatsapp(numeroWhatsapp())];
     abrirPainelInfo("Endereço e Contato", paragrafos);
   }
 
@@ -931,7 +964,7 @@
 
     const dadosCliente = coletarDadosCheckout();
     const mensagem = montarMensagemWhatsApp(dadosCliente);
-    const url = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(mensagem)}`;
+    const url = `https://wa.me/${numeroWhatsapp()}?text=${encodeURIComponent(mensagem)}`;
 
     const novaAba = window.open(url, "_blank");
     if (!novaAba) window.location.href = url;

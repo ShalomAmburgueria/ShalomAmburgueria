@@ -18,8 +18,8 @@ const CONFIG = {
   // O site compara isso com o endereço que está sendo acessado agora: se
   // for diferente (ambiente de homologação, preview do Vercel, celular
   // testando local, etc.), mostra um aviso "Ambiente de teste" no topo.
-  // Troque este valor quando o domínio definitivo (ex: .com.br) entrar
-  // no ar — esse valor é o mesmo tanto na branch "main" quanto "homolog".
+  // Este valor é o mesmo tanto na branch "main" quanto "homolog" (o código é
+  // idêntico nos dois ambientes; o que muda é só o endereço de acesso).
   dominioProducao: "www.shalomamburgueria.com.br",
 
   // Nome da loja (aparece no título da página e na mensagem do WhatsApp)
@@ -54,11 +54,14 @@ const CONFIG = {
   // iFood" não aparece no rodapé.
   ifood: "https://www.ifood.com.br/delivery/mogi-das-cruzes-sp/shallom-lanches-jundiapeba/914d63a4-19b5-45c1-a230-b15542697a0e?UTM_Medium=share",
 
-  // Número de WhatsApp que vai receber os pedidos, no formato DDI+DDD+número,
-  // só dígitos (sem espaços, parênteses ou traços).
-  // ⚠️ TESTE — o número real da loja é 5511966321857 (visto no banner de
-  // divulgação). Troque por ele antes de publicar de verdade.
-  whatsapp: "5511972317186",
+  // Número de WhatsApp que recebe os pedidos em PRODUÇÃO, no formato
+  // DDI+DDD+número, só dígitos (sem espaços, parênteses ou traços).
+  whatsapp: "5511966321857",
+
+  // Número usado em qualquer ambiente que NÃO seja a produção (HML/homologação,
+  // preview da Vercel, localhost...), para que testes de pedido nunca cheguem
+  // na lanchonete por engano.
+  whatsappTeste: "5511972317186",
 
   // Taxa de entrega em reais. Deixe "null" se ainda não foi definida
   // (o site vai mostrar "a combinar" nesse caso).
@@ -71,31 +74,23 @@ const CONFIG = {
 
   // Horário de funcionamento por dia da semana, formato 24h "HH:MM".
   // O site usa isso para mostrar "Aberto agora" / "Fechado" e bloquear o
-  // envio do pedido fora do horário.
-  // A DEFINIR — horário abaixo é um exemplo, confirme com o dono da loja.
-  //
-  // ⚠️ MODO TESTE: horário alargado para 00:00–23:59 todos os dias, só para
-  // conseguir testar o envio do pedido a qualquer hora. Troque pelo horário
-  // real da loja (como o exemplo comentado abaixo) antes de publicar!
+  // envio do pedido fora do horário. Se "fecha" for igual ou menor que "abre"
+  // (ex: "00:00"), o fechamento é na madrugada do dia seguinte.
+  // Horário real: todos os dias das 19:30 às 00:00 (meia-noite).
   horarios: {
-    dom: { abre: "00:00", fecha: "23:59" },
-    seg: { abre: "00:00", fecha: "23:59" },
-    ter: { abre: "00:00", fecha: "23:59" },
-    qua: { abre: "00:00", fecha: "23:59" },
-    qui: { abre: "00:00", fecha: "23:59" },
-    sex: { abre: "00:00", fecha: "23:59" },
-    sab: { abre: "00:00", fecha: "23:59" },
+    dom: { abre: "19:30", fecha: "00:00" },
+    seg: { abre: "19:30", fecha: "00:00" },
+    ter: { abre: "19:30", fecha: "00:00" },
+    qua: { abre: "19:30", fecha: "00:00" },
+    qui: { abre: "19:30", fecha: "00:00" },
+    sex: { abre: "19:30", fecha: "00:00" },
+    sab: { abre: "19:30", fecha: "00:00" },
   },
-  // Exemplo de horário real (descomente e ajuste, apagando o bloco acima):
-  // horarios: {
-  //   dom: { abre: "18:00", fecha: "23:00" },
-  //   seg: { abre: "18:00", fecha: "23:00" },
-  //   ter: { abre: "18:00", fecha: "23:00" },
-  //   qua: { abre: "18:00", fecha: "23:00" },
-  //   qui: { abre: "18:00", fecha: "23:00" },
-  //   sex: { abre: "18:00", fecha: "23:30" },
-  //   sab: { abre: "18:00", fecha: "23:30" },
-  // },
+
+  // Fora da produção (HML, preview, localhost...) o site fica aberto 24h,
+  // ignorando "horarios" acima, para permitir testar pedidos a qualquer hora.
+  // Em produção (CONFIG.dominioProducao) o horário real sempre vale.
+  abertoSempreForaDeProducao: true,
 
   // Quais "linhas" de lanche estão à venda: "tradicional" e/ou "artesanal".
   // Se só houver uma linha ativa aqui, o seletor de linha some do site e
