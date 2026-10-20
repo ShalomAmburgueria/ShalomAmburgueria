@@ -19,9 +19,9 @@ de confirmação do pedido.
 
 ## Como editar preços e itens
 
-Abra o arquivo **`cardapio.js`** em qualquer editor de texto (Bloco de Notas
-já serve, mas um editor de código como o VS Code é mais seguro). Ele tem duas
-partes:
+Abra o arquivo **`cardapio.js`** direto no GitHub (branch `homolog`, botão
+de lápis ✏️ no canto do arquivo) — não precisa baixar nem instalar nada. Veja
+o passo a passo em "Como fazer uma alteração". Ele tem duas partes:
 
 ### 1. `CONFIG` — configurações gerais
 
@@ -97,52 +97,51 @@ separado por vírgulas, e os textos entre aspas `"..."`. Se o site parar de
 carregar depois de uma edição, o motivo mais comum é uma vírgula ou aspas
 faltando — desfaça a última alteração e tente de novo com calma.
 
-## Como testar no celular (mesma rede Wi-Fi)
+## Como o projeto está publicado (tudo online)
 
-O site precisa ser aberto por um servidor local (não funciona 100% se você
-abrir o `index.html` direto por HTTPS de produção, mas para teste local pode
-usar qualquer servidor simples). Com **Python** instalado:
+Nada precisa rodar em computador nenhum: o código fica no GitHub, a Vercel
+publica o site e a Locaweb cuida do domínio.
 
-```bash
-# Dentro da pasta do projeto
-python -m http.server 8080
-```
+| Peça | Papel | Onde |
+|---|---|---|
+| **GitHub** | Guarda o código e o histórico de alterações | repositório `ShalomAmburgueria/ShalomAmburgueria` |
+| **Vercel** | Publica o site automaticamente a cada alteração enviada ao GitHub | projeto `shalom-amburgueria` |
+| **Locaweb** | Registro e DNS do domínio `shalomamburgueria.com.br` | painel da Locaweb → DNS |
 
-Ou com **Node.js**:
+| Ambiente | Branch | Endereço |
+|---|---|---|
+| **HML** (homologação / testes) | `homolog` | https://hml.shalomamburgueria.com.br |
+| **Produção** (clientes) | `main` | https://www.shalomamburgueria.com.br |
 
-```bash
-npx serve -l 8080
-```
+O HML mostra a faixa "Ambiente de teste" no topo; a produção não.
 
-Depois:
+## Como fazer uma alteração (sempre HML primeiro)
 
-1. Descubra o IP local do computador na rede Wi-Fi (Windows:
-   `ipconfig`, procure "Endereço IPv4" da conexão Wi-Fi; Mac/Linux:
-   `ifconfig` ou `ip a`).
-2. No celular, **conectado na mesma rede Wi-Fi**, abra o navegador e acesse
-   `http://SEU-IP-LOCAL:8080` (por exemplo `http://192.168.15.2:8080`).
-3. Se não conectar, confira se o firewall do computador está permitindo
-   conexões de entrada na porta 8080 (no Windows: Firewall do Windows Defender
-   → Permitir um aplicativo → marque a rede "Privada" para o servidor usado).
+1. Altere o arquivo na branch **`homolog`** (pode ser pelo próprio GitHub, no
+   botão de lápis ✏️ do arquivo, sem instalar nada) e salve com "Commit".
+2. Aguarde a Vercel publicar (cerca de 1 minuto) e confira em
+   https://hml.shalomamburgueria.com.br — inclusive no celular. Teste um
+   pedido completo.
+3. Só depois de aprovado, leve a alteração para a **`main`** (Pull Request de
+   `homolog` → `main` no GitHub e "Merge"). A Vercel publica a produção sozinha.
+4. Confira https://www.shalomamburgueria.com.br.
 
-## Como publicar (GitHub Pages ou Netlify)
+Nunca altere a `main` diretamente. Se algo der errado na produção, volte a
+alteração pelo botão "Revert" do Pull Request no GitHub.
 
-O site é 100% estático, então basta hospedar os arquivos como estão.
+## Domínio e DNS (Locaweb)
 
-**GitHub Pages:**
-1. Crie um repositório no GitHub e suba todos os arquivos deste projeto.
-2. Vá em Settings → Pages → Source, escolha a branch principal (ex: `main`)
-   e a pasta raiz (`/`).
-3. Aguarde alguns minutos e acesse o link gerado pelo GitHub.
+Os registros ficam no painel DNS da Locaweb (nameservers `ns1/ns2/ns3.locaweb.com.br`)
+e apontam para a Vercel:
 
-**Netlify:**
-1. Crie uma conta em netlify.com.
-2. Arraste a pasta do projeto para a área de deploy manual (ou conecte o
-   repositório do GitHub para deploy automático a cada alteração).
-3. O Netlify gera um link público na hora.
+| Nome | Tipo | Aponta para |
+|---|---|---|
+| `@` (raiz) | A | `216.198.79.1` (a Vercel redireciona para o `www`) |
+| `www` | CNAME | valor fornecido pela Vercel (`...vercel-dns-017.com`) |
+| `hml` | CNAME | o mesmo valor do `www` |
 
-Em ambos os casos não há nenhuma configuração de build — é só publicar os
-arquivos.
+Se algum dia precisar mudar de projeto/conta na Vercel, ela mostra em
+*Settings → Domains* exatamente quais valores colocar na Locaweb.
 
 ## Antes de ir para produção
 
@@ -170,8 +169,9 @@ Confira este checklist antes de divulgar o link para os clientes:
       for fornecer — basta preencher o campo `foto` de cada item em
       `cardapio.js` (veja "Como editar preços e itens" acima). Sem fotos, o
       site continua funcionando normalmente com os emojis.
-- [ ] Testar um pedido completo no celular (adicionar item, editar
-      quantidade, finalizar, conferir a mensagem que chega no WhatsApp).
+- [ ] Testar um pedido completo no celular **no HML** (adicionar item, editar
+      quantidade, finalizar, conferir a mensagem que chega no WhatsApp) antes
+      de levar para a `main`.
 
 ## Como funciona por baixo dos panos (resumo técnico)
 
