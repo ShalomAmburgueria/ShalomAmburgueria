@@ -20,7 +20,7 @@ const CONFIG = {
   // testando local, etc.), mostra um aviso "Ambiente de teste" no topo.
   // Troque este valor quando o domínio definitivo (ex: .com.br) entrar
   // no ar — esse valor é o mesmo tanto na branch "main" quanto "homolog".
-  dominioProducao: "shalom-amburgueria.vercel.app",
+  dominioProducao: "www.shalomamburgueria.com.br",
 
   // Nome da loja (aparece no título da página e na mensagem do WhatsApp)
   nomeLoja: "Shalom Amburgueria",
