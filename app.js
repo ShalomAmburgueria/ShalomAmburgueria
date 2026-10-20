@@ -106,7 +106,26 @@
     return h * 60 + m;
   }
 
+  // Antes da abertura oficial (CONFIG.lancamento) a produção não aceita pedidos.
+  // Fora da produção, só se simula com ?lancamento=antes no endereço.
+  function antesDoLancamento() {
+    if (!CONFIG.lancamento) return false;
+    if (!ehProducao()) return new URLSearchParams(window.location.search).get("lancamento") === "antes";
+    return Date.now() < new Date(CONFIG.lancamento).getTime();
+  }
+
+  // Ex: "sexta-feira, 23/10 às 19:30" (sempre no horário de Brasília).
+  function textoDataLancamento() {
+    const partes = {};
+    new Intl.DateTimeFormat("pt-BR", {
+      timeZone: "America/Sao_Paulo", weekday: "long", day: "2-digit", month: "2-digit",
+      hour: "2-digit", minute: "2-digit", hourCycle: "h23",
+    }).formatToParts(new Date(CONFIG.lancamento)).forEach((p) => (partes[p.type] = p.value));
+    return `${partes.weekday}, ${partes.day}/${partes.month} às ${partes.hour}:${partes.minute}`;
+  }
+
   function estaAberto() {
+    if (antesDoLancamento()) return false;
     if (!ehProducao() && CONFIG.abertoSempreForaDeProducao) return true;
 
     const agora = new Date();
@@ -137,7 +156,9 @@
     status.classList.toggle("status-loja--aberto", aberto);
     status.classList.toggle("status-loja--fechado", !aberto);
 
-    if (aberto) {
+    if (antesDoLancamento()) {
+      texto.textContent = `Abrimos ${textoDataLancamento()}`;
+    } else if (aberto) {
       texto.textContent = !ehProducao() && CONFIG.abertoSempreForaDeProducao
         ? "Aberto agora · teste 24h"
         : horario
@@ -162,7 +183,9 @@
       btnEnviar.disabled = false;
     } else {
       aviso.hidden = false;
-      aviso.textContent = horario
+      aviso.textContent = antesDoLancamento()
+        ? `Ainda não abrimos! Os pedidos pelo site começam ${textoDataLancamento()}. Fique à vontade para conhecer o cardápio.`
+        : horario
         ? `A loja está fechada no momento. Horário de hoje: ${horario.abre} às ${horario.fecha}. Você poderá enviar o pedido quando abrirmos.`
         : "A loja está fechada hoje. Volte em outro dia para fazer seu pedido.";
       btnEnviar.disabled = true;

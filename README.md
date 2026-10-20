@@ -57,6 +57,14 @@ const CONFIG = {
   dia seguinte). No **HML** o site fica sempre aberto (24h) para facilitar os
   testes (`abertoSempreForaDeProducao: true`); em produção o horário real
   sempre vale.
+- **Abertura oficial (`lancamento`)**: data e hora (formato
+  `"2026-10-23T19:30:00-03:00"`, horário de Brasília) em que a **produção**
+  passa a aceitar pedidos. Antes disso o site mostra "Abrimos sexta-feira,
+  23/10 às 19:30", libera só a visualização do cardápio e bloqueia o envio do
+  pedido, mesmo dentro do horário normal. Na data e hora marcadas o site abre
+  sozinho, sem precisar de nova publicação nem recarregar a página. Depois do
+  lançamento pode deixar como está ou apagar o valor (`""`). Para ver essa
+  tela no HML, acrescente `?lancamento=antes` ao endereço.
 - **Linhas ativas**: se a loja vender só a linha Artesanal (por exemplo), use
   `linhasAtivas: ["artesanal"]` — o seletor Tradicional/Artesanal some
   automaticamente do site e todo o cardápio usa só essa linha.
@@ -164,6 +172,8 @@ Confira este checklist antes de divulgar o link para os clientes:
 
 - [x] **Número de WhatsApp real** (`5511966321857`) em `CONFIG.whatsapp` (já
       feito; o HML continua usando o número de teste).
+- [x] **Abertura oficial** em `CONFIG.lancamento`: sexta, 23/10/2026 às 19:30
+      (até lá a produção fica fechada para pedidos).
 - [x] **Horário de funcionamento real**: 19:30–00:00, todos os dias (já feito;
       o HML fica 24h).
 - [x] **Taxa de entrega** por bairro em `CONFIG.taxaEntrega`: R$ 5,00 em

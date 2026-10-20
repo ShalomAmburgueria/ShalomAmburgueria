@@ -92,6 +92,13 @@ const CONFIG = {
     sab: { abre: "19:30", fecha: "00:00" },
   },
 
+  // Abertura oficial: em PRODUÇÃO o site fica fechado (não aceita pedidos) até
+  // este momento, mesmo dentro do horário acima. Formato ISO com fuso de
+  // Brasília. Depois dessa data vale só o horário normal. Deixe "" para não
+  // usar. Para ver essa tela de "ainda não abrimos" no HML, acrescente
+  // ?lancamento=antes ao endereço.
+  lancamento: "2026-10-23T19:30:00-03:00",
+
   // Fora da produção (HML, preview, localhost...) o site fica aberto 24h,
   // ignorando "horarios" acima, para permitir testar pedidos a qualquer hora.
   // Em produção (CONFIG.dominioProducao) o horário real sempre vale.
