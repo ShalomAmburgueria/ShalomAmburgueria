@@ -1209,16 +1209,41 @@ textarea.campo-texto {
   padding-top: 16px;
   border-top: 1px solid var(--borda);
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
   align-items: center;
-  gap: 6px;
+  gap: 8px 10px;
   font-size: 0.7rem;
   color: var(--texto-muted-2);
 }
 
+.rodape__credito-texto {
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.62rem;
+  font-weight: 500;
+}
+
 .rodape__credito-marca {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.rodape__credito-icone {
+  height: 24px;
+  width: auto;
+}
+
+.rodape__credito-nome {
   font-weight: 700;
-  letter-spacing: 0.02em;
+  font-size: 1.05rem;
+  letter-spacing: -0.01em;
+  color: #0f2a4a;
+}
+
+.rodape__credito-nome span {
+  color: #14b8a6;
 }
 
 /* =========================================================================
