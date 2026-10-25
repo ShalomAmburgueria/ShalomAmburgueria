@@ -1204,24 +1204,26 @@ textarea.campo-texto {
   flex-shrink: 0;
 }
 
+/* Faixa "Desenvolvido por Doub IT" — padrão visual dos sites da Doub IT
+   (azul-marinho, linha turquesa no topo, logo para fundo escuro). Ocupa a
+   largura toda, por isso anula o padding lateral do .rodape. */
 .rodape__credito {
-  margin-top: 22px;
-  padding-top: 16px;
-  border-top: 1px solid var(--borda);
+  margin: 24px -16px -8px;
+  padding: 14px 16px;
+  background: #0f2a4a;
+  border-top: 1px solid #2dd4bf;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
   gap: 8px 10px;
-  font-size: 0.7rem;
-  color: var(--texto-muted-2);
 }
 
 .rodape__credito-texto {
   text-transform: uppercase;
   letter-spacing: 0.18em;
   font-size: 0.625rem;
-  color: #0d9488;
+  color: #2dd4bf;
 }
 
 .rodape__credito-logo {
