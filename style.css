@@ -1216,10 +1216,9 @@ textarea.campo-texto {
   color: var(--texto-muted-2);
 }
 
-.rodape__credito-logo {
-  height: 22px;
-  width: auto;
-  border-radius: 4px;
+.rodape__credito-marca {
+  font-weight: 700;
+  letter-spacing: 0.02em;
 }
 
 /* =========================================================================

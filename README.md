@@ -14,7 +14,6 @@ de confirmação do pedido.
 | `cardapio.js` | **Os dados que o dono da loja edita**: preços, itens, horários, número de WhatsApp |
 | `app.js` | A lógica do site (carrinho, cálculo de preços, montagem da mensagem) — normalmente não precisa mexer aqui |
 | `favicon.svg` | Ícone da aba do navegador (coroa) |
-| `doubene-logo.png` | Logo da doubene.ai, mostrado de forma discreta no rodapé ("Site desenvolvido por") |
 | `Cardapio_1.jpeg` / `Cardapio_2.jpeg` | Cardápios impressos originais, usados só como referência visual — não são exibidos no site |
 
 ## Como editar preços e itens
