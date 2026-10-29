@@ -964,11 +964,9 @@
   // =========================================================================
   // MONTAGEM DA MENSAGEM E ENVIO PARA O WHATSAPP
   // =========================================================================
-  function montarMensagemWhatsApp(dadosCliente) {
+  function montarMensagemWhatsApp(dadosCliente, codigo, total) {
     const subtotal = calcularSubtotal();
     const taxaAplicada = dadosCliente.tipo === "entrega" ? taxaParaBairro(dadosCliente.bairro) || 0 : 0;
-    const total = subtotal + taxaAplicada;
-    const codigo = gerarCodigoPedido();
 
     const linhas = [];
     linhas.push(`🍔 *NOVO PEDIDO – ${CONFIG.nomeLoja}* (#${codigo})`);
@@ -1007,6 +1005,9 @@
       linhaPagamento += ` (troco para R$ ${dadosCliente.troco})`;
     }
     linhas.push(linhaPagamento);
+    if (dadosCliente.pagamento === "Pix") {
+      linhas.push("💠 Vou pagar pelo QR Code / chave Pix do site e enviar o comprovante aqui.");
+    }
 
     if (dadosCliente.observacoes) {
       linhas.push(`📝 Observações: ${dadosCliente.observacoes}`);
@@ -1021,7 +1022,10 @@
     if (!validarCheckout()) return;
 
     const dadosCliente = coletarDadosCheckout();
-    const mensagem = montarMensagemWhatsApp(dadosCliente);
+    const codigo = gerarCodigoPedido();
+    const taxaAplicada = dadosCliente.tipo === "entrega" ? taxaParaBairro(dadosCliente.bairro) || 0 : 0;
+    const total = calcularSubtotal() + taxaAplicada;
+    const mensagem = montarMensagemWhatsApp(dadosCliente, codigo, total);
     const url = `https://wa.me/${numeroWhatsapp()}?text=${encodeURIComponent(mensagem)}`;
 
     const novaAba = window.open(url, "_blank");
@@ -1040,8 +1044,113 @@
     document.getElementById("campo-troco").hidden = true;
     anunciar("Pedido enviado para o WhatsApp!");
 
+    mostrarPagamentoPix(dadosCliente.pagamento === "Pix", total, codigo);
+
     document.getElementById("checkout-formulario").hidden = true;
     document.getElementById("checkout-sucesso").hidden = false;
+  }
+
+  // =========================================================================
+  // PIX — QR Code e "copia e cola" (padrão BR Code do Banco Central)
+  // =========================================================================
+  function campoEmv(id, valor) {
+    return id + String(valor.length).padStart(2, "0") + valor;
+  }
+
+  function semAcentos(texto) {
+    return texto.normalize("NFD").replace(/[̀-ͯ]/g, "");
+  }
+
+  // CRC16/CCITT-FALSE exigido no final do BR Code.
+  function crc16(texto) {
+    let crc = 0xffff;
+    for (let i = 0; i < texto.length; i++) {
+      crc ^= texto.charCodeAt(i) << 8;
+      for (let b = 0; b < 8; b++) {
+        crc = crc & 0x8000 ? ((crc << 1) ^ 0x1021) & 0xffff : (crc << 1) & 0xffff;
+      }
+    }
+    return crc.toString(16).toUpperCase().padStart(4, "0");
+  }
+
+  function gerarPayloadPix(valor, txid) {
+    const pix = CONFIG.pix;
+    const nome = semAcentos(pix.nomeRecebedor).toUpperCase().replace(/[^A-Z0-9 ]/g, "").slice(0, 25);
+    const cidade = semAcentos(pix.cidade).toUpperCase().replace(/[^A-Z0-9 ]/g, "").slice(0, 15);
+    const id = String(txid).replace(/[^A-Za-z0-9]/g, "").slice(0, 25) || "***";
+    const semCrc =
+      campoEmv("00", "01") +
+      campoEmv("26", campoEmv("00", "br.gov.bcb.pix") + campoEmv("01", pix.chave)) +
+      campoEmv("52", "0000") +
+      campoEmv("53", "986") +
+      campoEmv("54", valor.toFixed(2)) +
+      campoEmv("58", "BR") +
+      campoEmv("59", nome) +
+      campoEmv("60", cidade) +
+      campoEmv("62", campoEmv("05", id)) +
+      "6304";
+    return semCrc + crc16(semCrc);
+  }
+
+  let payloadPixAtual = "";
+
+  function mostrarPagamentoPix(ativo, total, codigo) {
+    const bloco = document.getElementById("pix-pagamento");
+    bloco.hidden = !ativo;
+    if (!ativo || !CONFIG.pix || !CONFIG.pix.chave) {
+      bloco.hidden = true;
+      return;
+    }
+    payloadPixAtual = gerarPayloadPix(total, codigo);
+    document.getElementById("pix-valor").textContent = formatarPreco(total);
+    document.getElementById("pix-chave").textContent = CONFIG.pix.chave;
+
+    const areaQr = document.getElementById("pix-qr");
+    if (window.qrcode) {
+      const qr = qrcode(0, "M");
+      qr.addData(payloadPixAtual);
+      qr.make();
+      areaQr.innerHTML = qr.createSvgTag({ cellSize: 4, margin: 0, scalable: true });
+      areaQr.hidden = false;
+    } else {
+      areaQr.hidden = true; // biblioteca não carregou: ainda dá para copiar a chave
+    }
+  }
+
+  async function copiarTexto(texto, botao, textoOriginal) {
+    let ok = false;
+    try {
+      await navigator.clipboard.writeText(texto);
+      ok = true;
+    } catch (erro) {
+      const area = document.createElement("textarea");
+      area.value = texto;
+      area.setAttribute("readonly", "");
+      area.style.position = "fixed";
+      area.style.opacity = "0";
+      document.body.appendChild(area);
+      area.select();
+      try {
+        ok = document.execCommand("copy");
+      } catch (e) {
+        ok = false;
+      }
+      document.body.removeChild(area);
+    }
+    botao.textContent = ok ? "Copiado! ✅" : "Não deu para copiar — selecione e copie manualmente";
+    anunciar(ok ? "Copiado." : "Não foi possível copiar.");
+    setTimeout(() => {
+      botao.textContent = textoOriginal;
+    }, 2500);
+  }
+
+  function configurarPix() {
+    const btnChave = document.getElementById("btn-copiar-chave");
+    const btnCodigo = document.getElementById("btn-copiar-codigo");
+    const textoChave = btnChave.textContent;
+    const textoCodigo = btnCodigo.textContent;
+    btnChave.addEventListener("click", () => copiarTexto(CONFIG.pix.chave, btnChave, textoChave));
+    btnCodigo.addEventListener("click", () => copiarTexto(payloadPixAtual, btnCodigo, textoCodigo));
   }
 
   // =========================================================================
@@ -1111,6 +1220,7 @@
     configurarMenuCategorias();
     configurarTipoEntrega();
     configurarPagamento();
+    configurarPix();
     configurarEventosPaineis();
     renderizarBarraCarrinho();
     atualizarStatusLoja();

@@ -921,6 +921,78 @@ textarea.campo-texto {
   margin-top: 8px;
 }
 
+/* Bloco de pagamento via Pix (QR Code + copiar chave) */
+.pix {
+  background: var(--bg-secao);
+  border: 1px solid var(--borda);
+  border-radius: var(--raio);
+  padding: 16px 14px;
+  margin: 0 0 14px;
+  text-align: center;
+}
+
+.pix__titulo {
+  font-size: 1.1rem;
+  margin: 0 0 6px;
+  color: var(--texto);
+}
+
+.pix__valor {
+  margin: 0 0 12px;
+  color: var(--texto-muted);
+}
+
+.pix__valor strong {
+  color: var(--texto);
+  font-size: 1.2rem;
+}
+
+.pix__qr {
+  display: inline-block;
+  background: #fff;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid var(--borda);
+  line-height: 0;
+  margin-bottom: 10px;
+}
+
+.pix__qr svg {
+  width: 220px;
+  height: 220px;
+  max-width: 100%;
+}
+
+.pix__instrucao {
+  color: var(--texto-muted);
+  font-size: 0.85rem;
+  line-height: 1.4;
+  margin: 0 0 12px;
+}
+
+.pix__rotulo {
+  color: var(--texto-muted);
+  font-size: 0.85rem;
+  margin: 4px 0 6px;
+}
+
+.pix__chave {
+  font-family: monospace;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  background: var(--bg-secao-alt);
+  border-radius: 8px;
+  padding: 8px;
+  margin-bottom: 10px;
+  user-select: all;
+}
+
+.pix .btn {
+  width: 100%;
+  margin-bottom: 8px;
+}
+
 /* =========================================================================
    CARRINHO — itens listados
    ========================================================================= */

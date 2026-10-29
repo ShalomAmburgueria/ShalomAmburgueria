@@ -199,8 +199,13 @@ Confira este checklist antes de divulgar o link para os clientes:
 - O carrinho fica salvo no `localStorage` do navegador do cliente, então se
   ele fechar a aba sem finalizar, o pedido continua lá na próxima visita
   (nesse mesmo aparelho).
-- Não existe pagamento online: a forma de pagamento escolhida (Pix, cartão na
-  entrega ou dinheiro) só vai escrita na mensagem do WhatsApp, e o
-  pagamento em si é combinado diretamente com a loja.
+- Não existe pagamento online integrado: a forma de pagamento escolhida
+  (Pix, cartão na entrega ou dinheiro) vai escrita na mensagem do WhatsApp.
+  No caso do **Pix**, ao concluir o pedido o site mostra na hora o QR Code
+  (já com o valor do pedido) e botões para copiar a chave Pix e o "Pix
+  Copia e Cola". A chave fica em `CONFIG.pix` (`cardapio.js`). O site não
+  recebe confirmação de pagamento: o cliente envia o comprovante pelo
+  WhatsApp e a loja confere no app do banco. O QR Code é gerado no próprio
+  navegador pela biblioteca `vendor/qrcode.js` (MIT).
 - O botão de enviar fica desativado fora do horário de funcionamento
   configurado em `CONFIG.horarios`.
