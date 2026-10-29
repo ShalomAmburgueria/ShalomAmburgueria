@@ -69,7 +69,7 @@ const CONFIG = {
   // dígitos); "nomeRecebedor" e "cidade" aparecem no app do banco ao pagar
   // (sem acentos; até 25 e 15 caracteres, respectivamente).
   pix: {
-    chave: "17354761000144",
+    chave: "69295059000150",
     nomeRecebedor: "Shalom Amburgueria",
     cidade: "Mogi das Cruzes",
   },
