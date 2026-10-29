@@ -352,6 +352,21 @@
       <p class="checkout-sucesso__texto">
         A loja vai confirmar o recebimento do seu pedido respondendo por lá.
       </p>
+
+      <!-- Só aparece quando o pagamento escolhido foi Pix -->
+      <div id="pix-pagamento" class="pix" hidden>
+        <h5 class="pix__titulo">💠 Pague agora com Pix</h5>
+        <p class="pix__valor">Valor: <strong id="pix-valor"></strong></p>
+        <div class="pix__qr" id="pix-qr" role="img" aria-label="QR Code para pagamento via Pix"></div>
+        <p class="pix__instrucao">Abra o app do seu banco, escolha pagar com Pix e leia o QR Code.</p>
+
+        <p class="pix__rotulo">Ou copie a chave Pix (CNPJ):</p>
+        <div class="pix__chave" id="pix-chave"></div>
+        <button type="button" class="btn btn--primario btn--grande" id="btn-copiar-chave">Copiar chave Pix</button>
+        <button type="button" class="btn btn--secundario btn--grande" id="btn-copiar-codigo">Copiar Pix Copia e Cola (com o valor)</button>
+        <p class="pix__instrucao">Depois de pagar, envie o comprovante na conversa do WhatsApp.</p>
+      </div>
+
       <button type="button" class="btn btn--secundario btn--grande" id="btn-novo-pedido">
         Fazer novo pedido
       </button>
@@ -361,6 +376,7 @@
   <!-- Área para leitores de tela anunciarem mensagens rápidas (ex: "item adicionado") -->
   <div id="anuncio" class="sr-somente" role="status" aria-live="polite"></div>
 
+  <script src="vendor/qrcode.js"></script>
   <script src="cardapio.js"></script>
   <script src="app.js"></script>
 </body>

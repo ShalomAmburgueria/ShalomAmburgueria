@@ -63,6 +63,17 @@ const CONFIG = {
   // na lanchonete por engano.
   whatsappTeste: "5511988430291",
 
+  // Dados do Pix. Quando o cliente escolhe pagar por Pix, ao concluir o
+  // pedido o site mostra o QR Code (com o valor do pedido já preenchido) e
+  // o botão de copiar. "chave" é a chave Pix da loja (aqui, o CNPJ, só
+  // dígitos); "nomeRecebedor" e "cidade" aparecem no app do banco ao pagar
+  // (sem acentos; até 25 e 15 caracteres, respectivamente).
+  pix: {
+    chave: "17354761000144",
+    nomeRecebedor: "Shalom Amburgueria",
+    cidade: "Mogi das Cruzes",
+  },
+
   // Taxa de entrega, calculada pelo bairro que o cliente digita no pedido:
   // - bairro igual a "bairroLoja" (Jundiapeba): taxa "noBairro";
   // - qualquer outro bairro (vizinhos): taxa "outrosBairros".
