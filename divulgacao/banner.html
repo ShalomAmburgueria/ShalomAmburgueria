@@ -77,24 +77,37 @@
   }
   .tagline em { font-style: normal; color: var(--dourado); }
 
-  .hamburguer { width: 390px; height: 292px; margin-top: 6px; filter: drop-shadow(0 30px 30px rgba(0, 0, 0, 0.55)); }
-  .story .hamburguer { width: 760px; height: 570px; margin-top: 50px; }
+  .hamburguer { width: 370px; height: 277px; margin-top: 4px; filter: drop-shadow(0 30px 30px rgba(0, 0, 0, 0.55)); }
+  .story .hamburguer { width: 800px; height: 600px; margin-top: 60px; }
 
-  .ofertas { display: flex; gap: 22px; width: 100%; margin-top: 14px; align-items: stretch; }
-  .story .ofertas { flex-direction: column; margin-top: 30px; }
-  .oferta {
-    flex: 1;
-    border-radius: 26px;
-    padding: 22px 26px;
-    background: rgba(0, 0, 0, 0.55);
-    border: 2px solid rgba(240, 180, 41, 0.6);
+  .chips { display: flex; gap: 14px; margin-top: 12px; flex-wrap: wrap; justify-content: center; }
+  .chips span {
+    padding: 8px 22px;
+    border: 2px solid rgba(240, 180, 41, 0.7);
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 26px;
+    color: var(--dourado-claro);
+    background: rgba(0, 0, 0, 0.35);
   }
-  .oferta__titulo { font-weight: 800; font-size: 25px; letter-spacing: 0.03em; text-transform: uppercase; color: var(--dourado); }
-  .oferta__texto { margin-top: 8px; font-size: 24px; line-height: 1.35; color: #f4e6d2; }
-  .oferta__preco { margin-top: 12px; font-weight: 800; font-size: 28px; }
-  .oferta__preco b { font-size: 62px; line-height: 1; color: #fff; }
-  .oferta--combo { flex: 1.35; background: linear-gradient(160deg, rgba(214, 42, 30, 0.85), rgba(110, 15, 10, 0.9)); border-color: var(--dourado-claro); }
-  .oferta--combo .oferta__titulo { color: var(--dourado-claro); }
+
+  .horario {
+    margin-top: 30px;
+    width: 100%;
+    border-radius: 30px;
+    padding: 20px 30px 22px;
+    text-align: center;
+    background: linear-gradient(160deg, var(--vermelho), var(--vermelho-escuro));
+    border: 3px solid var(--dourado-claro);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  }
+  .horario__titulo { font-weight: 800; font-size: 28px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--dourado-claro); }
+  .horario__horas { margin-top: 6px; font-weight: 800; font-size: 74px; line-height: 1.05; color: #fff; }
+  .horario__horas small { font-size: 40px; font-weight: 700; color: var(--dourado-claro); padding: 0 8px; }
+  .horario__dias { margin-top: 6px; font-weight: 700; font-size: 30px; }
+  .story .horario { margin-top: 56px; padding: 36px 30px 38px; }
+  .story .horario__horas { font-size: 96px; }
+  .story .chips { margin-top: 36px; }
 
   .rodape {
     margin-top: auto;
@@ -180,24 +193,21 @@
     </g>
   </svg>
 
-  <div class="ofertas">
-    <div class="oferta">
-      <div class="oferta__titulo">Lanches a partir de</div>
-      <div class="oferta__preco"><b>R$ 13</b></div>
-      <div class="oferta__texto">X-Burguer, X-Bacon, X-Egg, X-Tudo e muito mais — tradicional ou artesanal.</div>
-    </div>
-    <div class="oferta oferta--combo">
-      <div class="oferta__titulo">Combo Especial</div>
-      <div class="oferta__texto">2 X-Bacon + batata frita + cebola onion + 10 coxinhas + refri 2 litros</div>
-      <div class="oferta__preco">por apenas <b>R$ 80</b></div>
-    </div>
+  <div class="chips">
+    <span>Lanches</span><span>Combos</span><span>Porções</span><span>Bebidas</span>
+  </div>
+
+  <div class="horario">
+    <div class="horario__titulo">Estamos abertos</div>
+    <div class="horario__horas">19:30 <small>às</small> 00:00</div>
+    <div class="horario__dias">Todos os dias da semana</div>
   </div>
 
   <div class="rodape">
     <div class="cta">Peça pelo site e receba em casa 🛵</div>
     <p class="contato"><b>www.shalomamburgueria.com.br</b></p>
-    <p class="contato">WhatsApp <b>(11) 96632-1857</b></p>
-    <p class="infos">Todos os dias, das 19:30 às 00:00 · Também no iFood<br/>Rua Luiz Antonio de Oliveira, 601 · Jundiapeba, Mogi das Cruzes - SP</p>
+    <p class="contato">WhatsApp <b>(11) 96632-1857</b> · e no iFood</p>
+    <p class="infos">Rua Luiz Antonio de Oliveira, 601 · Jundiapeba, Mogi das Cruzes - SP</p>
   </div>
 </div>
 <script>
