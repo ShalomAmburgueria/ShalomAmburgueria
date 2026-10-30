@@ -96,6 +96,57 @@
     return ehProducao() ? CONFIG.whatsapp : CONFIG.whatsappTeste || CONFIG.whatsapp;
   }
 
+  // =========================================================================
+  // AJUSTES DO PAINEL /admin — preços, itens indisponíveis, loja fechada e
+  // aviso, vindos de /api/config. Se a consulta falhar, vale o cardapio.js.
+  // =========================================================================
+  let lojaFechadaManual = false;
+  let avisoLoja = "";
+
+  function aplicarConfigRemota(cfg) {
+    if (!cfg || typeof cfg !== "object") return;
+    lojaFechadaManual = cfg.lojaFechada === true;
+    avisoLoja = typeof cfg.aviso === "string" ? cfg.aviso : "";
+    const precos = cfg.precos || {};
+    const fora = new Set(Array.isArray(cfg.indisponiveis) ? cfg.indisponiveis : []);
+    const num = (v) => typeof v === "number" && isFinite(v);
+
+    CARDAPIO.lanches.itens.forEach((i) => {
+      const p = precos[i.id];
+      if (p && typeof p === "object") {
+        if (num(p.tradicional)) i.precos.tradicional = p.tradicional;
+        if (num(p.artesanal)) i.precos.artesanal = p.artesanal;
+      }
+    });
+    [CARDAPIO.combo.itens, CARDAPIO.porcoes.itens, CARDAPIO.bebidas.itens, CARDAPIO.porcoes.batataFrita.tamanhos]
+      .forEach((lista) => lista.forEach((i) => { if (num(precos[i.id])) i.preco = precos[i.id]; }));
+    CARDAPIO.adicionais.forEach((a) => {
+      const p = precos[a.id];
+      if (num(p) && a.precoUnico !== undefined) a.precoUnico = p;
+      else if (p && typeof p === "object" && a.precos) {
+        if (num(p.tradicional)) a.precos.tradicional = p.tradicional;
+        if (num(p.artesanal)) a.precos.artesanal = p.artesanal;
+      }
+    });
+
+    [CARDAPIO.lanches.itens, CARDAPIO.combo.itens, CARDAPIO.porcoes.itens, CARDAPIO.bebidas.itens,
+      CARDAPIO.porcoes.batataFrita.tamanhos, CARDAPIO.adicionais]
+      .forEach((lista) => lista.forEach((i) => { i.indisponivel = fora.has(i.id); }));
+  }
+
+  async function carregarConfigRemota() {
+    const controle = new AbortController();
+    const limite = setTimeout(() => controle.abort(), 2500);
+    try {
+      const resp = await fetch("/api/config", { signal: controle.signal, cache: "no-cache" });
+      if (resp.ok) aplicarConfigRemota(await resp.json());
+    } catch (erro) {
+      // sem rede ou sem API (ex.: abrindo o arquivo local): segue com o cardapio.js
+    } finally {
+      clearTimeout(limite);
+    }
+  }
+
   function horarioDeHoje() {
     const diaChave = DIAS[new Date().getDay()];
     return CONFIG.horarios[diaChave] || null;
@@ -125,6 +176,7 @@
   }
 
   function estaAberto() {
+    if (lojaFechadaManual) return false;
     if (antesDoLancamento()) return false;
     if (!ehProducao() && CONFIG.abertoSempreForaDeProducao) return true;
 
@@ -156,7 +208,9 @@
     status.classList.toggle("status-loja--aberto", aberto);
     status.classList.toggle("status-loja--fechado", !aberto);
 
-    if (antesDoLancamento()) {
+    if (lojaFechadaManual) {
+      texto.textContent = "Fechado no momento";
+    } else if (antesDoLancamento()) {
       texto.textContent = `Abrimos ${textoDataLancamento()}`;
     } else if (aberto) {
       texto.textContent = !ehProducao() && CONFIG.abertoSempreForaDeProducao
@@ -183,7 +237,9 @@
       btnEnviar.disabled = false;
     } else {
       aviso.hidden = false;
-      aviso.textContent = antesDoLancamento()
+      aviso.textContent = lojaFechadaManual
+        ? avisoLoja || "A loja está temporariamente fechada. Fique à vontade para conhecer o cardápio."
+        : antesDoLancamento()
         ? `Ainda não abrimos! Os pedidos pelo site começam ${textoDataLancamento()}. Fique à vontade para conhecer o cardápio.`
         : horario
         ? `A loja está fechada no momento. Horário de hoje: ${horario.abre} às ${horario.fecha}. Você poderá enviar o pedido quando abrirmos.`
@@ -331,14 +387,14 @@
     document.getElementById("obs-lanches").textContent = CARDAPIO.lanches.observacao || "";
     const gradeLanches = document.getElementById("grade-lanches");
     gradeLanches.replaceChildren();
-    CARDAPIO.lanches.itens.forEach((item) => {
+    CARDAPIO.lanches.itens.filter((i) => !i.indisponivel).forEach((item) => {
       gradeLanches.appendChild(criarCartaoItem(obterDadosItem("lanches", item.id)));
     });
 
     // Combo
     const gradeCombo = document.getElementById("grade-combo");
     gradeCombo.replaceChildren();
-    CARDAPIO.combo.itens.filter((item) => CONFIG.linhasAtivas.includes(item.linha)).forEach((item) => {
+    CARDAPIO.combo.itens.filter((item) => !item.indisponivel && CONFIG.linhasAtivas.includes(item.linha)).forEach((item) => {
       gradeCombo.appendChild(criarCartaoItem(obterDadosItem("combo", item.id), { destaque: true }));
     });
 
@@ -355,7 +411,7 @@
     bloco.appendChild(cabecalho);
 
     const opcoesTamanho = criarEl("div", "bloco-batata__opcoes");
-    blocoBatata.tamanhos.forEach((tamanho) => {
+    blocoBatata.tamanhos.filter((t) => !t.indisponivel).forEach((tamanho) => {
       const linha = criarEl("button", "opcao-tamanho");
       linha.type = "button";
       linha.setAttribute("aria-label", `${blocoBatata.nome} ${tamanho.nome}, ${formatarPreco(tamanho.preco)}. Toque para adicionar.`);
@@ -367,14 +423,14 @@
     bloco.appendChild(opcoesTamanho);
     gradePorcoes.appendChild(bloco);
 
-    CARDAPIO.porcoes.itens.forEach((item) => {
+    CARDAPIO.porcoes.itens.filter((i) => !i.indisponivel).forEach((item) => {
       gradePorcoes.appendChild(criarCartaoItem(obterDadosItem("porcoes-item", item.id)));
     });
 
     // Bebidas
     const gradeBebidas = document.getElementById("grade-bebidas");
     gradeBebidas.replaceChildren();
-    CARDAPIO.bebidas.itens.forEach((item) => {
+    CARDAPIO.bebidas.itens.filter((i) => !i.indisponivel).forEach((item) => {
       gradeBebidas.appendChild(criarCartaoItem(obterDadosItem("bebidas", item.id)));
     });
   }
@@ -549,7 +605,7 @@
     if (dados.permiteAdicionais) {
       const grupo = criarEl("div", "grupo-painel");
       grupo.appendChild(criarEl("p", "grupo-painel__titulo", "Adicionais"));
-      CARDAPIO.adicionais.forEach((adicional) => {
+      CARDAPIO.adicionais.filter((a) => !a.indisponivel).forEach((adicional) => {
         const nome = nomeAdicional(adicional);
         const preco = precoAdicional(adicional);
         const label = criarEl("label", "opcao-check");
@@ -1210,8 +1266,9 @@
     }
   }
 
-  function iniciar() {
+  async function iniciar() {
     verificarAmbiente();
+    await carregarConfigRemota();
     document.getElementById("tagline").textContent = CONFIG.tagline || "";
     configurarLinkExterno("link-instagram", CONFIG.instagram);
     configurarLinkExterno("link-ifood", CONFIG.ifood);

@@ -152,6 +152,26 @@ real da lanchonete.
 Nunca altere a `main` diretamente. Se algo der errado na produção, volte a
 alteração pelo botão "Revert" do Pull Request no GitHub.
 
+## Painel /admin
+
+Em `/admin` (ex.: https://www.shalomamburgueria.com.br/admin) a loja pode, sem
+mexer em código: **fechar a loja** com um aviso, **alterar preços** e
+**esconder itens** do cardápio. As mudanças valem na hora no site; o
+`cardapio.js` continua sendo o valor padrão.
+
+Como funciona: funções em `api/` (`/api/config` pública e `/api/admin` protegida
+por senha) guardam os ajustes num **Upstash Redis**. Se o Redis ou a API
+estiverem fora do ar, o site segue normalmente com o `cardapio.js`.
+
+Variáveis de ambiente (Vercel → projeto → Settings → Environment Variables):
+
+| Variável | Para quê |
+|---|---|
+| `ADMIN_PASSWORD` | Senha de acesso ao `/admin` |
+| `KV_REST_API_URL` e `KV_REST_API_TOKEN` | Banco Upstash Redis (criados automaticamente ao adicionar *Storage → Upstash Redis* ao projeto; também vale `UPSTASH_REDIS_REST_URL`/`_TOKEN`) |
+
+Depois de criar ou alterar variáveis, faça um novo deploy para valerem.
+
 ## Domínio e DNS (Locaweb)
 
 Os registros ficam no painel DNS da Locaweb (nameservers `ns1/ns2/ns3.locaweb.com.br`)

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Painel | Shalom Amburgueria</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <style>
+    :root {
+      --bg: #fff7ec; --card: #fff; --borda: #f0ddc0; --texto: #2a1206; --muted: #7a5b44;
+      --vermelho: #d62a1e; --dourado: #e8a400; --ok: #1e9e52; --erro: #d6304a;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--texto); font: 16px/1.4 system-ui, sans-serif; }
+    header { background: #8c1a12; color: #fff7ec; padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    header h1 { margin: 0; font-size: 1.1rem; }
+    main { max-width: 760px; margin: 0 auto; padding: 16px; }
+    section { background: var(--card); border: 1px solid var(--borda); border-radius: 14px; padding: 16px; margin-bottom: 16px; }
+    h2 { margin: 0 0 12px; font-size: 1.05rem; }
+    h3 { margin: 16px 0 6px; font-size: .9rem; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+    label { display: block; font-weight: 600; margin-bottom: 6px; }
+    input[type=text], input[type=password], input[type=number] { width: 100%; padding: 10px 12px; border: 1px solid var(--borda); border-radius: 10px; font: inherit; background: #fff; }
+    button { font: inherit; font-weight: 700; border: 0; border-radius: 10px; padding: 10px 16px; cursor: pointer; background: var(--vermelho); color: #fff; }
+    button.sec { background: transparent; color: inherit; border: 1px solid currentColor; }
+    button:disabled { opacity: .5; cursor: default; }
+    .linha { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-top: 1px solid var(--borda); }
+    .linha:first-of-type { border-top: 0; }
+    .linha .nome { flex: 1; min-width: 0; }
+    .linha .nome small { display: block; color: var(--muted); }
+    .linha input[type=number] { width: 96px; }
+    .precos { display: flex; gap: 8px; align-items: center; }
+    .precos span { font-size: .75rem; color: var(--muted); }
+    .check { display: flex; align-items: center; gap: 8px; font-weight: 600; margin: 0; }
+    .check input { width: 20px; height: 20px; }
+    .aviso { padding: 10px 12px; border-radius: 10px; margin-bottom: 12px; background: #fff1de; border: 1px solid var(--dourado); }
+    .msg { min-height: 1.4em; font-weight: 600; }
+    .msg.ok { color: var(--ok); } .msg.erro { color: var(--erro); }
+    .barra { position: sticky; bottom: 0; background: var(--bg); padding: 12px 0; display: flex; gap: 12px; align-items: center; }
+    [hidden] { display: none !important; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Painel · Shalom Amburgueria</h1>
+    <button id="sair" class="sec" hidden>Sair</button>
+  </header>
+  <main>
+    <section id="tela-login" hidden>
+      <h2>Entrar</h2>
+      <form id="form-login">
+        <label for="senha">Senha do painel</label>
+        <input id="senha" type="password" autocomplete="current-password" required />
+        <p id="msg-login" class="msg erro" role="alert"></p>
+        <button type="submit">Entrar</button>
+      </form>
+    </section>
+
+    <div id="tela-painel" hidden>
+      <p id="aviso-redis" class="aviso" hidden>⚠️ O banco Upstash Redis ainda não está ligado a este projeto na Vercel. Você pode ver o painel, mas não consegue salvar.</p>
+
+      <section>
+        <h2>Loja</h2>
+        <label class="check"><input id="loja-fechada" type="checkbox" /> Fechar a loja agora (bloqueia o envio de pedidos)</label>
+        <h3>Aviso para os clientes</h3>
+        <label for="aviso" class="check" style="font-weight:400">Aparece quando a loja estiver fechada pelo painel (opcional, até 200 caracteres)</label>
+        <input id="aviso" type="text" maxlength="200" placeholder="Ex.: Voltamos às 19:30, hoje fechamos mais cedo." />
+      </section>
+
+      <section>
+        <h2>Cardápio</h2>
+        <p style="margin-top:0;color:var(--muted)">Altere o preço ou desmarque “Disponível” para esconder o item do site. Campo de preço vazio = preço original.</p>
+        <div id="lista-itens"></div>
+      </section>
+
+      <div class="barra">
+        <button id="salvar">Salvar alterações</button>
+        <span id="msg-salvar" class="msg" role="status"></span>
+      </div>
+    </div>
+  </main>
+
+  <script src="/cardapio.js"></script>
+  <script>
+  (function () {
+    const $ = (id) => document.getElementById(id);
+    const el = (tag, cls, texto) => {
+      const e = document.createElement(tag);
+      if (cls) e.className = cls;
+      if (texto !== undefined) e.textContent = texto;
+      return e;
+    };
+    // Campos de preço: { id, tipo: "unico" | "linhas", input(s) } ; "disp" = checkbox
+    const campos = [];
+
+    async function api(metodo, corpo) {
+      const resp = await fetch("/api/admin", {
+        method: metodo,
+        headers: corpo ? { "Content-Type": "application/json" } : {},
+        body: corpo ? JSON.stringify(corpo) : undefined,
+        credentials: "same-origin",
+      });
+      const dados = await resp.json().catch(() => ({}));
+      return { ok: resp.ok, status: resp.status, dados };
+    }
+
+    function inputPreco(valorOriginal) {
+      const i = document.createElement("input");
+      i.type = "number"; i.min = "0"; i.step = "0.01"; i.inputMode = "decimal";
+      i.placeholder = String(valorOriginal);
+      return i;
+    }
+
+    function linhaItem(id, nome, detalhe, precos) {
+      const linha = el("div", "linha");
+      const n = el("div", "nome", nome);
+      if (detalhe) n.appendChild(el("small", null, detalhe));
+      linha.appendChild(n);
+      const campo = { id, inputs: {} };
+      const caixa = el("div", "precos");
+      precos.forEach(({ chave, rotulo, original }) => {
+        if (rotulo) caixa.appendChild(el("span", null, rotulo));
+        const inp = inputPreco(original);
+        campo.inputs[chave] = inp;
+        caixa.appendChild(inp);
+      });
+      linha.appendChild(caixa);
+      const lab = el("label", "check");
+      const cb = document.createElement("input");
+      cb.type = "checkbox"; cb.checked = true;
+      lab.append(cb, document.createTextNode("Disponível"));
+      campo.disp = cb;
+      linha.appendChild(lab);
+      campos.push(campo);
+      return linha;
+    }
+
+    function montarLista() {
+      const lista = $("lista-itens");
+      lista.replaceChildren();
+      const secao = (titulo) => lista.appendChild(el("h3", null, titulo));
+      const unico = (o) => [{ chave: "unico", original: o }];
+
+      secao("Lanches");
+      CARDAPIO.lanches.itens.forEach((i) => lista.appendChild(linhaItem(i.id, i.nome, null, [
+        { chave: "tradicional", rotulo: "Trad.", original: i.precos.tradicional },
+        { chave: "artesanal", rotulo: "Art.", original: i.precos.artesanal },
+      ])));
+      secao("Combos");
+      CARDAPIO.combo.itens.forEach((i) => lista.appendChild(linhaItem(i.id, i.nome, null, unico(i.preco))));
+      secao("Porções");
+      CARDAPIO.porcoes.batataFrita.tamanhos.forEach((t) =>
+        lista.appendChild(linhaItem(t.id, `Batata Frita — ${t.nome}`, null, unico(t.preco))));
+      CARDAPIO.porcoes.itens.forEach((i) => lista.appendChild(linhaItem(i.id, i.nome, null, unico(i.preco))));
+      secao("Bebidas");
+      CARDAPIO.bebidas.itens.forEach((i) => lista.appendChild(linhaItem(i.id, i.nome, null, unico(i.preco))));
+      secao("Adicionais");
+      CARDAPIO.adicionais.forEach((a) => {
+        const nome = a.nome || a.nomePorLinha.tradicional;
+        lista.appendChild(linhaItem(a.id, nome, null, a.precos
+          ? [{ chave: "tradicional", rotulo: "Trad.", original: a.precos.tradicional },
+             { chave: "artesanal", rotulo: "Art.", original: a.precos.artesanal }]
+          : unico(a.precoUnico)));
+      });
+    }
+
+    function preencher(config) {
+      $("loja-fechada").checked = !!config.lojaFechada;
+      $("aviso").value = config.aviso || "";
+      const fora = new Set(config.indisponiveis || []);
+      campos.forEach((c) => {
+        c.disp.checked = !fora.has(c.id);
+        const p = (config.precos || {})[c.id];
+        Object.entries(c.inputs).forEach(([chave, inp]) => {
+          const v = chave === "unico" ? p : p && typeof p === "object" ? p[chave] : undefined;
+          inp.value = typeof v === "number" ? String(v) : "";
+        });
+      });
+    }
+
+    function coletar() {
+      const config = {
+        lojaFechada: $("loja-fechada").checked,
+        aviso: $("aviso").value.trim(),
+        indisponiveis: [],
+        precos: {},
+      };
+      campos.forEach((c) => {
+        if (!c.disp.checked) config.indisponiveis.push(c.id);
+        const valores = {};
+        Object.entries(c.inputs).forEach(([chave, inp]) => {
+          const txt = inp.value.trim().replace(",", ".");
+          if (txt !== "" && isFinite(Number(txt))) valores[chave] = Number(txt);
+        });
+        if ("unico" in c.inputs) {
+          if ("unico" in valores) config.precos[c.id] = valores.unico;
+        } else if (Object.keys(valores).length) {
+          config.precos[c.id] = valores;
+        }
+      });
+      return config;
+    }
+
+    function mostrar(logado) {
+      $("tela-login").hidden = logado;
+      $("tela-painel").hidden = !logado;
+      $("sair").hidden = !logado;
+    }
+
+    async function carregar() {
+      const r = await api("GET");
+      if (r.status === 401) { mostrar(false); return; }
+      mostrar(true);
+      $("aviso-redis").hidden = r.dados.redis !== false;
+      if (r.dados.config) preencher(r.dados.config);
+    }
+
+    $("form-login").addEventListener("submit", async (ev) => {
+      ev.preventDefault();
+      $("msg-login").textContent = "";
+      const r = await api("POST", { senha: $("senha").value });
+      if (!r.ok) { $("msg-login").textContent = r.dados.erro || "Não foi possível entrar."; return; }
+      $("senha").value = "";
+      carregar();
+    });
+
+    $("sair").addEventListener("click", async () => { await api("DELETE"); mostrar(false); });
+
+    $("salvar").addEventListener("click", async () => {
+      const msg = $("msg-salvar");
+      $("salvar").disabled = true;
+      msg.className = "msg"; msg.textContent = "Salvando…";
+      const r = await api("PUT", coletar());
+      $("salvar").disabled = false;
+      if (r.status === 401) { mostrar(false); return; }
+      msg.className = "msg " + (r.ok ? "ok" : "erro");
+      msg.textContent = r.ok ? "Salvo! O site já usa os novos valores." : r.dados.erro || "Erro ao salvar.";
+      if (r.ok) preencher(r.dados.config);
+    });
+
+    montarLista();
+    carregar();
+  })();
+  </script>
+</body>
+</html>
