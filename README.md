@@ -13,6 +13,7 @@ de confirmação do pedido.
 | `style.css` | Toda a aparência visual (cores, layout, responsividade) |
 | `cardapio.js` | **Os dados que o dono da loja edita**: preços, itens, horários, número de WhatsApp |
 | `app.js` | A lógica do site (carrinho, cálculo de preços, montagem da mensagem) — normalmente não precisa mexer aqui |
+| `admin/` e `api/` | Painel do dono (`/admin`) para abrir/fechar a loja e deixar uma mensagem no site — ver a seção "Painel do dono" abaixo |
 | `favicon.svg` | Ícone da aba do navegador (coroa) |
 | `marca/` | Logo oficial da Doub IT (versão para fundo escuro), usado no crédito "Desenvolvido por" do rodapé |
 | `Cardapio_1.jpeg` / `Cardapio_2.jpeg` | Cardápios impressos originais, usados só como referência visual — não são exibidos no site |
@@ -193,6 +194,45 @@ Confira este checklist antes de divulgar o link para os clientes:
 - [ ] Testar um pedido completo no celular **no HML** (adicionar item, editar
       quantidade, finalizar, conferir a mensagem que chega no WhatsApp) antes
       de levar para a `main`.
+
+## Painel do dono: abrir/fechar a loja e avisar os clientes
+
+O dono acessa **`/admin`** (ex: `https://www.shalomamburgueria.com.br/admin/`)
+pelo celular e entra com a senha. No Android (Chrome) ou iPhone (Safari) dá
+para "Adicionar à tela inicial" e ele passa a abrir como um app.
+
+No painel ele escolhe:
+
+- **Horário normal** — o site segue `CONFIG.horarios` (19:30 às 00:00).
+- **Fechar a loja** — o site não aceita pedidos, mesmo dentro do horário.
+- **Abrir a loja agora** — o site aceita pedidos, mesmo fora do horário.
+- **Por quanto tempo** — só hoje (volta ao normal às 06:00), 1 h, 3 h, até um
+  dia/hora escolhido, ou até ele desfazer. Assim a loja não fica fechada por
+  esquecimento.
+- **Mensagem para os clientes** — aparece em destaque no topo do site (até
+  200 caracteres, com atalhos prontos como "Imprevisto, voltamos amanhã").
+
+O site consulta `/api/status` ao abrir, a cada minuto e quando o cliente volta
+para a aba. Se essa consulta falhar (sem internet, banco fora do ar), o site
+simplesmente segue o horário normal — nunca trava.
+
+### Configuração única na Vercel
+
+1. No projeto da Vercel: **Storage → Create/Connect → Upstash Redis** (plano
+   gratuito) e conecte aos ambientes **Production** e **Preview**. A Vercel
+   cria sozinha as variáveis `KV_REST_API_URL` e `KV_REST_API_TOKEN`.
+2. **Settings → Environment Variables**: crie `ADMIN_PASSWORD` com a senha do
+   dono (Production e Preview). Para trocar a senha depois, basta alterar essa
+   variável e fazer um novo deploy — as sessões antigas deixam de valer.
+3. Faça um novo deploy (Redeploy) para as variáveis valerem.
+
+Produção e homologação guardam estados **separados** (fechar a loja no
+endereço de testes não fecha a loja de verdade).
+
+Arquivos: `admin/` (página do painel e ícones), `api/status.js` (leitura
+pública), `api/admin.js` (login e gravação, protegidos por senha; 5 tentativas
+erradas bloqueiam o acesso por 15 minutos) e `api/_estado.js` (código
+compartilhado).
 
 ## Como funciona por baixo dos panos (resumo técnico)
 

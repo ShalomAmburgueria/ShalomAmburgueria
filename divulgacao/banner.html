@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<title>Banner de divulgação — Shalom Amburgueria</title>
+<!-- Banner de divulgação. Abra no navegador (o formato padrão é o feed do
+     Instagram 1080x1350). Para o formato Stories/Status (1080x1920) use
+     banner.html?formato=story. O PNG pronto é gerado por renderizar.js. -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --fundo: #1a0a06;
+    --vermelho: #d62a1e;
+    --vermelho-escuro: #8c1a12;
+    --dourado: #f0b429;
+    --dourado-claro: #ffe28a;
+    --creme: #fff7ec;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #000; }
+  .banner > * { flex-shrink: 0; }
+  .banner {
+    position: relative;
+    width: 1080px;
+    height: 1350px;
+    overflow: hidden;
+    color: var(--creme);
+    font-family: "Sora", sans-serif;
+    background:
+      radial-gradient(ellipse 70% 38% at 50% 44%, rgba(240, 120, 30, 0.55), transparent 70%),
+      radial-gradient(ellipse 120% 60% at 50% 0%, rgba(214, 42, 30, 0.35), transparent 65%),
+      var(--fundo);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 48px 64px 0;
+  }
+  .banner::before { /* moldura dourada fina */
+    content: "";
+    position: absolute;
+    inset: 22px;
+    border: 3px solid rgba(240, 180, 41, 0.55);
+    border-radius: 34px;
+    pointer-events: none;
+  }
+  .story { height: 1920px; padding-top: 110px; }
+
+  .coroa { width: 120px; height: 72px; margin-bottom: -10px; filter: drop-shadow(0 6px 14px rgba(240, 180, 41, 0.45)); }
+  .logo-nome {
+    font-family: "Pacifico", cursive;
+    font-size: 160px;
+    line-height: 1.05;
+    color: #fff;
+    text-shadow: 0 0 28px rgba(255, 190, 90, 0.55), 0 6px 0 rgba(0, 0, 0, 0.35);
+  }
+  .logo-faixa {
+    margin-top: -6px;
+    background: linear-gradient(180deg, var(--vermelho), var(--vermelho-escuro));
+    padding: 10px 56px;
+    font-weight: 800;
+    font-size: 38px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    transform: skewX(-8deg);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
+  }
+  .logo-faixa span { display: inline-block; transform: skewX(8deg); padding-left: 0.32em; }
+
+  .tagline {
+    margin-top: 24px;
+    font-size: 42px;
+    font-weight: 800;
+    text-align: center;
+    line-height: 1.15;
+  }
+  .tagline em { font-style: normal; color: var(--dourado); }
+
+  .hamburguer { width: 370px; height: 277px; margin-top: 4px; filter: drop-shadow(0 30px 30px rgba(0, 0, 0, 0.55)); }
+  .story .hamburguer { width: 800px; height: 600px; margin-top: 60px; }
+
+  .chips { display: flex; gap: 14px; margin-top: 12px; flex-wrap: wrap; justify-content: center; }
+  .chips span {
+    padding: 8px 22px;
+    border: 2px solid rgba(240, 180, 41, 0.7);
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 26px;
+    color: var(--dourado-claro);
+    background: rgba(0, 0, 0, 0.35);
+  }
+
+  .horario {
+    margin-top: 30px;
+    width: 100%;
+    border-radius: 30px;
+    padding: 20px 30px 22px;
+    text-align: center;
+    background: linear-gradient(160deg, var(--vermelho), var(--vermelho-escuro));
+    border: 3px solid var(--dourado-claro);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  }
+  .horario__titulo { font-weight: 800; font-size: 28px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--dourado-claro); }
+  .horario__horas { margin-top: 6px; font-weight: 800; font-size: 74px; line-height: 1.05; color: #fff; }
+  .horario__horas small { font-size: 40px; font-weight: 700; color: var(--dourado-claro); padding: 0 8px; }
+  .horario__dias { margin-top: 6px; font-weight: 700; font-size: 30px; }
+  .story .horario { margin-top: 56px; padding: 36px 30px 38px; }
+  .story .horario__horas { font-size: 96px; }
+  .story .chips { margin-top: 36px; }
+
+  .rodape {
+    margin-top: auto;
+    width: calc(100% + 128px);
+    padding: 24px 64px 44px;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.78) 30%);
+    text-align: center;
+  }
+  .cta {
+    display: inline-block;
+    background: linear-gradient(180deg, var(--dourado-claro), var(--dourado));
+    color: #3a1d00;
+    font-weight: 800;
+    font-size: 38px;
+    padding: 14px 44px;
+    border-radius: 999px;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.5);
+  }
+  .contato { margin-top: 12px; font-size: 32px; font-weight: 700; }
+  .contato b { color: var(--dourado); }
+  .infos { margin-top: 10px; font-size: 24px; color: #e8d3b8; line-height: 1.4; }
+</style>
+</head>
+<body>
+<div class="banner" id="banner">
+  <svg class="coroa" viewBox="0 0 100 60" aria-hidden="true">
+    <defs>
+      <linearGradient id="gc" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#ffe28a"/><stop offset="55%" stop-color="#f0b429"/><stop offset="100%" stop-color="#c98b0f"/>
+      </linearGradient>
+    </defs>
+    <polygon points="5,50 15,15 30,35 50,8 70,35 85,15 95,50" fill="url(#gc)" stroke="#7a4f0c" stroke-width="1.5" stroke-linejoin="round"/>
+    <circle cx="15" cy="15" r="5" fill="url(#gc)" stroke="#7a4f0c" stroke-width="1.5"/>
+    <circle cx="50" cy="8" r="6" fill="url(#gc)" stroke="#7a4f0c" stroke-width="1.5"/>
+    <circle cx="85" cy="15" r="5" fill="url(#gc)" stroke="#7a4f0c" stroke-width="1.5"/>
+    <rect x="5" y="48" width="90" height="8" rx="2" fill="url(#gc)" stroke="#7a4f0c" stroke-width="1.5"/>
+  </svg>
+  <div class="logo-nome">Shalom</div>
+  <div class="logo-faixa"><span>Amburgueria</span></div>
+
+  <p class="tagline">Chegou o novo sabor<br/>da sua <em>fome!</em></p>
+
+  <!-- Hambúrguer ilustrado -->
+  <svg class="hamburguer" viewBox="0 0 440 330" aria-hidden="true">
+    <defs>
+      <linearGradient id="pao" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f2a73b"/><stop offset="1" stop-color="#c8741a"/></linearGradient>
+      <linearGradient id="paoB" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e9962c"/><stop offset="1" stop-color="#b8650f"/></linearGradient>
+      <linearGradient id="carne" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6b3418"/><stop offset="1" stop-color="#3b1a0a"/></linearGradient>
+      <linearGradient id="queijo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd23f"/><stop offset="1" stop-color="#f0a800"/></linearGradient>
+    </defs>
+    <!-- pão de baixo -->
+    <path d="M40 262 H400 Q400 304 360 306 H80 Q40 304 40 262Z" fill="url(#paoB)"/>
+    <!-- carne -->
+    <rect x="28" y="222" width="384" height="46" rx="23" fill="url(#carne)"/>
+    <!-- bacon -->
+    <path d="M36 214 Q70 188 104 214 T172 214 T240 214 T308 214 T376 214 L404 222 H36Z" fill="#c4452e"/>
+    <path d="M36 214 Q70 196 104 214 T172 214 T240 214 T308 214 T376 214" fill="none" stroke="#f08a6b" stroke-width="6" stroke-linecap="round"/>
+    <!-- queijo derretendo -->
+    <path d="M34 190 H406 L396 204 L372 204 L360 238 L342 204 H250 L236 226 L220 204 H110 L96 244 L80 204 H44Z" fill="url(#queijo)"/>
+    <!-- tomate -->
+    <rect x="46" y="168" width="348" height="30" rx="15" fill="#e0301f"/>
+    <rect x="60" y="174" width="320" height="8" rx="4" fill="#ff6a52" opacity="0.7"/>
+    <!-- alface -->
+    <path d="M26 166 Q44 140 66 160 T110 160 T154 160 T198 160 T242 160 T286 160 T330 160 T374 160 T414 166 L404 186 H36Z" fill="#4fae3a"/>
+    <path d="M26 166 Q44 146 66 162 T110 162 T154 162 T198 162 T242 162 T286 162 T330 162 T374 162 T414 166" fill="none" stroke="#8ee06a" stroke-width="5" stroke-linecap="round"/>
+    <!-- batata palha -->
+    <g stroke="#f6d06b" stroke-width="5" stroke-linecap="round" opacity="0.95">
+      <path d="M90 150 l28 -22"/><path d="M130 146 l-24 -26"/><path d="M170 150 l30 -18"/><path d="M215 146 l-26 -28"/>
+      <path d="M250 150 l26 -24"/><path d="M290 146 l-22 -26"/><path d="M330 150 l30 -18"/><path d="M110 138 l36 -10"/>
+      <path d="M230 140 l32 -12"/><path d="M300 138 l-34 -12"/>
+    </g>
+    <!-- pão de cima -->
+    <path d="M36 140 Q36 24 220 18 Q404 24 404 140 Q404 156 384 156 H56 Q36 156 36 140Z" fill="url(#pao)"/>
+    <path d="M70 70 Q120 34 200 32" fill="none" stroke="#ffd98a" stroke-width="10" stroke-linecap="round" opacity="0.55"/>
+    <!-- gergelim -->
+    <g fill="#fff3cf">
+      <ellipse cx="120" cy="64" rx="9" ry="5" transform="rotate(-25 120 64)"/><ellipse cx="170" cy="46" rx="9" ry="5" transform="rotate(15 170 46)"/>
+      <ellipse cx="230" cy="44" rx="9" ry="5" transform="rotate(-10 230 44)"/><ellipse cx="290" cy="60" rx="9" ry="5" transform="rotate(30 290 60)"/>
+      <ellipse cx="340" cy="90" rx="9" ry="5" transform="rotate(-20 340 90)"/><ellipse cx="90" cy="104" rx="9" ry="5" transform="rotate(20 90 104)"/>
+      <ellipse cx="160" cy="92" rx="9" ry="5" transform="rotate(-5 160 92)"/><ellipse cx="250" cy="96" rx="9" ry="5" transform="rotate(25 250 96)"/>
+      <ellipse cx="320" cy="128" rx="9" ry="5" transform="rotate(-15 320 128)"/><ellipse cx="200" cy="124" rx="9" ry="5" transform="rotate(10 200 124)"/>
+      <ellipse cx="120" cy="132" rx="9" ry="5" transform="rotate(-30 120 132)"/>
+    </g>
+  </svg>
+
+  <div class="chips">
+    <span>Lanches</span><span>Combos</span><span>Porções</span><span>Bebidas</span>
+  </div>
+
+  <div class="horario">
+    <div class="horario__titulo">Estamos abertos</div>
+    <div class="horario__horas">19:30 <small>às</small> 00:00</div>
+    <div class="horario__dias">Todos os dias da semana</div>
+  </div>
+
+  <div class="rodape">
+    <div class="cta">Peça pelo site e receba em casa 🛵</div>
+    <p class="contato"><b>www.shalomamburgueria.com.br</b></p>
+    <p class="contato">WhatsApp <b>(11) 96632-1857</b> · e no iFood</p>
+    <p class="infos">Rua Luiz Antonio de Oliveira, 601 · Jundiapeba, Mogi das Cruzes - SP</p>
+  </div>
+</div>
+<script>
+  if (new URLSearchParams(location.search).get("formato") === "story") {
+    document.getElementById("banner").classList.add("story");
+  }
+</script>
+</body>
+</html>
