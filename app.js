@@ -24,6 +24,7 @@
   let carrinho = carregarCarrinho(); // array de itens no carrinho
   let painelState = null; // guarda o item sendo personalizado no momento
   let tipoEntregaAtual = "entrega"; // "entrega" ou "retirada"
+  let statusRemoto = null; // {modo, mensagem, ate} que o dono define em /admin (vem de /api/status)
 
   // =========================================================================
   // UTILITÁRIOS
@@ -124,8 +125,52 @@
     return `${partes.weekday}, ${partes.day}/${partes.month} às ${partes.hour}:${partes.minute}`;
   }
 
+  // Abertura/fechamento forçado pelo dono no painel /admin ("fechado" ou
+  // "aberto"). Devolve null quando vale o horário normal (modo "auto", prazo
+  // vencido ou sem resposta do servidor).
+  function modoForcado() {
+    if (!statusRemoto || statusRemoto.modo === "auto") return null;
+    if (statusRemoto.ate && Date.now() > Date.parse(statusRemoto.ate)) return null;
+    return statusRemoto.modo;
+  }
+
+  // Mensagem do dono para os clientes (aparece no topo do site), se houver.
+  function mensagemDaLoja() {
+    if (!statusRemoto || !statusRemoto.mensagem) return "";
+    if (statusRemoto.ate && Date.now() > Date.parse(statusRemoto.ate)) return "";
+    return statusRemoto.mensagem;
+  }
+
+  async function carregarStatusRemoto() {
+    const controle = new AbortController();
+    const limite = setTimeout(() => controle.abort(), 5000);
+    try {
+      const resposta = await fetch("/api/status", { cache: "no-store", signal: controle.signal });
+      if (!resposta.ok) return;
+      const dados = await resposta.json();
+      if (dados && ["auto", "fechado", "aberto"].includes(dados.modo)) {
+        statusRemoto = {
+          modo: dados.modo,
+          mensagem: typeof dados.mensagem === "string" ? dados.mensagem : "",
+          ate: typeof dados.ate === "string" ? dados.ate : null,
+        };
+      }
+    } catch (erro) {
+      // Sem rede, sem /api (ex: arquivo aberto direto) ou timeout: segue o último estado conhecido.
+    } finally {
+      clearTimeout(limite);
+    }
+  }
+
+  async function atualizarTudo() {
+    await carregarStatusRemoto();
+    atualizarStatusLoja();
+  }
+
   function estaAberto() {
     if (antesDoLancamento()) return false;
+    const forcado = modoForcado();
+    if (forcado) return forcado === "aberto";
     if (!ehProducao() && CONFIG.abertoSempreForaDeProducao) return true;
 
     const agora = new Date();
@@ -158,6 +203,8 @@
 
     if (antesDoLancamento()) {
       texto.textContent = `Abrimos ${textoDataLancamento()}`;
+    } else if (modoForcado()) {
+      texto.textContent = aberto ? "Aberto agora" : "Fechado no momento";
     } else if (aberto) {
       texto.textContent = !ehProducao() && CONFIG.abertoSempreForaDeProducao
         ? "Aberto agora · teste 24h"
@@ -171,6 +218,15 @@
     }
 
     atualizarAvisoFechado(aberto, horario);
+    atualizarAvisoLoja();
+  }
+
+  function atualizarAvisoLoja() {
+    const caixa = document.getElementById("aviso-loja");
+    if (!caixa) return;
+    const mensagem = mensagemDaLoja();
+    caixa.textContent = mensagem;
+    caixa.hidden = !mensagem;
   }
 
   function atualizarAvisoFechado(aberto, horario) {
@@ -185,6 +241,8 @@
       aviso.hidden = false;
       aviso.textContent = antesDoLancamento()
         ? `Ainda não abrimos! Os pedidos pelo site começam ${textoDataLancamento()}. Fique à vontade para conhecer o cardápio.`
+        : modoForcado() === "fechado"
+        ? "A loja está fechada no momento. Você poderá enviar o pedido quando voltarmos a abrir."
         : horario
         ? `A loja está fechada no momento. Horário de hoje: ${horario.abre} às ${horario.fecha}. Você poderá enviar o pedido quando abrirmos.`
         : "A loja está fechada hoje. Volte em outro dia para fazer seu pedido.";
@@ -1224,7 +1282,11 @@
     configurarEventosPaineis();
     renderizarBarraCarrinho();
     atualizarStatusLoja();
-    setInterval(atualizarStatusLoja, 60000); // reavalia aberto/fechado a cada minuto
+    atualizarTudo();
+    setInterval(atualizarTudo, 60000); // reavalia aberto/fechado (e consulta o painel do dono) a cada minuto
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "visible") atualizarTudo();
+    });
   }
 
   if (document.readyState === "loading") {

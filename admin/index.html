@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="robots" content="noindex, nofollow" />
+<meta name="theme-color" content="#8c1a12" />
+<title>Painel da Loja | Shalom</title>
+<link rel="manifest" href="manifest.webmanifest" />
+<link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+<link rel="apple-touch-icon" href="icone-180.png" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-title" content="Painel Shalom" />
+<style>
+  :root {
+    --bg: #1a0a06; --card: #2a1410; --borda: #5a2a1c;
+    --vermelho: #d62a1e; --dourado: #f0b429; --dourado-claro: #ffe28a;
+    --texto: #fff7ec; --muted: #cdb59c; --ok: #2fbf6b; --erro: #ff6a6a;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh; background: var(--bg); color: var(--texto);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; line-height: 1.4;
+    padding: env(safe-area-inset-top) 16px calc(24px + env(safe-area-inset-bottom));
+  }
+  main { max-width: 520px; margin: 0 auto; padding-top: 20px; }
+  h1 { font-size: 1.4rem; margin: 0 0 4px; }
+  .sub { color: var(--muted); margin: 0 0 20px; font-size: 0.95rem; }
+  [hidden] { display: none !important; }
+  .card { background: var(--card); border: 1px solid var(--borda); border-radius: 16px; padding: 16px; margin-bottom: 16px; }
+  .card h2 { font-size: 1rem; margin: 0 0 12px; color: var(--dourado-claro); }
+  label.campo { display: block; font-size: 0.9rem; color: var(--muted); margin-bottom: 6px; }
+  input[type="password"], input[type="datetime-local"], textarea, select {
+    width: 100%; font: inherit; font-size: 1rem; color: var(--texto); background: #160804;
+    border: 1px solid var(--borda); border-radius: 10px; padding: 12px;
+  }
+  textarea { min-height: 84px; resize: vertical; }
+  .contador { text-align: right; font-size: 0.8rem; color: var(--muted); margin-top: 4px; }
+
+  .modos { display: grid; gap: 10px; }
+  .modo { position: relative; }
+  .modo input { position: absolute; opacity: 0; inset: 0; }
+  .modo span {
+    display: block; padding: 16px; border-radius: 14px; border: 2px solid var(--borda);
+    background: #160804; font-weight: 700; font-size: 1.05rem;
+  }
+  .modo small { display: block; font-weight: 400; color: var(--muted); margin-top: 2px; font-size: 0.85rem; }
+  .modo input:checked + span { border-color: var(--dourado); background: #3a1c10; }
+  .modo--fechado input:checked + span { border-color: var(--vermelho); background: #4a120d; }
+  .modo--aberto input:checked + span { border-color: var(--ok); background: #0f2e1c; }
+  .modo input:focus-visible + span { outline: 3px solid var(--dourado-claro); outline-offset: 2px; }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+  .chip {
+    font: inherit; font-size: 0.85rem; color: var(--dourado-claro); background: transparent;
+    border: 1px solid var(--borda); border-radius: 999px; padding: 8px 12px; cursor: pointer;
+  }
+  .btn {
+    display: block; width: 100%; font: inherit; font-size: 1.1rem; font-weight: 800; cursor: pointer;
+    border: 0; border-radius: 14px; padding: 16px; color: #3a1d00;
+    background: linear-gradient(180deg, var(--dourado-claro), var(--dourado));
+  }
+  .btn:disabled { opacity: 0.55; cursor: wait; }
+  .btn--sec { background: transparent; color: var(--texto); border: 1px solid var(--borda); font-weight: 600; font-size: 0.95rem; margin-top: 10px; padding: 12px; }
+  .msg { margin: 12px 0 0; padding: 12px; border-radius: 10px; font-size: 0.95rem; }
+  .msg--ok { background: #0f2e1c; color: #8ff0b6; }
+  .msg--erro { background: #4a120d; color: #ffb4b4; }
+  .atual { font-size: 0.95rem; }
+  .atual b { color: var(--dourado-claro); }
+  .rodape { text-align: center; margin-top: 8px; }
+  .rodape a { color: var(--muted); }
+</style>
+</head>
+<body>
+<main>
+  <h1>👑 Painel da Loja</h1>
+  <p class="sub">Shalom Amburgueria — controle se o site recebe pedidos.</p>
+
+  <!-- Entrada -->
+  <form id="tela-login" class="card" autocomplete="on">
+    <h2>Entrar</h2>
+    <label class="campo" for="senha">Senha do painel</label>
+    <input type="password" id="senha" name="password" autocomplete="current-password" required />
+    <button type="submit" class="btn" id="btn-entrar" style="margin-top:14px">Entrar</button>
+    <p class="msg msg--erro" id="login-erro" hidden></p>
+  </form>
+
+  <!-- Painel -->
+  <div id="tela-painel" hidden>
+    <div class="card">
+      <h2>Situação gravada agora</h2>
+      <p class="atual" id="atual">Carregando…</p>
+    </div>
+
+    <form id="form-estado">
+      <div class="card">
+        <h2>1. O que o site deve fazer?</h2>
+        <div class="modos">
+          <label class="modo">
+            <input type="radio" name="modo" value="auto" checked />
+            <span>🕐 Horário normal<small>Abre e fecha sozinho: todos os dias, 19:30 às 00:00.</small></span>
+          </label>
+          <label class="modo modo--fechado">
+            <input type="radio" name="modo" value="fechado" />
+            <span>🔴 Fechar a loja<small>O site não aceita pedidos, mesmo dentro do horário.</small></span>
+          </label>
+          <label class="modo modo--aberto">
+            <input type="radio" name="modo" value="aberto" />
+            <span>🟢 Abrir a loja agora<small>O site aceita pedidos, mesmo fora do horário.</small></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>2. Por quanto tempo?</h2>
+        <label class="campo" for="duracao">A escolha acima vale até:</label>
+        <select id="duracao">
+          <option value="hoje">Só hoje (volta ao normal às 06:00)</option>
+          <option value="1h">1 hora</option>
+          <option value="3h">3 horas</option>
+          <option value="sempre">Até eu desfazer</option>
+          <option value="data">Escolher dia e hora…</option>
+        </select>
+        <div id="campo-data" hidden style="margin-top:10px">
+          <label class="campo" for="data-hora">Dia e hora (horário de Brasília)</label>
+          <input type="datetime-local" id="data-hora" />
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>3. Mensagem para os clientes (opcional)</h2>
+        <div class="chips" id="sugestoes">
+          <button type="button" class="chip" data-texto="Hoje não abriremos por um imprevisto. Voltamos amanhã às 19:30!">Imprevisto, voltamos amanhã</button>
+          <button type="button" class="chip" data-texto="Hoje fecharemos mais cedo. Obrigado pela compreensão!">Fechamos mais cedo</button>
+          <button type="button" class="chip" data-texto="Estamos com alta demanda, o preparo pode demorar um pouco mais.">Alta demanda</button>
+        </div>
+        <textarea id="mensagem" maxlength="200" placeholder="Aparece em destaque no topo do site"></textarea>
+        <div class="contador"><span id="contador">0</span>/200</div>
+      </div>
+
+      <button type="submit" class="btn" id="btn-salvar">Salvar e publicar no site</button>
+      <p class="msg" id="resultado" hidden role="status"></p>
+    </form>
+
+    <button type="button" class="btn btn--sec" id="btn-desfazer">Desfazer tudo (voltar ao horário normal)</button>
+    <p class="rodape"><a href="../" target="_blank" rel="noopener">Ver o site</a> · <a href="#" id="btn-sair">Sair</a></p>
+  </div>
+</main>
+
+<script>
+(function () {
+  "use strict";
+  const CHAVE_TOKEN = "shalom_admin_token_v1";
+  const $ = (id) => document.getElementById(id);
+
+  function lerToken() { try { return localStorage.getItem(CHAVE_TOKEN) || ""; } catch (e) { return ""; } }
+  function gravarToken(t) { try { t ? localStorage.setItem(CHAVE_TOKEN, t) : localStorage.removeItem(CHAVE_TOKEN); } catch (e) {} }
+  let token = lerToken();
+
+  async function chamar(corpo) {
+    const cab = { "Content-Type": "application/json" };
+    if (token) cab.Authorization = "Bearer " + token;
+    let resposta;
+    try {
+      resposta = await fetch("/api/admin", { method: "POST", headers: cab, body: JSON.stringify(corpo) });
+    } catch (e) {
+      throw new Error("Sem conexão. Verifique a internet e tente de novo.");
+    }
+    let dados = {};
+    try { dados = await resposta.json(); } catch (e) {}
+    if (resposta.status === 401 && corpo.acao !== "login") {
+      sair();
+      throw new Error(dados.erro || "Sessão expirada. Entre de novo.");
+    }
+    if (!resposta.ok) throw new Error(dados.erro || "Algo deu errado. Tente de novo.");
+    return dados;
+  }
+
+  // ---------- datas (sempre horário de Brasília, UTC-3) ----------
+  const BRT = 3 * 60 * 60 * 1000;
+  function proximas6h() {
+    const b = new Date(Date.now() - BRT); // campos UTC de "b" = relógio de Brasília
+    const dia = b.getUTCHours() < 6 ? b.getUTCDate() : b.getUTCDate() + 1;
+    return new Date(Date.UTC(b.getUTCFullYear(), b.getUTCMonth(), dia, 6, 0) + BRT);
+  }
+  function calcularPrazo() {
+    const v = $("duracao").value;
+    if (v === "hoje") return proximas6h().toISOString();
+    if (v === "1h") return new Date(Date.now() + 3600e3).toISOString();
+    if (v === "3h") return new Date(Date.now() + 3 * 3600e3).toISOString();
+    if (v === "data") {
+      const campo = $("data-hora").value;
+      if (!campo) throw new Error("Escolha o dia e a hora do fim.");
+      return new Date(campo + ":00-03:00").toISOString();
+    }
+    return null;
+  }
+  function descreverData(iso) {
+    return new Intl.DateTimeFormat("pt-BR", {
+      timeZone: "America/Sao_Paulo", weekday: "long", day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit",
+    }).format(new Date(iso));
+  }
+
+  // ---------- telas ----------
+  function mostrarMensagem(texto, tipo) {
+    const el = $("resultado");
+    el.textContent = texto;
+    el.className = "msg msg--" + tipo;
+    el.hidden = false;
+  }
+
+  function mostrarAtual(estado) {
+    const nomes = { auto: "🕐 Horário normal", fechado: "🔴 Loja FECHADA", aberto: "🟢 Loja ABERTA (forçado)" };
+    const el = $("atual");
+    el.textContent = "";
+    const forte = document.createElement("b");
+    forte.textContent = nomes[estado.modo] || nomes.auto;
+    el.appendChild(forte);
+    if (estado.ate && Date.parse(estado.ate) > Date.now()) {
+      el.appendChild(document.createTextNode(" — até " + descreverData(estado.ate)));
+    } else if (estado.modo !== "auto") {
+      el.appendChild(document.createTextNode(" — até você desfazer"));
+    }
+    if (estado.mensagem) {
+      el.appendChild(document.createElement("br"));
+      el.appendChild(document.createTextNode("Mensagem no site: “" + estado.mensagem + "”"));
+    }
+  }
+
+  async function abrirPainel() {
+    $("tela-login").hidden = true;
+    $("tela-painel").hidden = false;
+    try {
+      const { estado } = await chamar({ acao: "ler" });
+      mostrarAtual(estado);
+      document.querySelector('input[name="modo"][value="' + estado.modo + '"]').checked = true;
+      $("mensagem").value = estado.mensagem || "";
+      $("contador").textContent = $("mensagem").value.length;
+      if (estado.ate) {
+        $("duracao").value = "data";
+        $("campo-data").hidden = false;
+        const brt = new Date(Date.parse(estado.ate) - BRT).toISOString().slice(0, 16);
+        $("data-hora").value = brt;
+      } else if (estado.modo === "auto") {
+        $("duracao").value = "hoje";
+      } else {
+        $("duracao").value = "sempre";
+      }
+    } catch (e) {
+      $("atual").textContent = e.message;
+    }
+  }
+
+  function sair() {
+    token = "";
+    gravarToken("");
+    $("tela-painel").hidden = true;
+    $("tela-login").hidden = false;
+  }
+
+  // ---------- eventos ----------
+  $("tela-login").addEventListener("submit", async (ev) => {
+    ev.preventDefault();
+    const erro = $("login-erro");
+    erro.hidden = true;
+    $("btn-entrar").disabled = true;
+    try {
+      const { token: novo } = await chamar({ acao: "login", senha: $("senha").value });
+      token = novo;
+      gravarToken(novo);
+      $("senha").value = "";
+      await abrirPainel();
+    } catch (e) {
+      erro.textContent = e.message;
+      erro.hidden = false;
+    } finally {
+      $("btn-entrar").disabled = false;
+    }
+  });
+
+  $("duracao").addEventListener("change", () => { $("campo-data").hidden = $("duracao").value !== "data"; });
+  $("mensagem").addEventListener("input", () => { $("contador").textContent = $("mensagem").value.length; });
+  $("sugestoes").addEventListener("click", (ev) => {
+    const chip = ev.target.closest(".chip");
+    if (!chip) return;
+    $("mensagem").value = chip.dataset.texto;
+    $("contador").textContent = $("mensagem").value.length;
+  });
+
+  async function salvar(estado) {
+    $("btn-salvar").disabled = true;
+    $("btn-desfazer").disabled = true;
+    try {
+      const { estado: gravado } = await chamar({ acao: "salvar", estado });
+      mostrarAtual(gravado);
+      mostrarMensagem("Pronto! O site já usa essa configuração (clientes com o site aberto veem em até 1 minuto).", "ok");
+    } catch (e) {
+      mostrarMensagem(e.message, "erro");
+    } finally {
+      $("btn-salvar").disabled = false;
+      $("btn-desfazer").disabled = false;
+    }
+  }
+
+  $("form-estado").addEventListener("submit", (ev) => {
+    ev.preventDefault();
+    const modo = document.querySelector('input[name="modo"]:checked').value;
+    const mensagem = $("mensagem").value.trim();
+    let ate = null;
+    try {
+      // Horário normal sem mensagem não precisa de prazo.
+      if (modo !== "auto" || mensagem) ate = calcularPrazo();
+    } catch (e) {
+      return mostrarMensagem(e.message, "erro");
+    }
+    salvar({ modo, mensagem, ate });
+  });
+
+  $("btn-desfazer").addEventListener("click", () => {
+    document.querySelector('input[name="modo"][value="auto"]').checked = true;
+    $("mensagem").value = "";
+    $("contador").textContent = "0";
+    $("duracao").value = "hoje";
+    $("campo-data").hidden = true;
+    salvar({ modo: "auto", mensagem: "", ate: null });
+  });
+
+  $("btn-sair").addEventListener("click", (ev) => { ev.preventDefault(); sair(); });
+
+  if (token) abrirPainel();
+})();
+</script>
+</body>
+</html>
